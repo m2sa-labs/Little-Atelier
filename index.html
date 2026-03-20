@@ -1,0 +1,2342 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>○○のアトリエ</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Hiragino Maru Gothic ProN", "Yu Gothic", sans-serif;
+      background: #efe7de;
+      color: #6f5442;
+    }
+
+    .app {
+      max-width: 430px;
+      min-height: 100vh;
+      margin: 0 auto;
+      background: #f7efe6;
+      position: relative;
+      overflow: hidden;
+      padding-bottom: 92px;
+    }
+
+    .screen {
+      display: none;
+      width: 100%;
+      position: relative;
+    }
+
+    .screen.active { display: block; }
+
+    .bg-image {
+      width: 100%;
+      display: block;
+      user-select: none;
+      -webkit-user-drag: none;
+      pointer-events: none;
+    }
+
+    /* 作品のせる層 */
+    .overlay-layer {
+      position: absolute;
+      inset: 0;
+      z-index: 5;
+    }
+.ui-buttons {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+}
+.ui-btn {
+  position: absolute;
+  width: 48px;            /* ← さらに小さく（56 → 48） */
+  cursor: pointer;
+  pointer-events: auto;
+   transition: transform 0.08s, opacity 0.15s;
+  opacity: 0.65;          /* ← さらに薄く（0.85 → 0.65） */
+}
+/* 下の3つ */
+.btn-add:active,
+.btn-album:active,
+.btn-setting:active {
+  transform: translateX(-50%) scale(0.97);
+  opacity: 0.9;
+}
+
+/* 位置（さらに下） */
+.btn-add {
+  left: 25%;
+  transform: translateX(-50%);
+  bottom: 12px;           /* ← さらに下（20 → 12） */
+}
+
+.btn-album {
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 12px;
+}
+
+.btn-setting {
+  left: 75%;
+  transform: translateX(-50%);
+  bottom: 12px;
+}
+/* アルバム画面の下3つ */
+.btn-add-album {
+  left: 25%;
+  transform: translateX(-50%);
+  bottom: 12px;
+  z-index: 15;
+}
+
+.btn-home-album {
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 12px;
+  z-index: 15;
+}
+
+.btn-setting-album {
+  left: 75%;
+  transform: translateX(-50%);
+  bottom: 12px;
+  z-index: 15;
+}
+
+/* アルバム画面ボタンを押したとき */
+.btn-home-album:active,
+.btn-add-album:active,
+.btn-setting-album:active {
+  transform: translateX(-50%) scale(0.97);
+  opacity: 0.9;
+}
+    .art-slot {
+  position: absolute;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.album-screen .art-slot {
+  overflow: visible;
+}
+
+    .art-slot img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;   /* ← ここ変えるだけ！ */
+  display: block;
+}
+
+    .art-slot.empty {
+      background: transparent;
+    }
+
+    /* アトリエ画面の平面作品4枠 */
+    .flat-large {
+  left: 185px;
+  top: 80px;   /* さらに上へ */
+  width: 206px;
+  height: 128px;
+}
+
+.flat-small-1 {
+  left: 58px;   /* さらに左へ */
+  top: 74px;    /* さらに上へ */
+  width: 65px;
+  height: 73px;
+}
+
+.flat-small-2 {
+  left: 58px;
+  top: 168px;   /* 上へ */
+  width: 65px;
+  height: 66px;
+}
+
+.flat-small-3 {
+  left: 458px;  /* さらに右へ */
+  top: 69px;    /* 上へ */
+  width: 82px;
+  height: 52px;
+}
+
+.flat-mini-1 {
+  left: 457px;
+  top: 152px;   /* 上へ */
+  width: 83px;
+  height: 48px;
+}
+    .flat-mini-2 {
+      left: 0px;
+      top: 0px;
+      width: 0px;
+      height: 0px;
+      border-radius: 0;
+    }
+
+    .flat-mini-3 {
+      left: 0px;
+      top: 0px;
+      width: 0px;
+      height: 0px;
+      border-radius: 0;
+    }
+
+    .flat-mini-4 {
+      left: 360px;
+      top: 650px;
+      width: 0px;
+      height: 0px;
+    }
+
+    /* 立体作品4枠 */
+    .shelf-1 {
+  left: 88px;
+  top: 226px;
+  width: 42px;
+  height: 58px;
+  border-radius: 14px;
+}
+
+.shelf-2 {
+  left: 206px;
+  top: 226px;
+  width: 52px;
+  height: 58px;
+  border-radius: 14px;
+}
+
+.shelf-3 {
+  left: 320px;
+  top: 226px;
+  width: 52px;
+  height: 58px;
+  border-radius: 14px;
+}
+
+.shelf-4 {
+  left: 442px;
+  top: 226px;
+  width: 52px;
+  height: 58px;
+  border-radius: 14px;
+}
+
+    .art-slot.sculpture img {
+      object-fit: contain;
+    }
+/* ===== 縦メイン背景のときだけ slot 位置を変更 ===== */
+.home-screen.bg-vertical .flat-large {
+  left: 202px;
+  top: 65px;
+  width: 172px;
+  height: 212px;
+}
+
+.home-screen.bg-vertical .flat-small-1 {
+  left: 70px;
+  top: 75px;
+  width: 64px;
+  height: 68px;
+}
+
+.home-screen.bg-vertical .flat-small-2 {
+  left: 70px;
+  top: 167px;
+  width: 62px;
+  height: 60px;
+}
+
+.home-screen.bg-vertical .flat-small-3 {
+  left: 444px;
+  top: 75px;
+  width: 78px;
+  height: 42px;
+}
+
+.home-screen.bg-vertical .flat-mini-1 {
+  left: 445px;
+  top: 149px;
+  width: 78px;
+  height: 45px;
+}
+
+/* 棚作品は今のままでもOKならそのまま */
+.home-screen.bg-vertical .shelf-1 {
+  left: 88px;
+  top: 226px;
+  width: 42px;
+  height: 58px;
+}
+
+.home-screen.bg-vertical .shelf-2 {
+  left: 206px;
+  top: 226px;
+  width: 52px;
+  height: 58px;
+}
+
+.home-screen.bg-vertical .shelf-3 {
+  left: 320px;
+  top: 226px;
+  width: 52px;
+  height: 58px;
+}
+
+.home-screen.bg-vertical .shelf-4 {
+  left: 442px;
+  top: 226px;
+  width: 52px;
+  height: 58px;
+}
+    /* アルバム画面の8枠（右ページ調整版） */
+.album-slot-1 { left: 106px; top: 78px; width: 68px; height: 84px; transform: rotate(-1deg); }
+.album-slot-2 { left: 190px; top: 78px; width: 68px; height: 84px; }
+
+.album-slot-3 { left: 324px; top: 78px; width: 68px; height: 84px; }
+.album-slot-4 { left: 408px; top: 78px; width: 68px; height: 84px; transform: rotate(1deg); }
+
+.album-slot-5 { left: 106px; top: 188px; width: 68px; height: 84px; }
+.album-slot-6 { left: 190px; top: 188px; width: 68px; height: 84px; }
+
+.album-slot-7 { left: 324px; top: 188px; width: 68px; height: 84px; }
+.album-slot-8 { left: 408px; top: 188px; width: 68px; height: 84px; }
+
+    /* 画像サイズに合わせて縮小 */
+    .home-screen,
+    .album-screen {
+      transform-origin: top left;
+    }
+
+    /* 下ナビ */
+    .bottom-nav {
+      position: fixed;
+      left: 50%;
+      bottom: 14px;
+      transform: translateX(-50%);
+      width: min(92%, 400px);
+      background: rgba(255, 249, 242, 0.96);
+      border: 2px solid #e3cfbc;
+      border-radius: 28px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      box-shadow: 0 10px 24px rgba(113, 83, 57, 0.15);
+      overflow: hidden;
+      backdrop-filter: blur(8px);
+      z-index: 20;
+    }
+
+    .nav-item {
+      border: none;
+      background: transparent;
+      padding: 13px 8px 14px;
+      font: inherit;
+      color: #7d624f;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+    }
+
+    .nav-item span {
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .nav-item small {
+      font-size: 12px;
+      color: #a28773;
+    }
+
+    .nav-item.active {
+      background: rgba(255, 239, 225, 0.88);
+    }
+
+    .icon {
+      font-size: 26px;
+      line-height: 1;
+    }
+
+    /* 追加モーダル */
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(80, 60, 45, 0.32);
+      display: none;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 20px;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      z-index: 30;
+    }
+
+    .modal.show { display: flex; }
+
+    .modal-card {
+      width: 100%;
+      max-width: 360px;
+      background: #fffaf4;
+      border: 2px solid #e5d1bf;
+      border-radius: 24px;
+      padding: 20px 16px;
+      box-shadow: 0 18px 40px rgba(90, 65, 45, 0.18);
+      margin: auto 0;
+      max-height: calc(100vh - 40px);
+      overflow-y: auto;
+    }
+
+    .modal-card h2 {
+      margin: 0 0 14px;
+      font-size: 22px;
+      color: #7a5b49;
+      text-align: center;
+    }
+
+    .field {
+      margin-bottom: 12px;
+    }
+
+    .field label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: #8a6a56;
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+      width: 100%;
+      border: 1.5px solid #e2d2c2;
+      border-radius: 12px;
+      padding: 10px 12px;
+      font: inherit;
+      background: #fff;
+      color: #6f5442;
+    }
+
+    .field textarea {
+      resize: vertical;
+      min-height: 72px;
+    }
+.chip-group {
+  display: flex;
+  gap: 10px;
+}
+
+.chip-btn {
+  border: 1.5px solid #e2d2c2;
+  background: #fffdf9;
+  color: #8a6a56;
+  border-radius: 999px;
+  padding: 10px 18px;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.chip-btn.selected {
+  background: #f0d9c4;
+  color: #7a5b49;
+  border-color: #e1c3aa;
+}
+
+.chip-btn:active {
+  transform: scale(0.97);
+}
+    .preview-box {
+      width: 100%;
+      height: 140px;
+      border: 2px dashed #e4d3c2;
+      border-radius: 14px;
+      background: #fffdf9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      color: #b19582;
+      font-size: 13px;
+      text-align: center;
+      margin-top: 6px;
+       background: linear-gradient(45deg, #eee 25%, transparent 25%), 
+              linear-gradient(-45deg, #eee 25%, transparent 25%), 
+              linear-gradient(45deg, transparent 75%, #eee 75%), 
+              linear-gradient(-45deg, transparent 75%, #eee 75%);
+  background-size: 20px 20px;
+  background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+    }
+
+    .preview-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+    }
+
+    .preview-box.has-image img { display: block; }
+    .preview-box.has-image .preview-text { display: none; }
+
+    .modal-buttons {
+      display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      margin-top: 14px;
+      position: sticky;
+      bottom: -1px;
+      z-index: 3;
+      background: #fffaf4;
+      padding-top: 10px;
+      padding-bottom: 2px;
+    }
+
+    .modal-buttons button {
+      border: none;
+      border-radius: 14px;
+      padding: 12px;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .main-btn {
+      background: #f0d9c4;
+      color: #7a5b49;
+    }
+
+    .sub-btn {
+      background: #f8f1ea;
+      color: #9a7d69;
+      border: 1px solid #ead8c9;
+    }
+
+    .hint {
+      margin-top: 6px;
+      font-size: 12px;
+      color: #a18774;
+      line-height: 1.6;
+    }
+
+    .field input,
+    .field select,
+    .field textarea,
+    .modal-buttons button {
+      font-size: 16px;
+    }
+
+    @media (max-width: 430px) {
+  .scaled {
+    width: 576px;
+  }
+
+  .home-screen,
+  .album-screen {
+    transform: scale(calc(100vw / 576));
+    transform-origin: top left;
+  }
+
+  .title-screen {
+    transform: translateX(-50%) scale(calc(100vw / 576));
+    transform-origin: top center;
+  }
+
+  .app {
+    max-width: 100%;
+  }
+}
+
+@media (min-width: 431px) {
+  .scaled {
+    width: 576px;
+  }
+
+  .home-screen,
+  .album-screen {
+    transform: scale(calc(430 / 576));
+    transform-origin: top left;
+  }
+
+  .title-screen {
+    transform: translateX(-50%) scale(calc(430 / 576));
+    transform-origin: top center;
+  }
+}
+        .art-slot {
+      cursor: pointer;
+    }
+
+    .art-slot.empty {
+      cursor: default;
+    }
+    .album-pagination {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 20%;  /* ←ここがポイント */
+  width: 70%;   /* ←アルバム内に収める */
+  z-index: 12;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  pointer-events: none;
+}
+
+.page-btn,
+.page-indicator {
+  pointer-events: auto;
+}
+
+.page-btn {
+  border: none;
+  background: rgba(255, 250, 244, 0.92);
+  color: #7a5b49;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 12px;
+  padding: 4px 10px;
+  box-shadow: 0 4px 12px rgba(90, 65, 45, 0.16);
+  cursor: pointer;
+}
+
+.page-btn:active {
+  transform: scale(0.96);
+}
+
+.page-btn:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.page-indicator {
+  background: rgba(255, 250, 244, 0.88);
+  color: #8a6a56;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(90, 65, 45, 0.12);
+}
+#displaySlotField {
+  display: none;
+}
+
+#displaySlotButtons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.slot-btn {
+  border: 1.5px solid #e2d2c2;
+  background: #fffdf9;
+  color: #8a6a56;
+  border-radius: 999px;
+  padding: 10px 16px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.slot-btn:hover {
+  background: #f8efe7;
+}
+
+.slot-btn:active {
+  transform: scale(0.97);
+}
+
+.slot-btn.current {
+  background: #f0d9c4;
+  color: #7a5b49;
+  border-color: #e1c3aa;
+}
+
+.slot-btn.disabled {
+  opacity: 0.45;
+}
+.detail-card {
+  max-width: 980px;
+  width: min(94vw, 980px);
+  padding: 22px 20px 18px;
+}
+
+.detail-layout {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 22px;
+  align-items: stretch;
+}
+
+.detail-left,
+.detail-right {
+  min-width: 0;
+}
+
+.detail-preview-box {
+  width: 100%;
+  height: 100%;
+  min-height: 420px;
+  margin-top: 0;
+  border-radius: 22px;
+  border: 2px dashed #e4d3c2;
+  background: #fffdf9;
+}
+
+.detail-preview-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.detail-right {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  justify-content: flex-start;
+}
+
+.detail-right .field {
+  margin-bottom: 0;
+}
+
+.detail-text {
+  font-size: 16px;
+  color: #6f5442;
+  line-height: 1.7;
+  background: #fffdf9;
+  border: 1.5px solid #ead8c9;
+  border-radius: 14px;
+  padding: 10px 12px;
+}
+
+.detail-summary {
+  min-height: 110px;
+  white-space: pre-wrap;
+}
+
+.detail-buttons {
+  position: static;
+  margin-top: auto;
+  padding-top: 6px;
+  padding-bottom: 0;
+  background: transparent;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+#displaySlotButtons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+@media (max-width: 760px) {
+  .detail-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-preview-box {
+    min-height: 260px;
+  }
+}
+.add-card {
+  max-width: 980px;
+  width: min(94vw, 980px);
+  padding: 22px 20px 18px;
+}
+
+.add-layout {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 22px;
+  align-items: stretch;
+}
+
+.add-left,
+.add-right {
+  min-width: 0;
+}
+
+.add-left {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.add-preview-box {
+  width: 100%;
+  flex: 1;
+  min-height: 380px;
+  margin-top: 0;
+  border-radius: 22px;
+}
+
+.add-preview-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: none;
+}
+
+.add-right {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.add-right .field {
+  margin-bottom: 0;
+}
+
+#artSummary {
+  min-height: 150px;
+  resize: vertical;
+}
+
+.add-buttons {
+  position: static;
+  margin-top: auto;
+  padding-top: 6px;
+  padding-bottom: 0;
+  background: transparent;
+  grid-template-columns: 1fr 1fr;
+}
+
+@media (max-width: 760px) {
+  .add-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .add-preview-box {
+    min-height: 240px;
+  }
+}
+.tape {
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-3deg);
+  width: 34px;
+  height: 14px;
+  background: rgba(255, 230, 170, 0.72);
+  border-radius: 3px;
+  box-shadow: 0 1px 2px rgba(120, 95, 70, 0.12);
+  pointer-events: none;
+  z-index: 2;
+}
+.album-screen .art-slot.album-vertical {
+  width: 68px;
+  height: 84px;
+}
+
+.album-screen .art-slot.album-horizontal {
+  width: 82px;
+  height: 62px;
+  margin-left: -7px;
+  margin-top: 11px;
+}
+.atelier-title {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 12;
+
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #8a6b5c;
+
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 999px;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+
+  pointer-events: none;
+}
+.title-screen {
+  position: relative;
+  left: 50%;
+}
+.title-name-btn {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  padding: 6px 12px;
+  font-size: 13px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(4px);
+  color: #8a6b5c;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+#userModal .modal-card,
+#userModal input,
+#userModal button {
+  pointer-events: auto;
+}
+
+.user-list div {
+  background: rgba(255, 255, 255, 0.82);
+  padding: 8px 14px;
+  border-radius: 999px;
+  color: #8a6b5c;
+  font-weight: 700;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+.user-list {
+  position: absolute;
+  left: 50%;
+  top: 168px;
+  transform: translateX(-50%);
+  z-index: 15;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+  width: 82%;
+}
+
+.user-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+.user-item img {
+  width: 68px;
+  height: 68px;
+  object-fit: contain;
+  display: block;
+  border-radius: 50%;
+  box-shadow: 0 3px 8px rgba(90, 65, 45, 0.18);
+}
+
+.user-item span {
+  margin-top: 2px;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #8a6b5c;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 999px;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  display: inline-block;
+}
+
+.user-modal-card {
+  max-width: 360px;
+}
+
+.user-icon-select {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.user-icon-btn {
+  border: 2px solid #ead8c9;
+  background: #fffdf9;
+  border-radius: 18px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.user-icon-btn.selected {
+  border-color: #ddb89c;
+  background: #fff4ea;
+  box-shadow: 0 0 0 3px rgba(240, 217, 196, 0.8) inset;
+}
+
+.user-icon-btn img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.title-name-btn {
+  border: none;
+  cursor: pointer;
+}
+
+.title-name-btn:active {
+  transform: scale(0.97);
+}
+.dummy-shelf {
+  position: absolute;
+  z-index: 4; /* 作品より後ろ */
+  pointer-events: none;
+  display: none;
+}
+
+.home-screen.bg-vertical .dummy-shelf.show {
+  display: block;
+}
+
+/* 縦背景用の位置 */
+/* 縦背景用の位置 */
+.dummy-shelf-1 {
+  left: 40px;
+  top: 260px;
+  width: 78px;
+}
+
+.dummy-shelf-2 {
+  left: 120px;
+  top: 250px;
+  width: 60px;
+}
+
+.dummy-shelf-3 {
+  left: 410px;
+  top: 290px;
+  width: 60px;
+}
+
+.dummy-shelf-4 {
+  left: 470px;
+  top: 235px;
+  width: 82px;
+}
+
+.dummy-shelf-h {
+  position: absolute;
+  z-index: 4;
+  pointer-events: none;
+  display: none;
+}
+
+.home-screen.bg-horizontal .dummy-shelf-h.show {
+  display: block;
+}
+
+.dummy-shelf-h-1 {
+  left: 200px;
+  top: 255px;
+  width: 70px;
+}
+
+.dummy-shelf-h-2 {
+  left: 280px;
+  top: 243px;
+  width: 68px;
+}
+
+.dummy-shelf-h-3 {
+  left: 346px;
+  top: 240px;
+  width: 80px;
+}
+.change-user-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.change-user-btn {
+  border: none;
+  cursor: pointer;
+
+  padding: 7px 16px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  color: #8a6b5c;
+
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 999px;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+
+  display: inline-block;
+}
+
+.change-user-btn:active {
+  transform: scale(0.97);
+}
+.change-user-btn:active {
+  transform: scale(0.97);
+}
+
+#dummyShelfH2 {
+  transform: scale(0.86);
+  transform-origin: bottom center;
+}
+
+#dummyShelfH3 {
+  transform: scale(0.8);
+  transform-origin: bottom center;
+}
+  </style>
+</head>
+<body>
+  <div class="app">
+    <!-- タイトル画面 -->
+<section id="titleScreen" class="screen title-screen active scaled">
+  <img src="assets/title-bg.jpg" alt="リトルアトリエ タイトル画面" class="bg-image" />
+
+  <div id="userList" class="user-list"></div>
+
+  <div id="userModal" class="modal">
+    <div class="modal-card user-modal-card">
+      <h2>なまえ登録</h2>
+
+      <div class="field">
+        <label for="userNameInput">なまえ</label>
+        <input id="userNameInput" type="text" placeholder="おなまえをいれてね" maxlength="12" />
+      </div>
+
+      <div class="field">
+        <label>アイコンをえらぶ</label>
+        <div class="user-icon-select" id="userIconSelect">
+          <button type="button" class="user-icon-btn selected" data-icon="assets/icon_girl1.png">
+            <img src="assets/icon_girl1.png" alt="女の子1" />
+          </button>
+          <button type="button" class="user-icon-btn" data-icon="assets/icon_girl2.png">
+            <img src="assets/icon_girl2.png" alt="女の子2" />
+          </button>
+          <button type="button" class="user-icon-btn" data-icon="assets/icon_boy1.png">
+            <img src="assets/icon_boy1.png" alt="男の子1" />
+          </button>
+          <button type="button" class="user-icon-btn" data-icon="assets/icon_boy2.png">
+            <img src="assets/icon_boy2.png" alt="男の子2" />
+          </button>
+        </div>
+      </div>
+
+      <div class="modal-buttons">
+        <button class="sub-btn" id="closeUserModalBtn" type="button">とじる</button>
+        <button class="main-btn" id="saveUserBtn" type="button">とうろく</button>
+      </div>
+    </div>
+  </div>
+
+  <button class="title-name-btn" id="openUserModal" type="button">なまえ登録</button>
+</section>
+    <!-- アトリエ画面 -->
+    <section id="homeScreen" class="screen home-screen scaled">
+  <img id="homeBgImage" src="assets/atelier-main-horizontal.jpg" alt="アトリエ画面" class="bg-image" />
+      <div class="atelier-title" id="atelierTitle">○○のアトリエ</div>
+      <div class="overlay-layer">
+        <div id="homeFlatLarge" class="art-slot flat-large empty"></div>
+        <div id="homeFlat1" class="art-slot flat-small-1 empty"></div>
+        <div id="homeFlat2" class="art-slot flat-small-2 empty"></div>
+        <div id="homeFlat3" class="art-slot flat-small-3 empty"></div>
+
+        <div id="homeMini1" class="art-slot flat-mini-1 empty"></div>
+        <div id="homeMini2" class="art-slot flat-mini-2 empty"></div>
+        <div id="homeMini3" class="art-slot flat-mini-3 empty"></div>
+
+<img id="dummyShelf1" class="dummy-shelf dummy-shelf-1" src="assets/dummy_shelf_1.png" alt="" />
+<img id="dummyShelf2" class="dummy-shelf dummy-shelf-2" src="assets/dummy_shelf_2.png" alt="" />
+<img id="dummyShelf3" class="dummy-shelf dummy-shelf-3" src="assets/dummy_shelf_3.png" alt="" />
+<img id="dummyShelf4" class="dummy-shelf dummy-shelf-4" src="assets/dummy_shelf_4.png" alt="" />
+
+<img id="dummyShelfH1" class="dummy-shelf-h dummy-shelf-h-1" src="assets/dummy_shelf_h_1.png" alt="" />
+<img id="dummyShelfH2" class="dummy-shelf-h dummy-shelf-h-2" src="assets/dummy_shelf_h_2.png" alt="" />
+<img id="dummyShelfH3" class="dummy-shelf-h dummy-shelf-h-3" src="assets/dummy_shelf_h_3.png" alt="" />
+        <div id="homeShelf1" class="art-slot sculpture shelf-1 empty"></div>
+        <div id="homeShelf2" class="art-slot sculpture shelf-2 empty"></div>
+        <div id="homeShelf3" class="art-slot sculpture shelf-3 empty"></div>
+        <div id="homeShelf4" class="art-slot sculpture shelf-4 empty"></div>
+        
+      </div>
+      <div class="ui-buttons">
+  <img src="assets/icon_add.png" class="ui-btn btn-add" alt="追加" />
+  <img src="assets/icon_album.png" class="ui-btn btn-album" alt="アルバム" />
+  <img src="assets/icon_setting.png" class="ui-btn btn-setting" alt="設定" />
+</div>
+    </section>
+
+    <!-- アルバム画面 -->
+    <section id="albumScreen" class="screen album-screen scaled">
+ <img src="assets/atelier-album.jpg" alt="アルバム画面" class="bg-image" />
+
+  <div class="overlay-layer">
+    <div id="album1" class="art-slot album-slot-1 empty"></div>
+    <div id="album2" class="art-slot album-slot-2 empty"></div>
+    <div id="album3" class="art-slot album-slot-3 empty"></div>
+    <div id="album4" class="art-slot album-slot-4 empty"></div>
+    <div id="album5" class="art-slot album-slot-5 empty"></div>
+    <div id="album6" class="art-slot album-slot-6 empty"></div>
+    <div id="album7" class="art-slot album-slot-7 empty"></div>
+    <div id="album8" class="art-slot album-slot-8 empty"></div>
+  </div>
+
+<div class="ui-buttons">
+  <img id="albumAddBtn" src="assets/icon_add.png" class="ui-btn btn-add-album" alt="追加" />
+  <img id="albumHomeBtn" src="assets/icon_home.png" class="ui-btn btn-home-album" alt="アトリエに戻る" />
+  <img id="albumSettingBtn" src="assets/icon_setting.png" class="ui-btn btn-setting-album" alt="設定" />
+</div>
+<div class="album-pagination">
+  <button id="prevPageBtn" class="page-btn" type="button">◀ 前へ</button>
+  <div id="pageIndicator" class="page-indicator">1 / 1</div>
+  <button id="nextPageBtn" class="page-btn" type="button">次へ ▶</button>
+</div>
+</section>
+  </div>
+  <div id="detailModal" class="modal">
+  <div class="modal-card detail-card">
+    <h2>作品のくわしい情報</h2>
+
+    <div class="detail-layout">
+      <div class="detail-left">
+        <div class="preview-box has-image detail-preview-box">
+          <img id="detailImage" alt="作品画像" style="display:block;" />
+        </div>
+      </div>
+
+      <div class="detail-right">
+        <div class="field">
+          <label>日付</label>
+          <div id="detailDate" class="hint detail-text"></div>
+        </div>
+
+        <div class="field">
+          <label>タイトル・メモ</label>
+          <div id="detailSummary" class="hint detail-text detail-summary"></div>
+        </div>
+
+        <div class="field" id="displaySlotField">
+          <label>どこにかざる？</label>
+          <div id="displaySlotButtons" class="chip-group"></div>
+        </div>
+
+        <div class="modal-buttons detail-buttons">
+          <button class="sub-btn" id="closeDetailBtn" type="button">とじる</button>
+          <button class="sub-btn" id="deleteArtworkBtn" type="button">けす</button>
+          <button class="main-btn" id="displayToggleBtn" type="button">展示をはずす</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="addModal" class="modal">
+
+    <div class="modal-card add-card">
+  <h2>作品追加</h2>
+
+  <div class="add-layout">
+    <div class="add-left">
+      <div class="field">
+        <label for="artImage">作品の写真</label>
+        <input id="artImage" type="file" accept="image/*" />
+      </div>
+
+      <div id="previewBox" class="preview-box add-preview-box">
+        <img id="previewImage" alt="プレビュー" />
+        <div class="preview-text">ここに作品の写真が表示されるよ</div>
+      </div>
+    </div>
+
+    <div class="add-right">
+      <div class="field">
+        <label for="artDate">日付</label>
+        <input id="artDate" type="date" />
+      </div>
+
+      <div class="field">
+        <label for="artSummary">タイトル・メモ</label>
+        <textarea id="artSummary" placeholder="作品タイトルやメモを書いてね"></textarea>
+      </div>
+
+      <div class="field">
+        <label for="artType">作品の種類</label>
+        <select id="artType">
+          <option value="flat">平面作品</option>
+          <option value="sculpture">立体作品</option>
+        </select>
+      </div>
+<div id="sculptureHint" class="hint" style="display:none;">
+背景を消した画像だと、棚にきれいにかざれるよ✨<br>
+iPhoneなら<br>
+写真を長押し → 共有 → ファイルに保存 → ファイルから写真へ保存<br>
+でやってみてね！
+</div>
+      <div class="field" id="orientationField">
+        <label>向き</label>
+        <div class="chip-group">
+          <button type="button" class="chip-btn selected" data-orientation="horizontal">横</button>
+          <button type="button" class="chip-btn" data-orientation="vertical">縦</button>
+        </div>
+      </div>
+
+      <div class="modal-buttons add-buttons">
+        <button class="sub-btn" id="closeModalBtn" type="button">とじる</button>
+        <button class="main-btn" id="saveArtworkBtn" type="button">保存する</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<div id="settingModal" class="modal">
+  <div class="modal-card">
+    <h2>設定</h2>
+
+<!-- ⭐ ① いちばん上に移動 -->
+<div class="field change-user-wrap">
+  <button class="change-user-btn" id="changeUserBtn" type="button">
+    ユーザーを切り替える
+  </button>
+</div>
+
+<!-- ② 背景設定 -->
+<div class="field">
+  <label>メイン画面の背景</label>
+  <div class="chip-group" id="bgModeButtons">
+    <button type="button" class="chip-btn selected" data-bg="horizontal">横メイン背景</button>
+    <button type="button" class="chip-btn" data-bg="vertical">縦メイン背景</button>
+  </div>
+</div>
+
+<!-- ③ 下のボタン -->
+<div class="modal-buttons" style="grid-template-columns: 1fr 1fr;">
+  <button class="sub-btn" id="closeSettingModalBtn" type="button">とじる</button>
+  <button class="main-btn" id="saveSettingsBtn" type="button">この背景にする</button>
+</div>
+  </div>
+</div>
+  <script>
+    const USER_STORAGE_KEY = 'atelier-users-v1';
+
+let currentUserId = null;
+let selectedUserIcon = 'assets/icon_girl1.png';
+
+const userModal = document.getElementById('userModal');
+const openUserModalBtn = document.getElementById('openUserModal');
+const closeUserModalBtn = document.getElementById('closeUserModalBtn');
+const saveUserBtn = document.getElementById('saveUserBtn');
+const userNameInput = document.getElementById('userNameInput');
+const userList = document.getElementById('userList');
+const userIconButtons = document.querySelectorAll('.user-icon-btn');
+const changeUserBtn = document.getElementById('changeUserBtn');
+let users = loadUsers();
+
+function loadUsers() {
+  const saved = localStorage.getItem(USER_STORAGE_KEY);
+  if (!saved) return [];
+
+  try {
+    return JSON.parse(saved);
+  } catch (error) {
+    console.error('ユーザー読み込み失敗', error);
+    return [];
+  }
+}
+
+function saveUsers() {
+  localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(users));
+}
+
+function openUserModal() {
+  userModal.classList.add('show');
+  userNameInput.value = '';
+  selectedUserIcon = 'assets/icon_girl1.png';
+
+  userIconButtons.forEach((btn, index) => {
+    btn.classList.remove('selected');
+    if (index === 0) btn.classList.add('selected');
+  });
+}
+
+function closeUserModal() {
+  userModal.classList.remove('show');
+}
+
+function renderUsers() {
+  userList.innerHTML = '';
+
+  users.forEach(user => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'user-item';
+
+    const img = document.createElement('img');
+    img.src = user.icon;
+    img.alt = user.name;
+
+    const name = document.createElement('span');
+    name.textContent = user.name;
+
+    btn.appendChild(img);
+    btn.appendChild(name);
+
+    btn.addEventListener('click', (event) => {
+      event.stopPropagation();
+      selectUser(user.id);
+    });
+
+    userList.appendChild(btn);
+  });
+}
+
+function selectUser(userId) {
+  currentUserId = userId;
+
+  const user = users.find(u => u.id === userId);
+  if (!user) return;
+
+  if (atelierTitle) {
+    atelierTitle.textContent = `${user.name}のアトリエ`;
+  }
+
+  artworks = loadArtworks();
+  currentAlbumPage = 1;
+  renderAll();
+  showHome();
+}
+
+openUserModalBtn.addEventListener('click', (event) => {
+  event.stopPropagation();
+  openUserModal();
+});
+
+closeUserModalBtn.addEventListener('click', (event) => {
+  event.stopPropagation();
+  closeUserModal();
+});
+
+saveUserBtn.addEventListener('click', (event) => {
+  event.stopPropagation();
+
+  const name = userNameInput.value.trim();
+  if (!name) {
+    alert('なまえをいれてね');
+    return;
+  }
+
+  const newUser = {
+    id: Date.now(),
+    name,
+    icon: selectedUserIcon
+  };
+
+  users.push(newUser);
+  saveUsers();
+  renderUsers();
+  closeUserModal();
+});
+
+userModal.addEventListener('click', (event) => {
+  if (event.target === userModal) {
+    closeUserModal();
+  }
+});
+
+userIconButtons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    selectedUserIcon = btn.dataset.icon;
+
+    userIconButtons.forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+  });
+});
+    const tapeColors = [
+  'rgba(255, 230, 170, 0.7)', // 黄色
+  'rgba(255, 200, 200, 0.7)', // ピンク
+  'rgba(200, 230, 255, 0.7)', // 水色
+  'rgba(210, 255, 210, 0.7)', // ミント
+  'rgba(255, 240, 200, 0.7)'  // ベージュ
+];
+const atelierName = 'まみのアトリエ';
+const atelierTitle = document.getElementById('atelierTitle');
+if (atelierTitle) {
+  atelierTitle.textContent = atelierName;
+}
+const titleScreen = document.getElementById('titleScreen');
+
+    const homeScreen = document.getElementById('homeScreen');
+    const albumScreen = document.getElementById('albumScreen');
+
+    const addModal = document.getElementById('addModal');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const saveArtworkBtn = document.getElementById('saveArtworkBtn');
+
+    const artImage = document.getElementById('artImage');
+    const artSummary = document.getElementById('artSummary');
+    const artType = document.getElementById('artType');
+    const artDate = document.getElementById('artDate');
+    
+const orientationField = document.getElementById('orientationField');
+const orientationButtons = orientationField.querySelectorAll('.chip-btn');
+const sculptureHint = document.getElementById('sculptureHint');
+let selectedOrientation = 'horizontal';
+    const previewBox = document.getElementById('previewBox');
+    const modalCard = addModal.querySelector('.modal-card');
+    const previewImage = document.getElementById('previewImage');
+
+    const homeFlatSlots = [
+      document.getElementById('homeFlatLarge'),
+      document.getElementById('homeFlat1'),
+      document.getElementById('homeFlat2'),
+      document.getElementById('homeFlat3'),
+      document.getElementById('homeMini1')
+    ];
+
+    const homeShelfSlots = [
+      document.getElementById('homeShelf1'),
+      document.getElementById('homeShelf2'),
+      document.getElementById('homeShelf3'),
+      document.getElementById('homeShelf4')
+    ];
+
+    const albumSlots = [
+  document.getElementById('album1'),
+  document.getElementById('album2'),
+  document.getElementById('album5'),
+  document.getElementById('album6'),
+  document.getElementById('album3'),
+  document.getElementById('album4'),
+  document.getElementById('album7'),
+  document.getElementById('album8')
+];
+
+    const detailModal = document.getElementById('detailModal');
+const closeDetailBtn = document.getElementById('closeDetailBtn');
+const deleteArtworkBtn = document.getElementById('deleteArtworkBtn');
+const displayToggleBtn = document.getElementById('displayToggleBtn');
+const detailImage = document.getElementById('detailImage');
+const detailDate = document.getElementById('detailDate');
+const detailSummary = document.getElementById('detailSummary');
+const displaySlotField = document.getElementById('displaySlotField');
+const displaySlotButtons = document.getElementById('displaySlotButtons');
+const BG_SETTING_KEY = 'atelier-bg-mode-v1';
+const homeBgImage = document.getElementById('homeBgImage');
+
+const settingModal = document.getElementById('settingModal');
+const closeSettingModalBtn = document.getElementById('closeSettingModalBtn');
+const saveSettingBtn = document.getElementById('saveSettingsBtn');
+const bgModeButtons = document.querySelectorAll('#bgModeButtons .chip-btn');
+const uiAddBtn = document.querySelector('.btn-add');
+const uiAlbumBtn = document.querySelector('.btn-album');
+const uiSettingBtn = document.querySelector('.btn-setting');
+
+const albumAddBtn = document.getElementById('albumAddBtn');
+const albumHomeBtn = document.getElementById('albumHomeBtn');
+const albumSettingBtn = document.getElementById('albumSettingBtn');
+
+const prevPageBtn = document.getElementById('prevPageBtn');
+const nextPageBtn = document.getElementById('nextPageBtn');
+const pageIndicator = document.getElementById('pageIndicator');
+const dummyShelf1 = document.getElementById('dummyShelf1');
+const dummyShelf2 = document.getElementById('dummyShelf2');
+const dummyShelf3 = document.getElementById('dummyShelf3');
+const dummyShelf4 = document.getElementById('dummyShelf4');
+
+const dummyShelfH1 = document.getElementById('dummyShelfH1');
+const dummyShelfH2 = document.getElementById('dummyShelfH2');
+const dummyShelfH3 = document.getElementById('dummyShelfH3');
+if (titleScreen) {
+  titleScreen.addEventListener('click', (event) => {
+    if (
+      event.target.id === 'openUserModal' ||
+      event.target.closest('#userModal')
+    ) {
+      return;
+    }
+    showHome();
+  });
+}
+if (uiAddBtn) {
+  uiAddBtn.addEventListener('click', () => {
+    showHome();
+    openModal();
+  });
+}
+if (albumHomeBtn) {
+  albumHomeBtn.addEventListener('click', () => {
+    closeModal();
+    closeDetailModal();
+    showHome();
+  });
+}
+
+if (albumAddBtn) {
+  albumAddBtn.addEventListener('click', () => {
+    showHome();
+    openModal();
+  });
+}
+
+if (albumSettingBtn) {
+  albumSettingBtn.addEventListener('click', () => {
+    closeModal();
+    closeDetailModal();
+    showHome();
+    openSettingModal();
+  });
+}
+if (uiAlbumBtn) {
+  uiAlbumBtn.addEventListener('click', () => {
+    closeModal();
+    closeDetailModal();
+    showAlbum();
+  });
+}
+if (displayToggleBtn) {
+  displayToggleBtn.addEventListener('click', () => {
+    if (currentDetailId === null) return;
+
+    removeArtworkFromDisplay(currentDetailId);
+    closeDetailModal();
+  });
+}
+if (uiSettingBtn) {
+  uiSettingBtn.addEventListener('click', () => {
+    closeModal();
+    closeDetailModal();
+    showHome();
+    openSettingModal();
+  });
+}
+    let currentDetailId = null;
+    let previewDataUrl = '';
+    let selectedFile = null;
+    let artworks = [];
+    let selectedBgMode = loadBgMode();
+    orientationButtons.forEach(button => {
+  button.addEventListener('click', () => {
+    selectedOrientation = button.dataset.orientation;
+
+    orientationButtons.forEach(btn => {
+      btn.classList.remove('selected');
+    });
+
+    button.classList.add('selected');
+  });
+});
+const ALBUM_PAGE_SIZE = 8;
+let currentAlbumPage = 1;
+    setTodayDate();
+updateOrientationField();
+applyBgMode();
+renderAll();
+renderUsers();
+showTitle();
+function getArtworkStorageKey() {
+  if (!currentUserId) return null;
+  return `atelier-artworks-${currentUserId}`;
+}
+function updateOrientationField() {
+  const isSculpture = artType.value === 'sculpture';
+
+  orientationField.style.display = isSculpture ? 'none' : 'block';
+  sculptureHint.style.display = isSculpture ? 'block' : 'none';
+}
+
+artType.addEventListener('change', updateOrientationField);
+artType.addEventListener('input', updateOrientationField);
+    function setTodayDate() {
+      const today = new Date();
+      const yyyy = today.getFullYear();
+      const mm = String(today.getMonth() + 1).padStart(2, '0');
+      const dd = String(today.getDate()).padStart(2, '0');
+      artDate.value = `${yyyy}-${mm}-${dd}`;
+    }
+
+    function loadArtworks() {
+  const storageKey = getArtworkStorageKey();
+  if (!storageKey) return [];
+
+  const saved = localStorage.getItem(storageKey);
+  if (!saved) return [];
+
+  try {
+    const parsed = JSON.parse(saved);
+
+    return parsed.map(item => ({
+      ...item,
+      orientation: item.orientation || (item.type === 'flat' ? 'horizontal' : ''),
+      displayByBg: item.displayByBg || {
+        horizontal: {
+          isDisplayed: item.isDisplayed || false,
+          displaySlot: item.displaySlot || '',
+          isFavorite: item.isFavorite || false
+        },
+        vertical: {
+          isDisplayed: false,
+          displaySlot: '',
+          isFavorite: false
+        }
+      }
+    }));
+  } catch (error) {
+    console.error('保存データの読み込み失敗', error);
+    return [];
+  }
+}
+function loadBgMode() {
+  return localStorage.getItem(BG_SETTING_KEY) || 'horizontal';
+}
+
+function saveBgMode() {
+  localStorage.setItem(BG_SETTING_KEY, selectedBgMode);
+}
+
+function applyBgMode() {
+  if (!homeBgImage) return;
+
+  homeScreen.classList.remove('bg-horizontal', 'bg-vertical');
+
+  if (selectedBgMode === 'vertical') {
+    homeBgImage.src = 'assets/atelier-main-vertical.jpg';
+    homeScreen.classList.add('bg-vertical');
+  } else {
+    homeBgImage.src = 'assets/atelier-main-horizontal.jpg';
+    homeScreen.classList.add('bg-horizontal');
+  }
+}
+function getCurrentBgKey() {
+  return selectedBgMode === 'vertical' ? 'vertical' : 'horizontal';
+}
+function openSettingModal() {
+  settingModal.classList.add('show');
+
+  bgModeButtons.forEach(btn => {
+    btn.classList.remove('selected');
+    if (btn.dataset.bg === selectedBgMode) {
+      btn.classList.add('selected');
+    }
+  });
+}
+
+function closeSettingModal() {
+  settingModal.classList.remove('show');
+}
+function getAlbumTotalPages() {
+  return Math.max(1, Math.ceil(artworks.length / ALBUM_PAGE_SIZE));
+}
+    function saveArtworks() {
+  const storageKey = getArtworkStorageKey();
+
+  if (!storageKey) {
+    alert('先になまえをえらんでね');
+    return false;
+  }
+
+  try {
+    localStorage.setItem(storageKey, JSON.stringify(artworks));
+    return true;
+  } catch (error) {
+    console.error('保存エラー', error);
+    alert('保存できなかったよ。写真サイズが大きいかも。もう少し軽い画像で試してね。');
+    return false;
+  }
+}
+
+function showTitle() {
+  titleScreen.classList.add('active');
+  homeScreen.classList.remove('active');
+  albumScreen.classList.remove('active');
+}
+
+    function showHome() {
+  titleScreen.classList.remove('active');
+  homeScreen.classList.add('active');
+  albumScreen.classList.remove('active');
+}
+function showAlbum() {
+  titleScreen.classList.remove('active');
+  homeScreen.classList.remove('active');
+  albumScreen.classList.add('active');
+}
+
+    
+
+    function openModal() {
+  resetForm();
+  addModal.classList.add('show');
+  updateOrientationField();
+
+  requestAnimationFrame(() => {
+    addModal.scrollTop = 0;
+    if (modalCard) modalCard.scrollTop = 0;
+  });
+}
+    function openDetailModal(artwork) {
+  currentDetailId = artwork.id;
+  detailImage.src = artwork.image;
+
+  detailDate.textContent = artwork.date || '日付なし';
+
+  const titleText = artwork.title ? `タイトル：${artwork.title}` : 'タイトル：だいじな作品';
+  const memoText = artwork.memo ? `メモ：${artwork.memo}` : 'メモ：まだないよ';
+  detailSummary.textContent = `${titleText}\n${memoText}`;
+
+ const bgKey = getCurrentBgKey();
+const currentDisplay = artwork.displayByBg?.[bgKey];
+
+if (currentDisplay && currentDisplay.isDisplayed) {
+  displayToggleBtn.textContent = '展示をはずす';
+  displayToggleBtn.style.display = 'block';
+} else {
+  displayToggleBtn.style.display = 'none';
+}
+
+  detailModal.classList.add('show');
+  displaySlotButtons.innerHTML = '';
+
+  const displayOptions = getDisplayOptions(artwork);
+
+  if (displayOptions.length > 0) {
+    displaySlotField.style.display = 'block';
+
+    displayOptions.forEach(option => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'slot-btn';
+      button.textContent = option.label;
+
+      if (currentDisplay && currentDisplay.displaySlot === option.value) {
+  button.classList.add('current');
+}
+
+      const occupied = findDisplayedArtworkBySlot(option.value, artwork.id);
+      if (occupied) {
+        button.classList.add('disabled');
+      }
+
+      button.addEventListener('click', () => {
+        displayArtworkInSlot(artwork.id, option.value);
+        closeDetailModal();
+      });
+
+      displaySlotButtons.appendChild(button);
+    });
+  } else {
+    displaySlotField.style.display = 'none';
+  }
+}
+
+    function closeDetailModal() {
+      detailModal.classList.remove('show');
+      currentDetailId = null;
+    }
+    function closeModal() {
+      addModal.classList.remove('show');
+      document.activeElement.blur();
+    }
+
+    function resetForm() {
+  artImage.value = '';
+ artSummary.value = '';
+  artType.value = 'flat';
+  
+  previewDataUrl = '';
+  selectedFile = null;
+  selectedOrientation = 'horizontal';
+  previewImage.src = '';
+  previewBox.classList.remove('has-image');
+
+  orientationButtons.forEach(btn => {
+    btn.classList.remove('selected');
+    if (btn.dataset.orientation === 'horizontal') {
+      btn.classList.add('selected');
+    }
+  });
+
+  updateOrientationField();
+  setTodayDate();
+}
+
+    function compressImage(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      const img = new Image();
+
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const maxWidth = 1200;
+        const maxHeight = 1200;
+        let { width, height } = img;
+
+        if (width > maxWidth || height > maxHeight) {
+          const ratio = Math.min(maxWidth / width, maxHeight / height);
+          width = Math.round(width * ratio);
+          height = Math.round(height * ratio);
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, width, height);
+        ctx.drawImage(img, 0, 0, width, height);
+
+        const isPng =
+          file.type === 'image/png' ||
+          file.name.toLowerCase().endsWith('.png');
+
+        if (isPng) {
+          resolve(canvas.toDataURL('image/png'));
+        } else {
+          resolve(canvas.toDataURL('image/jpeg', 0.82));
+        }
+      };
+
+      img.onerror = reject;
+      img.src = reader.result;
+    };
+
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+        function fillSlot(slot, artwork, useContain = false) {
+  slot.innerHTML = '';
+  slot.classList.remove('empty', 'album-horizontal', 'album-vertical');
+
+  const img = document.createElement('img');
+  img.src = artwork.image;
+  img.alt = artwork.title || '作品';
+  img.style.objectFit = useContain ? 'contain' : 'cover';
+  
+  slot.appendChild(img);
+
+  if (slot.id && slot.id.startsWith('album') && artwork.type === 'flat') {
+    if (artwork.orientation === 'horizontal') {
+      slot.classList.add('album-horizontal');
+    } else {
+      slot.classList.add('album-vertical');
+    }
+
+    const tape = document.createElement('div');
+    tape.className = 'tape';
+
+    const color = tapeColors[Math.floor(Math.random() * tapeColors.length)];
+    tape.style.background = color;
+
+    const angle = Math.random() * 10 - 5;
+    tape.style.transform = `translateX(-50%) rotate(${angle}deg)`;
+
+    slot.appendChild(tape);
+
+    if (Math.random() < 0.4) {
+      const tape2 = document.createElement('div');
+      tape2.className = 'tape';
+
+      const color2 = tapeColors[Math.floor(Math.random() * tapeColors.length)];
+      tape2.style.background = color2;
+
+      const angle2 = Math.random() * 10 - 5;
+      tape2.style.left = '60%';
+      tape2.style.top = '-4px';
+      tape2.style.transform = `translateX(-50%) rotate(${angle2}deg)`;
+
+      slot.appendChild(tape2);
+    }
+  }
+
+  slot.onclick = () => openDetailModal(artwork);
+}
+function clearSlot(slot) {
+  slot.innerHTML = '';
+  slot.classList.add('empty');
+  slot.onclick = null;
+}
+    function renderHome() {
+  const bgKey = getCurrentBgKey();
+
+  const leftTopArtwork = artworks.find(item => item.displayByBg?.[bgKey]?.displaySlot === 'left-top');
+  const leftBottomArtwork = artworks.find(item => item.displayByBg?.[bgKey]?.displaySlot === 'left-bottom');
+  const centerArtwork = artworks.find(item => item.displayByBg?.[bgKey]?.displaySlot === 'center');
+  const rightTopArtwork = artworks.find(item => item.displayByBg?.[bgKey]?.displaySlot === 'right-top');
+  const rightBottomArtwork = artworks.find(item => item.displayByBg?.[bgKey]?.displaySlot === 'right-bottom');
+
+  const shelf1Artwork = artworks.find(item => item.displayByBg?.[bgKey]?.displaySlot === 'shelf-1');
+  const shelf2Artwork = artworks.find(item => item.displayByBg?.[bgKey]?.displaySlot === 'shelf-2');
+  const shelf3Artwork = artworks.find(item => item.displayByBg?.[bgKey]?.displaySlot === 'shelf-3');
+  const shelf4Artwork = artworks.find(item => item.displayByBg?.[bgKey]?.displaySlot === 'shelf-4');
+
+  leftTopArtwork
+    ? fillSlot(document.getElementById('homeFlat1'), leftTopArtwork, false)
+    : clearSlot(document.getElementById('homeFlat1'));
+
+  leftBottomArtwork
+    ? fillSlot(document.getElementById('homeFlat2'), leftBottomArtwork, false)
+    : clearSlot(document.getElementById('homeFlat2'));
+
+  centerArtwork
+    ? fillSlot(document.getElementById('homeFlatLarge'), centerArtwork, false)
+    : clearSlot(document.getElementById('homeFlatLarge'));
+
+  rightTopArtwork
+    ? fillSlot(document.getElementById('homeFlat3'), rightTopArtwork, false)
+    : clearSlot(document.getElementById('homeFlat3'));
+
+  rightBottomArtwork
+    ? fillSlot(document.getElementById('homeMini1'), rightBottomArtwork, false)
+    : clearSlot(document.getElementById('homeMini1'));
+
+  shelf1Artwork
+    ? fillSlot(document.getElementById('homeShelf1'), shelf1Artwork, true)
+    : clearSlot(document.getElementById('homeShelf1'));
+
+  shelf2Artwork
+    ? fillSlot(document.getElementById('homeShelf2'), shelf2Artwork, true)
+    : clearSlot(document.getElementById('homeShelf2'));
+
+  shelf3Artwork
+    ? fillSlot(document.getElementById('homeShelf3'), shelf3Artwork, true)
+    : clearSlot(document.getElementById('homeShelf3'));
+
+  shelf4Artwork
+    ? fillSlot(document.getElementById('homeShelf4'), shelf4Artwork, true)
+    : clearSlot(document.getElementById('homeShelf4'));
+    updateVerticalShelfDummies();
+}
+function updateVerticalShelfDummies() {
+  const verticalDummyMap = {
+    'shelf-1': dummyShelf1,
+    'shelf-2': dummyShelf2,
+    'shelf-3': dummyShelf3,
+    'shelf-4': dummyShelf4
+  };
+
+  const horizontalDummyMap = {
+    'shelf-1': dummyShelfH1,
+    'shelf-2': dummyShelfH2,
+    'shelf-3': dummyShelfH3
+  };
+
+  Object.values(verticalDummyMap).forEach(dummy => {
+    if (dummy) dummy.classList.remove('show');
+  });
+
+  Object.values(horizontalDummyMap).forEach(dummy => {
+    if (dummy) dummy.classList.remove('show');
+  });
+
+  const bgKey = getCurrentBgKey();
+
+  if (bgKey === 'vertical') {
+    ['shelf-1', 'shelf-2', 'shelf-3', 'shelf-4'].forEach(slot => {
+      const artwork = artworks.find(item => item.displayByBg?.[bgKey]?.displaySlot === slot);
+      if (!artwork && verticalDummyMap[slot]) {
+        verticalDummyMap[slot].classList.add('show');
+      }
+    });
+  }
+
+  if (bgKey === 'horizontal') {
+    ['shelf-1', 'shelf-2', 'shelf-3'].forEach(slot => {
+      const artwork = artworks.find(item => item.displayByBg?.[bgKey]?.displaySlot === slot);
+      if (!artwork && horizontalDummyMap[slot]) {
+        horizontalDummyMap[slot].classList.add('show');
+      }
+    });
+  }
+}
+    function renderAlbum() {
+  const totalPages = getAlbumTotalPages();
+
+  if (currentAlbumPage > totalPages) {
+    currentAlbumPage = totalPages;
+  }
+  if (currentAlbumPage < 1) {
+    currentAlbumPage = 1;
+  }
+
+  const startIndex = (currentAlbumPage - 1) * ALBUM_PAGE_SIZE;
+  const pageItems = artworks.slice(startIndex, startIndex + ALBUM_PAGE_SIZE);
+
+  albumSlots.forEach((slot, index) => {
+    const artwork = pageItems[index];
+    if (artwork) {
+      fillSlot(slot, artwork, artwork.type === 'sculpture');
+    } else {
+      clearSlot(slot);
+    }
+  });
+
+  pageIndicator.textContent = `${currentAlbumPage} / ${totalPages}`;
+  prevPageBtn.disabled = currentAlbumPage === 1;
+  nextPageBtn.disabled = currentAlbumPage === totalPages;
+}
+function getDisplayOptions(artwork) {
+  const bgKey = getCurrentBgKey();
+
+  if (artwork.type === 'flat') {
+    if (bgKey === 'horizontal') {
+      if (artwork.orientation === 'vertical') {
+        return [
+          { value: 'left-top', label: '左上' },
+          { value: 'left-bottom', label: '左下' }
+        ];
+      }
+
+      if (artwork.orientation === 'horizontal') {
+        return [
+          { value: 'center', label: '中央⭐' },
+          { value: 'right-top', label: '右上' },
+          { value: 'right-bottom', label: '右下' }
+        ];
+      }
+    }
+
+    if (bgKey === 'vertical') {
+      if (artwork.orientation === 'vertical') {
+        return [
+          { value: 'center', label: '中央⭐' },
+          { value: 'left-top', label: '左上' },
+          { value: 'left-bottom', label: '左下' }
+        ];
+      }
+
+      if (artwork.orientation === 'horizontal') {
+        return [
+          { value: 'right-top', label: '右上' },
+          { value: 'right-bottom', label: '右下' }
+        ];
+      }
+    }
+  }
+
+  if (artwork.type === 'sculpture') {
+    return [
+      { value: 'shelf-1', label: '棚1' },
+      { value: 'shelf-2', label: '棚2' },
+      { value: 'shelf-3', label: '棚3' },
+      { value: 'shelf-4', label: '棚4' }
+    ];
+  }
+
+  return [];
+}
+function findDisplayedArtworkBySlot(slot, ignoreId = null) {
+  const bgKey = getCurrentBgKey();
+
+  return artworks.find(item =>
+    item.displayByBg?.[bgKey]?.displaySlot === slot &&
+    item.id !== ignoreId
+  );
+}
+function displayArtworkInSlot(artworkId, slot) {
+  const artwork = artworks.find(item => item.id === artworkId);
+  if (!artwork) return;
+
+  const bgKey = getCurrentBgKey();
+
+  if (!artwork.displayByBg) {
+    artwork.displayByBg = {
+      horizontal: { isDisplayed: false, displaySlot: '', isFavorite: false },
+      vertical: { isDisplayed: false, displaySlot: '', isFavorite: false }
+    };
+  }
+
+  const options = getDisplayOptions(artwork);
+  const allowedSlots = options.map(option => option.value);
+
+  if (!allowedSlots.includes(slot)) {
+    alert('この作品はその場所にかざれないよ。');
+    return;
+  }
+
+  const existingArtwork = findDisplayedArtworkBySlot(slot, artwork.id);
+  if (existingArtwork) {
+    alert('その場所には、すでに作品がかざってあるよ。');
+    return;
+  }
+
+  artwork.displayByBg[bgKey].isDisplayed = true;
+  artwork.displayByBg[bgKey].displaySlot = slot;
+  artwork.displayByBg[bgKey].isFavorite = slot === 'center';
+
+  saveArtworks();
+  renderAll();
+}
+function removeArtworkFromDisplay(artworkId) {
+  const artwork = artworks.find(item => item.id === artworkId);
+  if (!artwork) return;
+
+  const bgKey = getCurrentBgKey();
+
+  if (!artwork.displayByBg) {
+    artwork.displayByBg = {
+      horizontal: { isDisplayed: false, displaySlot: '', isFavorite: false },
+      vertical: { isDisplayed: false, displaySlot: '', isFavorite: false }
+    };
+  }
+
+  artwork.displayByBg[bgKey].isDisplayed = false;
+  artwork.displayByBg[bgKey].displaySlot = '';
+  artwork.displayByBg[bgKey].isFavorite = false;
+
+  saveArtworks();
+  renderAll();
+}
+
+    function renderAll() {
+      renderHome();
+      renderAlbum();
+    }
+
+    artImage.addEventListener('change', async (event) => {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      selectedFile = file;
+      previewBox.classList.remove('has-image');
+      previewImage.src = '';
+      previewDataUrl = '';
+
+      try {
+        previewDataUrl = await compressImage(file);
+        previewImage.src = previewDataUrl;
+        previewBox.classList.add('has-image');
+      } catch (error) {
+        console.error('画像読み込み失敗', error);
+        alert('写真の読み込みに失敗したよ。もう一度えらんでみてね。');
+      }
+    });
+
+    saveArtworkBtn.addEventListener('click', () => {
+      if (!previewDataUrl) {
+        alert('作品の写真を選んでね');
+        return;
+      }
+
+      const summaryText = artSummary.value.trim();
+
+const newArtwork = {
+  id: Date.now(),
+  image: previewDataUrl,
+  title: summaryText || 'だいじな作品',
+  type: artType.value,
+  orientation: artType.value === 'flat' ? selectedOrientation : '',
+  date: artDate.value,
+  memo: summaryText,
+  displayByBg: {
+    horizontal: {
+      isDisplayed: false,
+      displaySlot: '',
+      isFavorite: false
+    },
+    vertical: {
+      isDisplayed: false,
+      displaySlot: '',
+      isFavorite: false
+    }
+  }
+};
+
+      const nextArtworks = [...artworks, newArtwork];
+      const oldArtworks = artworks;
+      artworks = nextArtworks;
+
+      const saved = saveArtworks();
+      if (!saved) {
+        artworks = oldArtworks;
+        return;
+      }
+currentAlbumPage = 1;
+      renderAll();
+      closeModal();
+      showHome();
+      
+    });
+
+
+    closeModalBtn.addEventListener('click', closeModal);
+
+    addModal.addEventListener('click', (event) => {
+      if (event.target === addModal) closeModal();
+    });
+        closeDetailBtn.addEventListener('click', closeDetailModal);
+
+    detailModal.addEventListener('click', (event) => {
+      if (event.target === detailModal) closeDetailModal();
+    });
+
+    deleteArtworkBtn.addEventListener('click', () => {
+      if (currentDetailId === null) return;
+
+      const ok = confirm('この作品をアトリエとアルバムからはずす？');
+      if (!ok) return;
+
+      artworks = artworks.filter(item => item.id !== currentDetailId);
+      saveArtworks();
+      const totalPages = getAlbumTotalPages();
+  if (currentAlbumPage > totalPages) {
+    currentAlbumPage = totalPages;
+  }
+      renderAll();
+      closeDetailModal();
+    });
+    prevPageBtn.addEventListener('click', () => {
+  if (currentAlbumPage > 1) {
+    currentAlbumPage--;
+    renderAlbum();
+  }
+});
+
+nextPageBtn.addEventListener('click', () => {
+  if (currentAlbumPage < getAlbumTotalPages()) {
+    currentAlbumPage++;
+    renderAlbum();
+  }
+});
+bgModeButtons.forEach(button => {
+  button.addEventListener('click', () => {
+    selectedBgMode = button.dataset.bg;
+
+    bgModeButtons.forEach(btn => btn.classList.remove('selected'));
+    button.classList.add('selected');
+  });
+});
+
+closeSettingModalBtn.addEventListener('click', () => {
+  closeSettingModal();
+});
+changeUserBtn.addEventListener('click', () => {
+  closeSettingModal();
+  showTitle();
+});
+saveSettingBtn.addEventListener('click', () => {
+  saveBgMode();
+  applyBgMode();
+  renderHome();
+  closeSettingModal();
+});
+
+settingModal.addEventListener('click', (event) => {
+  if (event.target === settingModal) {
+    closeSettingModal();
+  }
+});
+  </script>
+</body>
+</html>
