@@ -31,10 +31,11 @@
     }
 
     .screen {
-      display: none;
-      width: 100%;
-      position: relative;
-    }
+  display: none;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
 html, body {
   width: 100%;
   height: 100%;
@@ -43,12 +44,14 @@ html, body {
     .screen.active { display: block; }
 
     .bg-image {
-      width: 100%;
-      display: block;
-      user-select: none;
-      -webkit-user-drag: none;
-      pointer-events: none;
-    }
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
+}
 
     /* 作品のせる層 */
     .overlay-layer {
@@ -545,42 +548,18 @@ html, body {
       font-size: 16px;
     }
 
-    @media (max-width: 430px) {
-  .scaled {
-    width: 576px;
-  }
-
-  .home-screen,
-  .album-screen {
-    transform: scale(calc(100vw / 576));
-    transform-origin: top left;
-  }
-
-  .title-screen {
-    transform: translateX(-50%) scale(calc(100vw / 576));
-    transform-origin: top center;
-  }
-
-  .app {
-    max-width: 100%;
-  }
+    .scaled {
+  width: 100%;
+  height: 100%;
 }
 
-@media (min-width: 431px) {
-  .scaled {
-    width: 576px;
-  }
-
-  .home-screen,
-  .album-screen {
-    transform: scale(calc(430 / 576));
-    transform-origin: top left;
-  }
-
-  .title-screen {
-    transform: translateX(-50%) scale(calc(430 / 576));
-    transform-origin: top center;
-  }
+.home-screen,
+.album-screen,
+.title-screen {
+  width: 100%;
+  height: 100%;
+  transform: none;
+  left: 0;
 }
         .art-slot {
       cursor: pointer;
@@ -1056,6 +1035,26 @@ html, body {
   left: 346px;
   top: 240px;
   width: 80px;
+}
+.home-screen.bg-horizontal .shelf-1 {
+  left: 200px;
+  top: 255px;
+  width: 70px;
+  height: 70px;
+}
+
+.home-screen.bg-horizontal .shelf-2 {
+  left: 280px;
+  top: 243px;
+  width: 68px;
+  height: 72px;
+}
+
+.home-screen.bg-horizontal .shelf-3 {
+  left: 346px;
+  top: 240px;
+  width: 80px;
+  height: 72px;
 }
 .change-user-wrap {
   display: flex;
