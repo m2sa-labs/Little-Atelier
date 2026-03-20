@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="manifest" href="manifest.json">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <title>○○のアトリエ</title>
   <style>
     * { box-sizing: border-box; }
@@ -12,10 +15,13 @@
       font-family: "Hiragino Maru Gothic ProN", "Yu Gothic", sans-serif;
       background: #efe7de;
       color: #6f5442;
+      overflow: hidden;
     }
 
     .app {
-      max-width: 430px;
+      width: 100vw;
+  height: 100vh;
+  max-width: none;
       min-height: 100vh;
       margin: 0 auto;
       background: #f7efe6;
@@ -29,7 +35,11 @@
       width: 100%;
       position: relative;
     }
-
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
     .screen.active { display: block; }
 
     .bg-image {
@@ -383,14 +393,14 @@
 
     .modal-card {
       width: 100%;
-      max-width: 360px;
+      max-width: 90vw;
+      max-height: 90vh;
       background: #fffaf4;
       border: 2px solid #e5d1bf;
       border-radius: 24px;
       padding: 20px 16px;
       box-shadow: 0 18px 40px rgba(90, 65, 45, 0.18);
       margin: auto 0;
-      max-height: calc(100vh - 40px);
       overflow-y: auto;
     }
 
@@ -763,9 +773,10 @@
 
 .add-layout {
   display: grid;
-  grid-template-columns: 1.05fr 0.95fr;
+  grid-template-columns: 1fr 1fr;
   gap: 22px;
   align-items: stretch;
+  height: 100%;
 }
 
 .add-left,
@@ -818,15 +829,7 @@
   grid-template-columns: 1fr 1fr;
 }
 
-@media (max-width: 760px) {
-  .add-layout {
-    grid-template-columns: 1fr;
-  }
 
-  .add-preview-box {
-    min-height: 240px;
-  }
-}
 .tape {
   position: absolute;
   top: -8px;
