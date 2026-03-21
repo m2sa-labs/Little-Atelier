@@ -2323,29 +2323,36 @@ settingModal.addEventListener('click', (event) => {
     
 function fitScreens() {
   const designWidth = 576;
-  const designHeight = 324;  // ← まずこれで試す
-
   const screens = document.querySelectorAll('.home-screen, .album-screen, .title-screen');
   const vw = window.innerWidth;
   const vh = window.innerHeight;
 
-  const scaleByWidth = vw / designWidth;
-  const scaleByHeight = vh / designHeight;
-  const scale = Math.min(scaleByWidth, scaleByHeight);
-
   screens.forEach(screen => {
     screen.style.width = designWidth + 'px';
-    screen.style.transformOrigin = 'top center';
-    screen.style.left = '50%';
     screen.style.position = 'relative';
+    screen.style.left = '50%';
+    screen.style.transformOrigin = 'top center';
+
+    // いったん拡大縮小を外して、本来の高さを測る
+    screen.style.transform = 'translateX(-50%) scale(1)';
+    const naturalHeight = screen.offsetHeight;
+
+    const scaleByWidth = vw / designWidth;
+    const scaleByHeight = vh / naturalHeight;
+    const scale = Math.min(scaleByWidth, scaleByHeight);
+
     screen.style.transform = `translateX(-50%) scale(${scale})`;
   });
 }
 
-window.addEventListener('load', fitScreens);
+window.addEventListener('load', () => {
+  setTimeout(fitScreens, 100);
+});
+
 window.addEventListener('resize', fitScreens);
+
 window.addEventListener('orientationchange', () => {
-  setTimeout(fitScreens, 300);
+  setTimeout(fitScreens, 400);
 });
 </script>
 </body>
