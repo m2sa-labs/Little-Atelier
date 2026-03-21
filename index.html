@@ -11,47 +11,40 @@
     * { box-sizing: border-box; }
 
     body {
-      margin: 0;
-      font-family: "Hiragino Maru Gothic ProN", "Yu Gothic", sans-serif;
-      background: #efe7de;
-      color: #6f5442;
-      overflow: hidden;
-    }
+  margin: 0;
+  font-family: "Hiragino Maru Gothic ProN", "Yu Gothic", sans-serif;
+  background: #efe7de;
+  color: #6f5442;
+  /* overflow: hidden; を消す */
+}
 
-    .app {
-      width: 100vw;
-  height: 100vh;
-  max-width: none;
-      min-height: 100vh;
-      margin: 0 auto;
-      background: #f7efe6;
-      position: relative;
-      overflow: hidden;
-      padding-bottom: 92px;
-    }
-
-    .screen {
+.app {
+  width: 100%;
+  max-width: 100%;
+  min-height: 100vh;
+  margin: 0 auto;
+  background: #f7efe6;
+  position: relative;
+  overflow: hidden;
+  padding-bottom: 0;
+}
+.screen {
   display: none;
   width: 100%;
-  height: 100%;
   position: relative;
 }
-html, body {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
+
+.screen.active {
+  display: block;
 }
-    .screen.active { display: block; }
 
     .bg-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  user-select: none;
-  -webkit-user-drag: none;
-  pointer-events: none;
-}
+      width: 100%;
+      display: block;
+      user-select: none;
+      -webkit-user-drag: none;
+      pointer-events: none;
+    }
 
     /* 作品のせる層 */
     .overlay-layer {
@@ -548,18 +541,40 @@ html, body {
       font-size: 16px;
     }
 
-    .scaled {
-  width: 100%;
-  height: 100%;
+    @media (max-width: 430px) {
+  .scaled {
+    width: 576px;
+  }
+
+  .home-screen,
+  .album-screen {
+    transform-origin: top left;
+  }
+
+  .title-screen {
+    transform-origin: top center;
+  }
+
+  .app {
+    max-width: 100%;
+  }
 }
 
-.home-screen,
-.album-screen,
-.title-screen {
-  width: 100%;
-  height: 100%;
-  transform: none;
-  left: 0;
+@media (min-width: 431px) {
+  .scaled {
+    width: 576px;
+  }
+
+  .home-screen,
+  .album-screen {
+    transform: scale(calc(430 / 576));
+    transform-origin: top left;
+  }
+
+  .title-screen {
+    transform: translateX(-50%) scale(calc(430 / 576));
+    transform-origin: top center;
+  }
 }
         .art-slot {
       cursor: pointer;
@@ -2339,6 +2354,32 @@ settingModal.addEventListener('click', (event) => {
     closeSettingModal();
   }
 });
+    function fitScreens() {
+  const designWidth = 576;
+
+  const screens = document.querySelectorAll('.home-screen, .album-screen, .title-screen');
+  const vw = window.innerWidth;
+
+  const scaleByWidth = vw / designWidth;
+
+  screens.forEach(screen => {
+    screen.style.width = designWidth + 'px';
+    screen.style.transformOrigin = screen.classList.contains('title-screen') ? 'top center' : 'top left';
+
+    if (screen.classList.contains('title-screen')) {
+      screen.style.left = '50%';
+      screen.style.transform = `translateX(-50%) scale(${scaleByWidth})`;
+    } else {
+      screen.style.transform = `scale(${scaleByWidth})`;
+    }
+  });
+}
+
+  window.addEventListener('load', fitScreens);
+  window.addEventListener('resize', fitScreens);
+  window.addEventListener('orientationchange', () => {
+    setTimeout(fitScreens, 300);
+  });
   </script>
 </body>
 </html>
