@@ -78,39 +78,39 @@
 .btn-add {
   left: 25%;
   transform: translateX(-50%);
-  bottom: 12px;           /* ← さらに下（20 → 12） */
+  bottom: 34px;
 }
 
 .btn-album {
   left: 50%;
   transform: translateX(-50%);
-  bottom: 12px;
+  bottom: 34px;
 }
 
 .btn-setting {
   left: 75%;
   transform: translateX(-50%);
-  bottom: 12px;
+  bottom: 34px;
 }
 /* アルバム画面の下3つ */
 .btn-add-album {
   left: 25%;
   transform: translateX(-50%);
-  bottom: 12px;
+  bottom: 34px;
   z-index: 15;
 }
 
 .btn-home-album {
   left: 50%;
   transform: translateX(-50%);
-  bottom: 12px;
+  bottom: 34px;
   z-index: 15;
 }
 
 .btn-setting-album {
   left: 75%;
   transform: translateX(-50%);
-  bottom: 12px;
+  bottom: 34px;
   z-index: 15;
 }
 
@@ -728,45 +728,43 @@
 .add-card {
   width: min(94vw, 980px);
   max-width: 980px;
-  max-height: 86vh;
-  padding: 16px 16px 12px;
+  max-height: 78vh;
+  padding: 10px 12px 8px;
   overflow: hidden;
 }
+
 .add-card h2 {
-  margin: 0 0 10px;
-  font-size: 18px;
+  margin: 0 0 6px;
+  font-size: 16px;
 }
 
 .add-layout {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px;
+  gap: 10px;
   align-items: stretch;
-  height: calc(86vh - 56px);
+  height: calc(78vh - 36px);
 }
+
 .add-left,
 .add-right {
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 6px;
 }
+
 .add-right .field,
 .add-left .field {
   margin-bottom: 0;
-}
-.add-left {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
 }
 
 .add-preview-box {
   width: 100%;
   flex: 1;
-  min-height: 220px;
-  max-height: 260px;
-  border-radius: 18px;
+  min-height: 150px;
+  max-height: 170px;
+  border-radius: 16px;
 }
 
 .add-preview-box img {
@@ -776,34 +774,28 @@
   display: none;
 }
 
-.add-right {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
 .add-card .field label {
-  font-size: 12px;
-  margin-bottom: 4px;
+  font-size: 11px;
+  margin-bottom: 3px;
 }
 
 .add-card input,
 .add-card select,
 .add-card textarea {
-  font-size: 14px;
-  padding: 8px 10px;
+  font-size: 13px;
+  padding: 7px 9px;
   border-radius: 10px;
 }
 
 #artSummary {
-  min-height: 110px;
+  min-height: 72px;
   resize: none;
 }
-
 
 .add-buttons {
   position: static;
   margin-top: auto;
-  padding-top: 4px;
+  padding-top: 2px;
   padding-bottom: 0;
   background: transparent;
   grid-template-columns: 1fr 1fr;
@@ -811,65 +803,65 @@
 }
 
 .add-buttons button {
-  padding: 10px;
-  font-size: 14px;
-  border-radius: 12px;
+  padding: 8px;
+  font-size: 13px;
+  border-radius: 10px;
 }
 @media (max-height: 430px) and (orientation: landscape) {
   .modal {
-    padding: 10px;
+    padding: 6px;
     align-items: center;
   }
 
   .add-card {
-    max-height: 92vh;
-    padding: 12px 12px 10px;
+    max-height: 82vh;
+    padding: 8px 10px 8px;
   }
 
   .add-card h2 {
-    font-size: 16px;
-    margin-bottom: 8px;
+    font-size: 15px;
+    margin-bottom: 6px;
   }
 
   .add-layout {
-    gap: 12px;
-    height: calc(92vh - 44px);
+    gap: 8px;
+    height: calc(82vh - 32px);
   }
 
   .add-card .field label {
-    font-size: 11px;
-    margin-bottom: 3px;
+    font-size: 10px;
+    margin-bottom: 2px;
   }
 
   .add-card input,
   .add-card select,
   .add-card textarea {
-    font-size: 13px;
-    padding: 7px 9px;
+    font-size: 12px;
+    padding: 6px 8px;
   }
 
   .add-preview-box {
-    min-height: 180px;
-    max-height: 200px;
+    min-height: 130px;
+    max-height: 150px;
   }
 
   #artSummary {
-    min-height: 84px;
+    min-height: 60px;
   }
 
   .chip-btn {
-    font-size: 13px;
-    padding: 8px 14px;
+    font-size: 12px;
+    padding: 6px 10px;
   }
 
   .add-buttons button {
-    padding: 8px;
-    font-size: 13px;
+    padding: 7px;
+    font-size: 12px;
   }
 
   #sculptureHint {
-    font-size: 11px;
-    line-height: 1.4;
+    font-size: 10px;
+    line-height: 1.3;
   }
 }
 
@@ -961,7 +953,46 @@
   gap: 14px;
   width: 82%;
 }
+.user-modal-card {
+  width: min(92vw, 860px);
+  max-width: 860px;
+  max-height: 84vh;
+  padding: 14px 16px 12px;
+  overflow: hidden;
+}
 
+.user-modal-card h2 {
+  margin: 0 0 8px;
+  font-size: 18px;
+  text-align: center;
+}
+
+.user-modal-layout {
+  display: grid;
+  grid-template-columns: 0.95fr 1.05fr;
+  gap: 14px;
+  align-items: start;
+}
+
+.user-modal-left,
+.user-modal-right {
+  min-width: 0;
+}
+
+.user-modal-card .field {
+  margin-bottom: 8px;
+}
+
+.user-modal-card .field label {
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+
+.user-modal-card input {
+  font-size: 14px;
+  padding: 8px 10px;
+  border-radius: 10px;
+}
 .user-item {
   display: flex;
   flex-direction: column;
@@ -997,21 +1028,16 @@
   display: inline-block;
 }
 
-.user-modal-card {
-  max-width: 360px;
-}
-
 .user-icon-select {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 12px;
 }
-
 .user-icon-btn {
   border: 2px solid #ead8c9;
   background: #fffdf9;
-  border-radius: 18px;
-  padding: 10px;
+  border-radius: 14px;
+  padding: 6px;
   cursor: pointer;
 }
 
@@ -1020,13 +1046,76 @@
   background: #fff4ea;
   box-shadow: 0 0 0 3px rgba(240, 217, 196, 0.8) inset;
 }
-
 .user-icon-btn img {
   width: 100%;
+  max-width: 110px;
   height: auto;
   display: block;
+  margin: 0 auto;
+}
+.user-modal-card .modal-buttons {
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 8px;
+  padding-top: 6px;
 }
 
+.user-modal-card .modal-buttons button {
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 12px;
+}
+
+@media (max-height: 430px) and (orientation: landscape) {
+  .user-modal-card {
+    width: min(94vw, 920px);
+    max-height: 90vh;
+    padding: 10px 12px 10px;
+  }
+
+  .user-modal-card h2 {
+    font-size: 16px;
+    margin-bottom: 6px;
+  }
+
+  .user-modal-layout {
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: 10px;
+  }
+
+  .user-modal-card .field {
+    margin-bottom: 6px;
+  }
+
+  .user-modal-card .field label {
+    font-size: 11px;
+    margin-bottom: 3px;
+  }
+
+  .user-modal-card input {
+    font-size: 13px;
+    padding: 7px 9px;
+  }
+
+  .user-icon-select {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+
+  .user-icon-btn {
+    padding: 4px;
+    border-radius: 12px;
+  }
+
+  .user-icon-btn img {
+    max-width: 88px;
+  }
+
+  .user-modal-card .modal-buttons button {
+    padding: 8px;
+    font-size: 13px;
+  }
+}
 .title-name-btn {
   border: none;
   cursor: pointer;
@@ -1162,28 +1251,6 @@
   transform: scale(0.8);
   transform-origin: bottom center;
 }
-.user-modal-card {
-  max-width: 720px;
-  width: min(92vw, 720px);
-}
-
-.user-modal-layout {
-  display: grid;
-  grid-template-columns: 0.9fr 1.1fr;
-  gap: 18px;
-  align-items: start;
-}
-
-.user-modal-left,
-.user-modal-right {
-  min-width: 0;
-}
-
-.user-icon-select {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-}
 
 @media (max-width: 760px) {
   .user-modal-card {
@@ -1215,6 +1282,11 @@
           <label for="userNameInput">なまえ</label>
           <input id="userNameInput" type="text" placeholder="おなまえをいれてね" maxlength="12" />
         </div>
+
+        <div class="modal-buttons">
+          <button class="sub-btn" id="closeUserModalBtn" type="button">とじる</button>
+          <button class="main-btn" id="saveUserBtn" type="button">とうろく</button>
+        </div>
       </div>
 
       <div class="user-modal-right">
@@ -1236,11 +1308,6 @@
           </div>
         </div>
       </div>
-    </div>
-
-    <div class="modal-buttons" style="grid-template-columns: 1fr 1fr;">
-      <button class="sub-btn" id="closeUserModalBtn" type="button">とじる</button>
-      <button class="main-btn" id="saveUserBtn" type="button">とうろく</button>
     </div>
   </div>
 </div>
@@ -2462,9 +2529,9 @@ function fitOneScreen(screen) {
 
   let scale = Math.min(scaleByWidth, scaleByHeight);
 
-  if (screen.classList.contains('home-screen')) {
-    scale *= 0.94;
-  }
+ if (screen.classList.contains('home-screen')) {
+  scale *= 0.88;
+}
 
   screen.style.transform = `translateX(-50%) scale(${scale})`;
 }
