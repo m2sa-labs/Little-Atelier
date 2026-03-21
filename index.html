@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <link rel="manifest" href="manifest.json">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -813,10 +813,10 @@
     align-items: center;
   }
 
-  .add-card {
-    max-height: 82vh;
-    padding: 8px 10px 8px;
-  }
+ .add-card {
+  max-height: 70vh;
+  padding: 6px 8px 6px;
+}
 
   .add-card h2 {
     font-size: 15px;
@@ -824,9 +824,9 @@
   }
 
   .add-layout {
-    gap: 8px;
-    height: calc(82vh - 32px);
-  }
+  gap: 6px;
+  height: calc(70vh - 24px);
+}
 
   .add-card .field label {
     font-size: 10px;
@@ -845,9 +845,9 @@
     max-height: 150px;
   }
 
-  #artSummary {
-    min-height: 60px;
-  }
+ #artSummary {
+  min-height: 42px;
+}
 
   .chip-btn {
     font-size: 12px;
@@ -855,9 +855,9 @@
   }
 
   .add-buttons button {
-    padding: 7px;
-    font-size: 12px;
-  }
+  padding: 5px;
+  font-size: 11px;
+}
 
   #sculptureHint {
     font-size: 10px;
@@ -2529,9 +2529,17 @@ function fitOneScreen(screen) {
 
   let scale = Math.min(scaleByWidth, scaleByHeight);
 
- if (screen.classList.contains('home-screen')) {
-  scale *= 0.88;
-}
+  if (screen.classList.contains('title-screen')) {
+    scale *= 0.99;
+  }
+
+  if (screen.classList.contains('home-screen')) {
+    scale *= 0.84;
+  }
+
+  if (screen.classList.contains('album-screen')) {
+    scale *= 0.84;
+  }
 
   screen.style.transform = `translateX(-50%) scale(${scale})`;
 }
