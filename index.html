@@ -276,31 +276,31 @@
 
 /* 棚作品は今のままでもOKならそのまま */
 .home-screen.bg-vertical .shelf-1 {
-  left: 88px;
-  top: 226px;
-  width: 42px;
-  height: 58px;
+  left: 40px;
+  top: 260px;
+  width: 78px;
+  height: 78px;
 }
 
 .home-screen.bg-vertical .shelf-2 {
-  left: 206px;
-  top: 226px;
-  width: 52px;
-  height: 58px;
+  left: 120px;
+  top: 250px;
+  width: 60px;
+  height: 60px;
 }
 
 .home-screen.bg-vertical .shelf-3 {
-  left: 320px;
-  top: 226px;
-  width: 52px;
-  height: 58px;
+  left: 410px;
+  top: 290px;
+  width: 60px;
+  height: 60px;
 }
 
 .home-screen.bg-vertical .shelf-4 {
-  left: 442px;
-  top: 226px;
-  width: 52px;
-  height: 58px;
+  left: 470px;
+  top: 235px;
+  width: 82px;
+  height: 82px;
 }
     /* アルバム画面の8枠（右ページ調整版） */
 .album-slot-1 { left: 106px; top: 78px; width: 68px; height: 84px; transform: rotate(-1deg); }
@@ -660,12 +660,14 @@
 
 .detail-preview-box {
   width: 100%;
-  height: 100%;
-  min-height: 420px;
+  height: 260px;
+  min-height: 260px;
+  max-height: 260px;
   margin-top: 0;
   border-radius: 22px;
   border: 2px dashed #e4d3c2;
   background: #fffdf9;
+  overflow: hidden;
 }
 
 .detail-preview-box img {
@@ -1195,7 +1197,7 @@
 }
 .home-screen.bg-horizontal .shelf-1 {
   left: 200px;
-  top: 255px;
+  top: 245px;
   width: 70px;
   height: 70px;
 }
@@ -1292,6 +1294,50 @@
   .detail-text {
     font-size: 14px;
     line-height: 1.5;
+  }
+}
+@media (max-height: 430px) and (orientation: landscape) {
+  .detail-card {
+    width: min(94vw, 980px);
+    max-height: 84vh;
+    padding: 10px 12px 10px;
+    overflow: hidden;
+  }
+
+  .detail-layout {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    align-items: start;
+  }
+
+  .detail-preview-box {
+    height: 200px;
+    min-height: 200px;
+    max-height: 200px;
+  }
+
+  .detail-right {
+    gap: 6px;
+  }
+
+  .detail-text {
+    font-size: 13px;
+    line-height: 1.4;
+    padding: 8px 10px;
+  }
+
+  .detail-summary {
+    min-height: 70px;
+  }
+
+  .detail-buttons button {
+    padding: 8px;
+    font-size: 12px;
+  }
+
+  .slot-btn {
+    padding: 8px 12px;
+    font-size: 12px;
   }
 }
   </style>
@@ -1981,7 +2027,7 @@ function showAlbum() {
   resetForm();
   addModal.classList.add('show');
   updateOrientationField();
-
+ populateShelfOptions();
   requestAnimationFrame(() => {
     addModal.scrollTop = 0;
     if (modalCard) modalCard.scrollTop = 0;
@@ -2565,7 +2611,27 @@ settingModal.addEventListener('click', (event) => {
     closeSettingModal();
   }
 });
-    
+    function populateShelfOptions() {
+  const shelfSelect = document.getElementById('shelfSelect');
+  if (!shelfSelect) return;
+
+  shelfSelect.innerHTML = '';
+
+  let shelves;
+
+  if (currentBg === 'vertical') {
+    shelves = [1, 2, 3, 4];
+  } else {
+    shelves = [1, 2, 3];
+  }
+
+  shelves.forEach(num => {
+    const option = document.createElement('option');
+    option.value = num;
+    option.textContent = `棚${num}`;
+    shelfSelect.appendChild(option);
+  });
+}
 function fitOneScreen(screen) {
   const designWidth = 576;
 
