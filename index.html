@@ -811,10 +811,14 @@
   .modal {
     padding: 4px;
     align-items: center;
+    align-items: flex-start;
+  padding-top: 6px;
   }
 .add-card {
-  max-height: 84vh;
-  padding: 6px 8px 6px;
+  height: 90vh;
+  max-height: 90vh;
+  padding: 6px 10px;
+  overflow-y: auto;
 }
   .add-card h2 {
     font-size: 13px;
@@ -841,8 +845,8 @@
   }
 
   .add-preview-box {
-    min-height: 82px;
-    max-height: 92px;
+    min-height: 140px;
+    max-height: 180px;
   }
 
   #artSummary {
@@ -1260,6 +1264,34 @@
   .user-modal-layout {
     grid-template-columns: 1fr;
     gap: 14px;
+  }
+}
+#artSummary {
+  min-height: 36px;
+  max-height: 60px;
+}
+.add-preview-box {
+  min-height: 140px;
+  max-height: 180px;
+}
+@media (orientation: landscape) {
+  .detail-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .detail-preview-box {
+    min-height: 220px;
+  }
+
+  .detail-right {
+    gap: 8px;
+  }
+
+  .detail-text {
+    font-size: 14px;
+    line-height: 1.5;
   }
 }
   </style>
@@ -2370,7 +2402,31 @@ function removeArtworkFromDisplay(artworkId) {
   saveArtworks();
   renderAll();
 }
+function resizeImage(file, callback) {
+  const img = new Image();
+  const reader = new FileReader();
 
+  resizeImage(file, (resizedData) => {
+  imageData = resizedData;
+});
+
+  img.onload = () => {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+
+    const maxWidth = 800;
+
+    const scale = maxWidth / img.width;
+    canvas.width = maxWidth;
+    canvas.height = img.height * scale;
+
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+    callback(canvas.toDataURL('image/jpeg', 0.7));
+  };
+
+  reader.readAsDataURL(file);
+}
     function renderAll() {
       renderHome();
       renderAlbum();
