@@ -726,24 +726,35 @@
   }
 }
 .add-card {
-  max-width: 980px;
   width: min(94vw, 980px);
-  padding: 22px 20px 18px;
+  max-width: 980px;
+  max-height: 86vh;
+  padding: 16px 16px 12px;
+  overflow: hidden;
+}
+.add-card h2 {
+  margin: 0 0 10px;
+  font-size: 18px;
 }
 
 .add-layout {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 22px;
+  gap: 16px;
   align-items: stretch;
-  height: 100%;
+  height: calc(86vh - 56px);
 }
-
 .add-left,
 .add-right {
   min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
-
+.add-right .field,
+.add-left .field {
+  margin-bottom: 0;
+}
 .add-left {
   display: flex;
   flex-direction: column;
@@ -753,9 +764,9 @@
 .add-preview-box {
   width: 100%;
   flex: 1;
-  min-height: 380px;
-  margin-top: 0;
-  border-radius: 22px;
+  min-height: 220px;
+  max-height: 260px;
+  border-radius: 18px;
 }
 
 .add-preview-box img {
@@ -770,25 +781,97 @@
   flex-direction: column;
   gap: 12px;
 }
+.add-card .field label {
+  font-size: 12px;
+  margin-bottom: 4px;
+}
 
-.add-right .field {
-  margin-bottom: 0;
+.add-card input,
+.add-card select,
+.add-card textarea {
+  font-size: 14px;
+  padding: 8px 10px;
+  border-radius: 10px;
 }
 
 #artSummary {
-  min-height: 150px;
-  resize: vertical;
+  min-height: 110px;
+  resize: none;
 }
+
 
 .add-buttons {
   position: static;
   margin-top: auto;
-  padding-top: 6px;
+  padding-top: 4px;
   padding-bottom: 0;
   background: transparent;
   grid-template-columns: 1fr 1fr;
+  gap: 8px;
 }
 
+.add-buttons button {
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 12px;
+}
+@media (max-height: 430px) and (orientation: landscape) {
+  .modal {
+    padding: 10px;
+    align-items: center;
+  }
+
+  .add-card {
+    max-height: 92vh;
+    padding: 12px 12px 10px;
+  }
+
+  .add-card h2 {
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+
+  .add-layout {
+    gap: 12px;
+    height: calc(92vh - 44px);
+  }
+
+  .add-card .field label {
+    font-size: 11px;
+    margin-bottom: 3px;
+  }
+
+  .add-card input,
+  .add-card select,
+  .add-card textarea {
+    font-size: 13px;
+    padding: 7px 9px;
+  }
+
+  .add-preview-box {
+    min-height: 180px;
+    max-height: 200px;
+  }
+
+  #artSummary {
+    min-height: 84px;
+  }
+
+  .chip-btn {
+    font-size: 13px;
+    padding: 8px 14px;
+  }
+
+  .add-buttons button {
+    padding: 8px;
+    font-size: 13px;
+  }
+
+  #sculptureHint {
+    font-size: 11px;
+    line-height: 1.4;
+  }
+}
 
 .tape {
   position: absolute;
@@ -1079,6 +1162,39 @@
   transform: scale(0.8);
   transform-origin: bottom center;
 }
+.user-modal-card {
+  max-width: 720px;
+  width: min(92vw, 720px);
+}
+
+.user-modal-layout {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 18px;
+  align-items: start;
+}
+
+.user-modal-left,
+.user-modal-right {
+  min-width: 0;
+}
+
+.user-icon-select {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+@media (max-width: 760px) {
+  .user-modal-card {
+    max-width: 92vw;
+  }
+
+  .user-modal-layout {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+}
   </style>
 </head>
 <body>
@@ -1090,38 +1206,44 @@
   <div id="userList" class="user-list"></div>
 
   <div id="userModal" class="modal">
-    <div class="modal-card user-modal-card">
-      <h2>なまえ登録</h2>
+  <div class="modal-card user-modal-card">
+    <h2>なまえ登録</h2>
 
-      <div class="field">
-        <label for="userNameInput">なまえ</label>
-        <input id="userNameInput" type="text" placeholder="おなまえをいれてね" maxlength="12" />
-      </div>
-
-      <div class="field">
-        <label>アイコンをえらぶ</label>
-        <div class="user-icon-select" id="userIconSelect">
-          <button type="button" class="user-icon-btn selected" data-icon="assets/icon_girl1.png">
-            <img src="assets/icon_girl1.png" alt="女の子1" />
-          </button>
-          <button type="button" class="user-icon-btn" data-icon="assets/icon_girl2.png">
-            <img src="assets/icon_girl2.png" alt="女の子2" />
-          </button>
-          <button type="button" class="user-icon-btn" data-icon="assets/icon_boy1.png">
-            <img src="assets/icon_boy1.png" alt="男の子1" />
-          </button>
-          <button type="button" class="user-icon-btn" data-icon="assets/icon_boy2.png">
-            <img src="assets/icon_boy2.png" alt="男の子2" />
-          </button>
+    <div class="user-modal-layout">
+      <div class="user-modal-left">
+        <div class="field">
+          <label for="userNameInput">なまえ</label>
+          <input id="userNameInput" type="text" placeholder="おなまえをいれてね" maxlength="12" />
         </div>
       </div>
 
-      <div class="modal-buttons">
-        <button class="sub-btn" id="closeUserModalBtn" type="button">とじる</button>
-        <button class="main-btn" id="saveUserBtn" type="button">とうろく</button>
+      <div class="user-modal-right">
+        <div class="field">
+          <label>アイコンをえらぶ</label>
+          <div class="user-icon-select" id="userIconSelect">
+            <button type="button" class="user-icon-btn selected" data-icon="assets/icon_girl1.png">
+              <img src="assets/icon_girl1.png" alt="女の子1" />
+            </button>
+            <button type="button" class="user-icon-btn" data-icon="assets/icon_girl2.png">
+              <img src="assets/icon_girl2.png" alt="女の子2" />
+            </button>
+            <button type="button" class="user-icon-btn" data-icon="assets/icon_boy1.png">
+              <img src="assets/icon_boy1.png" alt="男の子1" />
+            </button>
+            <button type="button" class="user-icon-btn" data-icon="assets/icon_boy2.png">
+              <img src="assets/icon_boy2.png" alt="男の子2" />
+            </button>
+          </div>
+        </div>
       </div>
     </div>
+
+    <div class="modal-buttons" style="grid-template-columns: 1fr 1fr;">
+      <button class="sub-btn" id="closeUserModalBtn" type="button">とじる</button>
+      <button class="main-btn" id="saveUserBtn" type="button">とうろく</button>
+    </div>
   </div>
+</div>
 
   <button class="title-name-btn" id="openUserModal" type="button">なまえ登録</button>
 </section>
@@ -2321,38 +2443,50 @@ settingModal.addEventListener('click', (event) => {
   }
 });
     
-function fitScreens() {
+function fitOneScreen(screen) {
   const designWidth = 576;
-  const screens = document.querySelectorAll('.home-screen, .album-screen, .title-screen');
+
+  screen.style.width = designWidth + 'px';
+  screen.style.position = 'relative';
+  screen.style.left = '50%';
+  screen.style.transformOrigin = 'top center';
+
+  screen.style.transform = 'translateX(-50%) scale(1)';
+  const naturalHeight = screen.offsetHeight;
+
   const vw = window.innerWidth;
   const vh = window.innerHeight;
 
-  screens.forEach(screen => {
-    screen.style.width = designWidth + 'px';
-    screen.style.position = 'relative';
-    screen.style.left = '50%';
-    screen.style.transformOrigin = 'top center';
+  const scaleByWidth = vw / designWidth;
+  const scaleByHeight = vh / naturalHeight;
 
-    // いったん拡大縮小を外して、本来の高さを測る
-    screen.style.transform = 'translateX(-50%) scale(1)';
-    const naturalHeight = screen.offsetHeight;
+  let scale = Math.min(scaleByWidth, scaleByHeight);
 
-    const scaleByWidth = vw / designWidth;
-    const scaleByHeight = vh / naturalHeight;
-    const scale = Math.min(scaleByWidth, scaleByHeight);
+  if (screen.classList.contains('home-screen')) {
+    scale *= 0.94;
+  }
 
-    screen.style.transform = `translateX(-50%) scale(${scale})`;
-  });
+  screen.style.transform = `translateX(-50%) scale(${scale})`;
+}
+
+function fitScreens() {
+  const titleScreen = document.getElementById('titleScreen');
+  const homeScreen = document.getElementById('homeScreen');
+  const albumScreen = document.getElementById('albumScreen');
+
+  if (titleScreen) fitOneScreen(titleScreen);
+  if (homeScreen) fitOneScreen(homeScreen);
+  if (albumScreen) fitOneScreen(albumScreen);
 }
 
 window.addEventListener('load', () => {
-  setTimeout(fitScreens, 100);
+  setTimeout(fitScreens, 150);
 });
 
 window.addEventListener('resize', fitScreens);
 
 window.addEventListener('orientationchange', () => {
-  setTimeout(fitScreens, 400);
+  setTimeout(fitScreens, 450);
 });
 </script>
 </body>
