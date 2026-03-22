@@ -60,11 +60,11 @@
 }
 .ui-btn {
   position: absolute;
-  width: 48px;            /* ← さらに小さく（56 → 48） */
+  width: 48px;            
   cursor: pointer;
   pointer-events: auto;
    transition: transform 0.08s, opacity 0.15s;
-  opacity: 0.65;          /* ← さらに薄く（0.85 → 0.65） */
+  opacity: 1;
 }
 /* 下の3つ */
 .btn-add:active,
@@ -76,21 +76,21 @@
 
 /* 位置（さらに下） */
 .btn-add {
-  left: 25%;
+  left: 32%;
   transform: translateX(-50%);
-  bottom: 34px;
+  bottom: 115px;
 }
 
 .btn-album {
   left: 50%;
   transform: translateX(-50%);
-  bottom: 34px;
+  bottom: 115px;
 }
 
 .btn-setting {
-  left: 75%;
+  left: 68%;
   transform: translateX(-50%);
-  bottom: 34px;
+  bottom: 115px;
 }
 /* アルバム画面の下3つ */
 .btn-add-album {
@@ -144,164 +144,43 @@
       background: transparent;
     }
 
-    /* アトリエ画面の平面作品4枠 */
-    .flat-large {
-  left: 185px;
-  top: 80px;   /* さらに上へ */
-  width: 206px;
-  height: 128px;
-}
-
-.flat-small-1 {
-  left: 58px;   /* さらに左へ */
-  top: 74px;    /* さらに上へ */
-  width: 65px;
-  height: 73px;
-}
-
-.flat-small-2 {
-  left: 58px;
-  top: 168px;   /* 上へ */
-  width: 65px;
-  height: 66px;
-}
-
-.flat-small-3 {
-  left: 458px;  /* さらに右へ */
-  top: 69px;    /* 上へ */
-  width: 82px;
-  height: 52px;
-}
-
-.flat-mini-1 {
-  left: 457px;
-  top: 152px;   /* 上へ */
-  width: 83px;
-  height: 48px;
-}
-    .flat-mini-2 {
-      left: 0px;
-      top: 0px;
-      width: 0px;
-      height: 0px;
-      border-radius: 0;
-    }
-
-    .flat-mini-3 {
-      left: 0px;
-      top: 0px;
-      width: 0px;
-      height: 0px;
-      border-radius: 0;
-    }
-
-    .flat-mini-4 {
-      left: 360px;
-      top: 650px;
-      width: 0px;
-      height: 0px;
-    }
-
     /* 立体作品4枠 */
-    .shelf-1 {
-  left: 88px;
-  top: 226px;
-  width: 42px;
-  height: 58px;
+   .shelf-1 {
+  left: 120px;
+  top: 300px;
+  width: 60px;
+  height: 60px;
   border-radius: 14px;
 }
 
 .shelf-2 {
-  left: 206px;
-  top: 226px;
-  width: 52px;
-  height: 58px;
+  left: 230px;
+  top: 310px;
+  width: 70px;
+  height: 70px;
   border-radius: 14px;
 }
 
 .shelf-3 {
-  left: 320px;
-  top: 226px;
-  width: 52px;
-  height: 58px;
+  left: 350px;
+  top: 295px;
+  width: 65px;
+  height: 65px;
   border-radius: 14px;
 }
 
 .shelf-4 {
-  left: 442px;
-  top: 226px;
-  width: 52px;
-  height: 58px;
+  left: 460px;
+  top: 305px;
+  width: 70px;
+  height: 70px;
   border-radius: 14px;
 }
 
     .art-slot.sculpture img {
       object-fit: contain;
     }
-/* ===== 縦メイン背景のときだけ slot 位置を変更 ===== */
-.home-screen.bg-vertical .flat-large {
-  left: 202px;
-  top: 65px;
-  width: 172px;
-  height: 212px;
-}
 
-.home-screen.bg-vertical .flat-small-1 {
-  left: 70px;
-  top: 75px;
-  width: 64px;
-  height: 68px;
-}
-
-.home-screen.bg-vertical .flat-small-2 {
-  left: 70px;
-  top: 167px;
-  width: 62px;
-  height: 60px;
-}
-
-.home-screen.bg-vertical .flat-small-3 {
-  left: 444px;
-  top: 75px;
-  width: 78px;
-  height: 42px;
-}
-
-.home-screen.bg-vertical .flat-mini-1 {
-  left: 445px;
-  top: 149px;
-  width: 78px;
-  height: 45px;
-}
-
-/* 棚作品は今のままでもOKならそのまま */
-.home-screen.bg-vertical .shelf-1 {
-  left: 40px;
-  top: 260px;
-  width: 78px;
-  height: 78px;
-}
-
-.home-screen.bg-vertical .shelf-2 {
-  left: 120px;
-  top: 250px;
-  width: 60px;
-  height: 60px;
-}
-
-.home-screen.bg-vertical .shelf-3 {
-  left: 410px;
-  top: 290px;
-  width: 60px;
-  height: 60px;
-}
-
-.home-screen.bg-vertical .shelf-4 {
-  left: 470px;
-  top: 235px;
-  width: 82px;
-  height: 82px;
-}
     /* アルバム画面の8枠（右ページ調整版） */
 .album-slot-1 { left: 106px; top: 78px; width: 68px; height: 84px; transform: rotate(-1deg); }
 .album-slot-2 { left: 190px; top: 78px; width: 68px; height: 84px; }
@@ -918,7 +797,6 @@
 }
 .title-screen {
   position: relative;
-  left: 50%;
 }
 .title-name-btn {
   position: absolute;
@@ -1136,7 +1014,9 @@
   pointer-events: none;
   display: none;
 }
-
+.dummy-shelf.show {
+  display: block;
+}
 .home-screen.bg-vertical .dummy-shelf.show {
   display: block;
 }
@@ -1167,54 +1047,6 @@
   width: 82px;
 }
 
-.dummy-shelf-h {
-  position: absolute;
-  z-index: 4;
-  pointer-events: none;
-  display: none;
-}
-
-.home-screen.bg-horizontal .dummy-shelf-h.show {
-  display: block;
-}
-
-.dummy-shelf-h-1 {
-  left: 200px;
-  top: 255px;
-  width: 70px;
-}
-
-.dummy-shelf-h-2 {
-  left: 280px;
-  top: 243px;
-  width: 68px;
-}
-
-.dummy-shelf-h-3 {
-  left: 346px;
-  top: 240px;
-  width: 80px;
-}
-.home-screen.bg-horizontal .shelf-1 {
-  left: 200px;
-  top: 245px;
-  width: 70px;
-  height: 70px;
-}
-
-.home-screen.bg-horizontal .shelf-2 {
-  left: 280px;
-  top: 243px;
-  width: 68px;
-  height: 72px;
-}
-
-.home-screen.bg-horizontal .shelf-3 {
-  left: 346px;
-  top: 240px;
-  width: 80px;
-  height: 72px;
-}
 .change-user-wrap {
   display: flex;
   justify-content: center;
@@ -1246,16 +1078,6 @@
 }
 .change-user-btn:active {
   transform: scale(0.97);
-}
-
-#dummyShelfH2 {
-  transform: scale(0.86);
-  transform-origin: bottom center;
-}
-
-#dummyShelfH3 {
-  transform: scale(0.8);
-  transform-origin: bottom center;
 }
 
 @media (max-width: 760px) {
@@ -1340,6 +1162,89 @@
     font-size: 12px;
   }
 }
+.flat-slot {
+  position: absolute;
+  border-radius: 8px;
+  overflow: visible;
+  background: rgba(255,255,255,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.flat-slot img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+.board-1 { left: 130px; top: 30px; width: 60px; height: 75px; transform: rotate(-4deg); }
+.board-2 { left: 200px; top: 50px; width: 60px; height: 75px; transform: rotate(3deg); }
+.board-3 { left: 270px; top: 40px; width: 90px; height: 115px; transform: rotate(-2deg); }
+
+.board-4 { left: 130px; top: 130px; width: 90px; height: 65px; transform: rotate(2deg); }
+.board-5 { left: 220px; top: 140px; width: 45px; height: 60px; transform: rotate(-5deg); }
+.board-6 { left: 370px; top: 35px; width: 70px; height: 50px; transform: rotate(3deg); }
+
+.board-7 { left: 280px; top: 150px; width: 60px; height: 50px; transform: rotate(-3deg); }
+.board-8 { left: 370px; top: 100px; width: 75px; height: 100px; transform: rotate(2deg); }
+.pin {
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  z-index: 3;
+  pointer-events: none;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.16);
+}
+
+.pin::before {
+  content: "";
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.45);
+  top: 2px;
+  left: 2px;
+}
+
+.pin::after {
+  content: "";
+  position: absolute;
+  width: 2px;
+  height: 6px;
+  background: rgba(120, 120, 120, 0.45);
+  left: 50%;
+  top: 9px;
+  transform: translateX(-50%);
+  border-radius: 2px;
+}
+.pin.red {
+  background: #e96b6b;
+}
+
+.pin.blue {
+  background: #6fa8e8;
+}
+
+.pin.yellow {
+  background: #f3cf63;
+}
+
+.pin.green {
+  background: #8bcf8b;
+}
+
+.pin.left {
+  left: 32%;
+}
+
+.pin.right {
+  left: 68%;
+}
   </style>
 </head>
 <body>
@@ -1394,26 +1299,24 @@
 </section>
     <!-- アトリエ画面 -->
     <section id="homeScreen" class="screen home-screen scaled">
-  <img id="homeBgImage" src="assets/atelier-main-horizontal.jpg" alt="アトリエ画面" class="bg-image" />
+  <img src="assets/atelier-main.jpg" alt="アトリエ画面" class="bg-image" />
       <div class="atelier-title" id="atelierTitle">○○のアトリエ</div>
       <div class="overlay-layer">
-        <div id="homeFlatLarge" class="art-slot flat-large empty"></div>
-        <div id="homeFlat1" class="art-slot flat-small-1 empty"></div>
-        <div id="homeFlat2" class="art-slot flat-small-2 empty"></div>
-        <div id="homeFlat3" class="art-slot flat-small-3 empty"></div>
-
-        <div id="homeMini1" class="art-slot flat-mini-1 empty"></div>
-        <div id="homeMini2" class="art-slot flat-mini-2 empty"></div>
-        <div id="homeMini3" class="art-slot flat-mini-3 empty"></div>
+      
+        <div id="boardSlot1" class="flat-slot board-1"></div>
+<div id="boardSlot2" class="flat-slot board-2"></div>
+<div id="boardSlot3" class="flat-slot board-3"></div>
+<div id="boardSlot4" class="flat-slot board-4"></div>
+<div id="boardSlot5" class="flat-slot board-5"></div>
+<div id="boardSlot6" class="flat-slot board-6"></div>
+<div id="boardSlot7" class="flat-slot board-7"></div>
+<div id="boardSlot8" class="flat-slot board-8"></div>
 
 <img id="dummyShelf1" class="dummy-shelf dummy-shelf-1" src="assets/dummy_shelf_1.png" alt="" />
 <img id="dummyShelf2" class="dummy-shelf dummy-shelf-2" src="assets/dummy_shelf_2.png" alt="" />
 <img id="dummyShelf3" class="dummy-shelf dummy-shelf-3" src="assets/dummy_shelf_3.png" alt="" />
 <img id="dummyShelf4" class="dummy-shelf dummy-shelf-4" src="assets/dummy_shelf_4.png" alt="" />
 
-<img id="dummyShelfH1" class="dummy-shelf-h dummy-shelf-h-1" src="assets/dummy_shelf_h_1.png" alt="" />
-<img id="dummyShelfH2" class="dummy-shelf-h dummy-shelf-h-2" src="assets/dummy_shelf_h_2.png" alt="" />
-<img id="dummyShelfH3" class="dummy-shelf-h dummy-shelf-h-3" src="assets/dummy_shelf_h_3.png" alt="" />
         <div id="homeShelf1" class="art-slot sculpture shelf-1 empty"></div>
         <div id="homeShelf2" class="art-slot sculpture shelf-2 empty"></div>
         <div id="homeShelf3" class="art-slot sculpture shelf-3 empty"></div>
@@ -1560,19 +1463,10 @@ iPhoneなら<br>
   </button>
 </div>
 
-<!-- ② 背景設定 -->
-<div class="field">
-  <label>メイン画面の背景</label>
-  <div class="chip-group" id="bgModeButtons">
-    <button type="button" class="chip-btn selected" data-bg="horizontal">横メイン背景</button>
-    <button type="button" class="chip-btn" data-bg="vertical">縦メイン背景</button>
-  </div>
-</div>
-
 <!-- ③ 下のボタン -->
 <div class="modal-buttons" style="grid-template-columns: 1fr 1fr;">
   <button class="sub-btn" id="closeSettingModalBtn" type="button">とじる</button>
-  <button class="main-btn" id="saveSettingsBtn" type="button">この背景にする</button>
+<button class="main-btn" id="saveSettingsBtn" type="button">とじる</button>
 </div>
   </div>
 </div>
@@ -1695,6 +1589,9 @@ saveUserBtn.addEventListener('click', (event) => {
   saveUsers();
   renderUsers();
   closeUserModal();
+
+  // 追加したユーザーをすぐ選ぶ
+  selectUser(newUser.id);
 });
 
 userModal.addEventListener('click', (event) => {
@@ -1780,13 +1677,9 @@ const detailDate = document.getElementById('detailDate');
 const detailSummary = document.getElementById('detailSummary');
 const displaySlotField = document.getElementById('displaySlotField');
 const displaySlotButtons = document.getElementById('displaySlotButtons');
-const BG_SETTING_KEY = 'atelier-bg-mode-v1';
-const homeBgImage = document.getElementById('homeBgImage');
-
 const settingModal = document.getElementById('settingModal');
 const closeSettingModalBtn = document.getElementById('closeSettingModalBtn');
 const saveSettingBtn = document.getElementById('saveSettingsBtn');
-const bgModeButtons = document.querySelectorAll('#bgModeButtons .chip-btn');
 const uiAddBtn = document.querySelector('.btn-add');
 const uiAlbumBtn = document.querySelector('.btn-album');
 const uiSettingBtn = document.querySelector('.btn-setting');
@@ -1803,9 +1696,6 @@ const dummyShelf2 = document.getElementById('dummyShelf2');
 const dummyShelf3 = document.getElementById('dummyShelf3');
 const dummyShelf4 = document.getElementById('dummyShelf4');
 
-const dummyShelfH1 = document.getElementById('dummyShelfH1');
-const dummyShelfH2 = document.getElementById('dummyShelfH2');
-const dummyShelfH3 = document.getElementById('dummyShelfH3');
 if (titleScreen) {
   titleScreen.addEventListener('click', (event) => {
     if (
@@ -1857,6 +1747,21 @@ if (displayToggleBtn) {
   displayToggleBtn.addEventListener('click', () => {
     if (currentDetailId === null) return;
 
+    const artwork = artworks.find(item => item.id === currentDetailId);
+    if (!artwork) return;
+
+    // 平面作品
+    if (artwork.type === 'flat') {
+      if (artwork.display?.isDisplayed) {
+        removeArtworkFromDisplay(currentDetailId);
+      } else {
+        displayFlatArtworkAutomatically(currentDetailId);
+      }
+      closeDetailModal();
+      return;
+    }
+
+    // 立体作品
     removeArtworkFromDisplay(currentDetailId);
     closeDetailModal();
   });
@@ -1873,7 +1778,7 @@ if (uiSettingBtn) {
     let previewDataUrl = '';
     let selectedFile = null;
     let artworks = [];
-    let selectedBgMode = loadBgMode();
+  
     orientationButtons.forEach(button => {
   button.addEventListener('click', () => {
     selectedOrientation = button.dataset.orientation;
@@ -1889,7 +1794,6 @@ const ALBUM_PAGE_SIZE = 8;
 let currentAlbumPage = 1;
     setTodayDate();
 updateOrientationField();
-applyBgMode();
 renderAll();
 renderUsers();
 showTitle();
@@ -1925,59 +1829,22 @@ artType.addEventListener('input', updateOrientationField);
     const parsed = JSON.parse(saved);
 
     return parsed.map(item => ({
-      ...item,
-      orientation: item.orientation || (item.type === 'flat' ? 'horizontal' : ''),
-      displayByBg: item.displayByBg || {
-        horizontal: {
-          isDisplayed: item.isDisplayed || false,
-          displaySlot: item.displaySlot || '',
-          isFavorite: item.isFavorite || false
-        },
-        vertical: {
-          isDisplayed: false,
-          displaySlot: '',
-          isFavorite: false
-        }
-      }
-    }));
+  ...item,
+  orientation: item.orientation || (item.type === 'flat' ? 'horizontal' : ''),
+  display: item.display || {
+    isDisplayed: item.isDisplayed || false,
+    displaySlot: item.displaySlot || '',
+    isFavorite: item.isFavorite || false
+  }
+}));
   } catch (error) {
     console.error('保存データの読み込み失敗', error);
     return [];
   }
 }
-function loadBgMode() {
-  return localStorage.getItem(BG_SETTING_KEY) || 'horizontal';
-}
 
-function saveBgMode() {
-  localStorage.setItem(BG_SETTING_KEY, selectedBgMode);
-}
-
-function applyBgMode() {
-  if (!homeBgImage) return;
-
-  homeScreen.classList.remove('bg-horizontal', 'bg-vertical');
-
-  if (selectedBgMode === 'vertical') {
-    homeBgImage.src = 'assets/atelier-main-vertical.jpg';
-    homeScreen.classList.add('bg-vertical');
-  } else {
-    homeBgImage.src = 'assets/atelier-main-horizontal.jpg';
-    homeScreen.classList.add('bg-horizontal');
-  }
-}
-function getCurrentBgKey() {
-  return selectedBgMode === 'vertical' ? 'vertical' : 'horizontal';
-}
 function openSettingModal() {
   settingModal.classList.add('show');
-
-  bgModeButtons.forEach(btn => {
-    btn.classList.remove('selected');
-    if (btn.dataset.bg === selectedBgMode) {
-      btn.classList.add('selected');
-    }
-  });
 }
 
 function closeSettingModal() {
@@ -2043,18 +1910,33 @@ function showAlbum() {
   const memoText = artwork.memo ? `メモ：${artwork.memo}` : 'メモ：まだないよ';
   detailSummary.textContent = `${titleText}\n${memoText}`;
 
- const bgKey = getCurrentBgKey();
-const currentDisplay = artwork.displayByBg?.[bgKey];
-
-if (currentDisplay && currentDisplay.isDisplayed) {
-  displayToggleBtn.textContent = '展示をはずす';
-  displayToggleBtn.style.display = 'block';
-} else {
-  displayToggleBtn.style.display = 'none';
-}
+  const currentDisplay = artwork.display;
 
   detailModal.classList.add('show');
   displaySlotButtons.innerHTML = '';
+
+  // 平面作品のとき
+  if (artwork.type === 'flat') {
+    displaySlotField.style.display = 'none';
+
+    if (currentDisplay && currentDisplay.isDisplayed) {
+      displayToggleBtn.textContent = '展示をはずす';
+      displayToggleBtn.style.display = 'block';
+    } else {
+      displayToggleBtn.textContent = '展示する';
+      displayToggleBtn.style.display = 'block';
+    }
+
+    return;
+  }
+
+  // 立体作品のとき
+  if (currentDisplay && currentDisplay.isDisplayed) {
+    displayToggleBtn.textContent = '展示をはずす';
+    displayToggleBtn.style.display = 'block';
+  } else {
+    displayToggleBtn.style.display = 'none';
+  }
 
   const displayOptions = getDisplayOptions(artwork);
 
@@ -2068,8 +1950,8 @@ if (currentDisplay && currentDisplay.isDisplayed) {
       button.textContent = option.label;
 
       if (currentDisplay && currentDisplay.displaySlot === option.value) {
-  button.classList.add('current');
-}
+        button.classList.add('current');
+      }
 
       const occupied = findDisplayedArtworkBySlot(option.value, artwork.id);
       if (occupied) {
@@ -2175,7 +2057,24 @@ if (currentDisplay && currentDisplay.isDisplayed) {
   img.style.objectFit = useContain ? 'contain' : 'cover';
   
   slot.appendChild(img);
+if (slot.classList.contains('flat-slot')) {
+  const colors = ['red', 'blue', 'yellow', 'green'];
+  const color1 = colors[Math.floor(Math.random() * colors.length)];
 
+  const pin1 = document.createElement('div');
+  pin1.className = `pin ${color1}`;
+  slot.appendChild(pin1);
+
+  // たまに2こ
+  if (Math.random() < 0.2) {
+    pin1.classList.add('left');
+
+    const color2 = colors[Math.floor(Math.random() * colors.length)];
+    const pin2 = document.createElement('div');
+    pin2.className = `pin ${color2} right`;
+    slot.appendChild(pin2);
+  }
+}
   if (slot.id && slot.id.startsWith('album') && artwork.type === 'flat') {
     if (artwork.orientation === 'horizontal') {
       slot.classList.add('album-horizontal');
@@ -2217,39 +2116,44 @@ function clearSlot(slot) {
   slot.classList.add('empty');
   slot.onclick = null;
 }
-    function renderHome() {
-  const bgKey = getCurrentBgKey();
+  function renderHome() {
+  const boardSlots = [
+    'boardSlot1',
+    'boardSlot2',
+    'boardSlot3',
+    'boardSlot4',
+    'boardSlot5',
+    'boardSlot6',
+    'boardSlot7',
+    'boardSlot8'
+  ];
 
-  const leftTopArtwork = artworks.find(item => item.displayByBg?.[bgKey]?.displaySlot === 'left-top');
-  const leftBottomArtwork = artworks.find(item => item.displayByBg?.[bgKey]?.displaySlot === 'left-bottom');
-  const centerArtwork = artworks.find(item => item.displayByBg?.[bgKey]?.displaySlot === 'center');
-  const rightTopArtwork = artworks.find(item => item.displayByBg?.[bgKey]?.displaySlot === 'right-top');
-  const rightBottomArtwork = artworks.find(item => item.displayByBg?.[bgKey]?.displaySlot === 'right-bottom');
+  const displayedFlatArtworks = artworks
+    .filter(item =>
+      item.type === 'flat' &&
+      item.display?.isDisplayed &&
+      item.display?.displaySlot
+    )
+    .sort((a, b) => {
+      const order = ['board-1', 'board-2', 'board-3', 'board-4', 'board-5', 'board-6', 'board-7', 'board-8'];
+      return order.indexOf(a.display.displaySlot) - order.indexOf(b.display.displaySlot);
+    });
 
-  const shelf1Artwork = artworks.find(item => item.displayByBg?.[bgKey]?.displaySlot === 'shelf-1');
-  const shelf2Artwork = artworks.find(item => item.displayByBg?.[bgKey]?.displaySlot === 'shelf-2');
-  const shelf3Artwork = artworks.find(item => item.displayByBg?.[bgKey]?.displaySlot === 'shelf-3');
-  const shelf4Artwork = artworks.find(item => item.displayByBg?.[bgKey]?.displaySlot === 'shelf-4');
+  boardSlots.forEach((slotId, index) => {
+    const el = document.getElementById(slotId);
+    const art = displayedFlatArtworks[index];
 
-  leftTopArtwork
-    ? fillSlot(document.getElementById('homeFlat1'), leftTopArtwork, false)
-    : clearSlot(document.getElementById('homeFlat1'));
+    if (art) {
+      fillSlot(el, art, true);
+    } else {
+      clearSlot(el);
+    }
+  });
 
-  leftBottomArtwork
-    ? fillSlot(document.getElementById('homeFlat2'), leftBottomArtwork, false)
-    : clearSlot(document.getElementById('homeFlat2'));
-
-  centerArtwork
-    ? fillSlot(document.getElementById('homeFlatLarge'), centerArtwork, false)
-    : clearSlot(document.getElementById('homeFlatLarge'));
-
-  rightTopArtwork
-    ? fillSlot(document.getElementById('homeFlat3'), rightTopArtwork, false)
-    : clearSlot(document.getElementById('homeFlat3'));
-
-  rightBottomArtwork
-    ? fillSlot(document.getElementById('homeMini1'), rightBottomArtwork, false)
-    : clearSlot(document.getElementById('homeMini1'));
+  const shelf1Artwork = artworks.find(item => item.display?.displaySlot === 'shelf-1');
+  const shelf2Artwork = artworks.find(item => item.display?.displaySlot === 'shelf-2');
+  const shelf3Artwork = artworks.find(item => item.display?.displaySlot === 'shelf-3');
+  const shelf4Artwork = artworks.find(item => item.display?.displaySlot === 'shelf-4');
 
   shelf1Artwork
     ? fillSlot(document.getElementById('homeShelf1'), shelf1Artwork, true)
@@ -2266,51 +2170,10 @@ function clearSlot(slot) {
   shelf4Artwork
     ? fillSlot(document.getElementById('homeShelf4'), shelf4Artwork, true)
     : clearSlot(document.getElementById('homeShelf4'));
-    updateVerticalShelfDummies();
+
+  updateDummyShelves();
 }
-function updateVerticalShelfDummies() {
-  const verticalDummyMap = {
-    'shelf-1': dummyShelf1,
-    'shelf-2': dummyShelf2,
-    'shelf-3': dummyShelf3,
-    'shelf-4': dummyShelf4
-  };
-
-  const horizontalDummyMap = {
-    'shelf-1': dummyShelfH1,
-    'shelf-2': dummyShelfH2,
-    'shelf-3': dummyShelfH3
-  };
-
-  Object.values(verticalDummyMap).forEach(dummy => {
-    if (dummy) dummy.classList.remove('show');
-  });
-
-  Object.values(horizontalDummyMap).forEach(dummy => {
-    if (dummy) dummy.classList.remove('show');
-  });
-
-  const bgKey = getCurrentBgKey();
-
-  if (bgKey === 'vertical') {
-    ['shelf-1', 'shelf-2', 'shelf-3', 'shelf-4'].forEach(slot => {
-      const artwork = artworks.find(item => item.displayByBg?.[bgKey]?.displaySlot === slot);
-      if (!artwork && verticalDummyMap[slot]) {
-        verticalDummyMap[slot].classList.add('show');
-      }
-    });
-  }
-
-  if (bgKey === 'horizontal') {
-    ['shelf-1', 'shelf-2', 'shelf-3'].forEach(slot => {
-      const artwork = artworks.find(item => item.displayByBg?.[bgKey]?.displaySlot === slot);
-      if (!artwork && horizontalDummyMap[slot]) {
-        horizontalDummyMap[slot].classList.add('show');
-      }
-    });
-  }
-}
-    function renderAlbum() {
+function renderAlbum() {
   const totalPages = getAlbumTotalPages();
 
   if (currentAlbumPage > totalPages) {
@@ -2337,116 +2200,124 @@ function updateVerticalShelfDummies() {
   nextPageBtn.disabled = currentAlbumPage === totalPages;
 }
 function getDisplayOptions(artwork) {
-  const bgKey = getCurrentBgKey();
-
   if (artwork.type === 'flat') {
-    if (bgKey === 'horizontal') {
-      if (artwork.orientation === 'vertical') {
-        return [
-          { value: 'left-top', label: '左上' },
-          { value: 'left-bottom', label: '左下' }
-        ];
-      }
-
-      if (artwork.orientation === 'horizontal') {
-        return [
-          { value: 'center', label: '中央⭐' },
-          { value: 'right-top', label: '右上' },
-          { value: 'right-bottom', label: '右下' }
-        ];
-      }
-    }
-
-    if (bgKey === 'vertical') {
-      if (artwork.orientation === 'vertical') {
-        return [
-          { value: 'center', label: '中央⭐' },
-          { value: 'left-top', label: '左上' },
-          { value: 'left-bottom', label: '左下' }
-        ];
-      }
-
-      if (artwork.orientation === 'horizontal') {
-        return [
-          { value: 'right-top', label: '右上' },
-          { value: 'right-bottom', label: '右下' }
-        ];
-      }
-    }
+    return [];
   }
 
-  if (artwork.type === 'sculpture') {
-    return [
-      { value: 'shelf-1', label: '棚1' },
-      { value: 'shelf-2', label: '棚2' },
-      { value: 'shelf-3', label: '棚3' },
-      { value: 'shelf-4', label: '棚4' }
-    ];
-  }
-
-  return [];
+  return [
+    { value: 'shelf-1', label: 'つくえ左' },
+    { value: 'shelf-2', label: 'つくえ中央左' },
+    { value: 'shelf-3', label: 'つくえ中央右' },
+    { value: 'shelf-4', label: 'つくえ右' }
+  ];
 }
 function findDisplayedArtworkBySlot(slot, ignoreId = null) {
-  const bgKey = getCurrentBgKey();
-
   return artworks.find(item =>
-    item.displayByBg?.[bgKey]?.displaySlot === slot &&
-    item.id !== ignoreId
+    item.id !== ignoreId &&
+    item.display?.isDisplayed &&
+    item.display?.displaySlot === slot
   );
 }
 function displayArtworkInSlot(artworkId, slot) {
   const artwork = artworks.find(item => item.id === artworkId);
   if (!artwork) return;
 
-  const bgKey = getCurrentBgKey();
-
-  if (!artwork.displayByBg) {
-    artwork.displayByBg = {
-      horizontal: { isDisplayed: false, displaySlot: '', isFavorite: false },
-      vertical: { isDisplayed: false, displaySlot: '', isFavorite: false }
+  if (!artwork.display) {
+    artwork.display = {
+      isDisplayed: false,
+      displaySlot: '',
+      isFavorite: false
     };
   }
 
   const options = getDisplayOptions(artwork);
-  const allowedSlots = options.map(option => option.value);
-
-  if (!allowedSlots.includes(slot)) {
-    alert('この作品はその場所にかざれないよ。');
-    return;
-  }
+  const isValidSlot = options.some(option => option.value === slot);
+  if (!isValidSlot) return;
 
   const existingArtwork = findDisplayedArtworkBySlot(slot, artwork.id);
   if (existingArtwork) {
-    alert('その場所には、すでに作品がかざってあるよ。');
+    existingArtwork.display.isDisplayed = false;
+    existingArtwork.display.displaySlot = '';
+    existingArtwork.display.isFavorite = false;
+  }
+
+  artwork.display.isDisplayed = true;
+  artwork.display.displaySlot = slot;
+  artwork.display.isFavorite = slot === 'center';
+
+  if (saveArtworks()) {
+    renderHome();
+    renderAlbum();
+  }
+}
+function displayFlatArtworkAutomatically(artworkId) {
+  const artwork = artworks.find(item => item.id === artworkId);
+  if (!artwork) return;
+
+  const boardSlots = [
+    'board-1',
+    'board-2',
+    'board-3',
+    'board-4',
+    'board-5',
+    'board-6',
+    'board-7',
+    'board-8'
+  ];
+
+  // すでに展示中なら何もしない
+  if (artwork.display?.isDisplayed) return;
+
+  // 今使われてる board slot 一覧
+  const usedSlots = artworks
+    .filter(item => item.type === 'flat' && item.display?.isDisplayed && item.display?.displaySlot)
+    .map(item => item.display.displaySlot);
+
+  // 空いてる slot を探す
+  const emptySlot = boardSlots.find(slot => !usedSlots.includes(slot));
+
+  if (!emptySlot) {
+    alert('ボードがいっぱいだよ');
     return;
   }
 
-  artwork.displayByBg[bgKey].isDisplayed = true;
-  artwork.displayByBg[bgKey].displaySlot = slot;
-  artwork.displayByBg[bgKey].isFavorite = slot === 'center';
+  if (!artwork.display) {
+    artwork.display = {
+      isDisplayed: false,
+      displaySlot: '',
+      isFavorite: false
+    };
+  }
 
-  saveArtworks();
-  renderAll();
+  artwork.display.isDisplayed = true;
+  artwork.display.displaySlot = emptySlot;
+  artwork.display.isFavorite = false;
+
+  if (saveArtworks()) {
+    renderHome();
+    renderAlbum();
+  }
 }
 function removeArtworkFromDisplay(artworkId) {
   const artwork = artworks.find(item => item.id === artworkId);
   if (!artwork) return;
 
-  const bgKey = getCurrentBgKey();
-
-  if (!artwork.displayByBg) {
-    artwork.displayByBg = {
-      horizontal: { isDisplayed: false, displaySlot: '', isFavorite: false },
-      vertical: { isDisplayed: false, displaySlot: '', isFavorite: false }
+  if (!artwork.display) {
+    artwork.display = {
+      isDisplayed: false,
+      displaySlot: '',
+      isFavorite: false
     };
   }
 
-  artwork.displayByBg[bgKey].isDisplayed = false;
-  artwork.displayByBg[bgKey].displaySlot = '';
-  artwork.displayByBg[bgKey].isFavorite = false;
+  artwork.display.isDisplayed = false;
+  artwork.display.displaySlot = '';
+  artwork.display.isFavorite = false;
 
-  saveArtworks();
-  renderAll();
+  if (saveArtworks()) {
+    renderHome();
+    renderAlbum();
+  }
 }
 function resizeImage(file, callback) {
   const img = new Image();
@@ -2474,9 +2345,9 @@ function resizeImage(file, callback) {
   reader.readAsDataURL(file);
 }
     function renderAll() {
-      renderHome();
-      renderAlbum();
-    }
+  renderHome();
+  renderAlbum();
+}
 
     artImage.addEventListener('change', async (event) => {
       const file = event.target.files[0];
@@ -2513,18 +2384,11 @@ const newArtwork = {
   orientation: artType.value === 'flat' ? selectedOrientation : '',
   date: artDate.value,
   memo: summaryText,
-  displayByBg: {
-    horizontal: {
-      isDisplayed: false,
-      displaySlot: '',
-      isFavorite: false
-    },
-    vertical: {
-      isDisplayed: false,
-      displaySlot: '',
-      isFavorite: false
-    }
-  }
+  display: {
+  isDisplayed: false,
+  displaySlot: '',
+  isFavorite: false
+}
 };
 
       const nextArtworks = [...artworks, newArtwork];
@@ -2583,14 +2447,6 @@ nextPageBtn.addEventListener('click', () => {
     renderAlbum();
   }
 });
-bgModeButtons.forEach(button => {
-  button.addEventListener('click', () => {
-    selectedBgMode = button.dataset.bg;
-
-    bgModeButtons.forEach(btn => btn.classList.remove('selected'));
-    button.classList.add('selected');
-  });
-});
 
 closeSettingModalBtn.addEventListener('click', () => {
   closeSettingModal();
@@ -2600,9 +2456,6 @@ changeUserBtn.addEventListener('click', () => {
   showTitle();
 });
 saveSettingBtn.addEventListener('click', () => {
-  saveBgMode();
-  applyBgMode();
-  renderHome();
   closeSettingModal();
 });
 
@@ -2611,26 +2464,29 @@ settingModal.addEventListener('click', (event) => {
     closeSettingModal();
   }
 });
-    function populateShelfOptions() {
-  const shelfSelect = document.getElementById('shelfSelect');
-  if (!shelfSelect) return;
+function populateShelfOptions() {
+  return;
+}
+function updateDummyShelves() {
+  const shelf1Artwork = artworks.find(item => item.display?.displaySlot === 'shelf-1');
+  const shelf2Artwork = artworks.find(item => item.display?.displaySlot === 'shelf-2');
+  const shelf3Artwork = artworks.find(item => item.display?.displaySlot === 'shelf-3');
+  const shelf4Artwork = artworks.find(item => item.display?.displaySlot === 'shelf-4');
 
-  shelfSelect.innerHTML = '';
+  toggleDummy(dummyShelf1, shelf1Artwork);
+  toggleDummy(dummyShelf2, shelf2Artwork);
+  toggleDummy(dummyShelf3, shelf3Artwork);
+  toggleDummy(dummyShelf4, shelf4Artwork);
+}
 
-  let shelves;
+function toggleDummy(dummyEl, artwork) {
+  if (!dummyEl) return;
 
-  if (currentBg === 'vertical') {
-    shelves = [1, 2, 3, 4];
+  if (artwork) {
+    dummyEl.classList.remove('show');
   } else {
-    shelves = [1, 2, 3];
+    dummyEl.classList.add('show');
   }
-
-  shelves.forEach(num => {
-    const option = document.createElement('option');
-    option.value = num;
-    option.textContent = `棚${num}`;
-    shelfSelect.appendChild(option);
-  });
 }
 function fitOneScreen(screen) {
   const designWidth = 576;
