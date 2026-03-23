@@ -78,19 +78,19 @@
 .btn-add {
   left: 32%;
   transform: translateX(-50%);
-  bottom: 115px;
+  bottom: 35px;
 }
 
 .btn-album {
   left: 50%;
   transform: translateX(-50%);
-  bottom: 115px;
+  bottom: 35px;
 }
 
 .btn-setting {
   left: 68%;
   transform: translateX(-50%);
-  bottom: 115px;
+  bottom: 35px;
 }
 /* アルバム画面の下3つ */
 .btn-add-album {
@@ -776,24 +776,20 @@
 }
 .atelier-title {
   position: absolute;
-  top: 14px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 12;
+  top: 12px;
+  left: 16px;
 
-  padding: 6px 12px;
-  font-size: 13px;
-  font-weight: 700;
-  color: #8a6b5c;
+  padding: 2px 7px;
+  font-size: 10px;
 
   background: rgba(255, 255, 255, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.55);
-  border-radius: 999px;
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  border-radius: 18px;
 
-  pointer-events: none;
+  color: #6f5442;
+  backdrop-filter: blur(3px);
+
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+
 }
 .title-screen {
   position: relative;
@@ -1166,16 +1162,43 @@
   position: absolute;
   border-radius: 8px;
   overflow: visible;
-  background: rgba(255,255,255,0.2);
+  background: transparent;
+  border: none;
+  box-shadow: none;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.flat-slot img {
+.flat-slot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 245, 230, 0.15);
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  border-radius: 8px;
+}
+.flat-slot .slot-art-img {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  display: block;
+
+ filter:
+  brightness(1.05)
+  contrast(0.92)
+  saturate(0.85)
+  blur(0.2px);
+}
+.pin-img {
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 16px;
+  height: auto;
+  z-index: 4;
+  pointer-events: none;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.10));
 }
 .board-1 { left: 130px; top: 30px; width: 60px; height: 75px; transform: rotate(-4deg); }
 .board-2 { left: 200px; top: 50px; width: 60px; height: 75px; transform: rotate(3deg); }
@@ -1187,64 +1210,7 @@
 
 .board-7 { left: 280px; top: 150px; width: 60px; height: 50px; transform: rotate(-3deg); }
 .board-8 { left: 370px; top: 100px; width: 75px; height: 100px; transform: rotate(2deg); }
-.pin {
-  position: absolute;
-  top: -6px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 11px;
-  height: 11px;
-  border-radius: 50%;
-  z-index: 3;
-  pointer-events: none;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.16);
-}
 
-.pin::before {
-  content: "";
-  position: absolute;
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.45);
-  top: 2px;
-  left: 2px;
-}
-
-.pin::after {
-  content: "";
-  position: absolute;
-  width: 2px;
-  height: 6px;
-  background: rgba(120, 120, 120, 0.45);
-  left: 50%;
-  top: 9px;
-  transform: translateX(-50%);
-  border-radius: 2px;
-}
-.pin.red {
-  background: #e96b6b;
-}
-
-.pin.blue {
-  background: #6fa8e8;
-}
-
-.pin.yellow {
-  background: #f3cf63;
-}
-
-.pin.green {
-  background: #8bcf8b;
-}
-
-.pin.left {
-  left: 32%;
-}
-
-.pin.right {
-  left: 68%;
-}
   </style>
 </head>
 <body>
@@ -1642,13 +1608,21 @@ let selectedOrientation = 'horizontal';
     const modalCard = addModal.querySelector('.modal-card');
     const previewImage = document.getElementById('previewImage');
 
-    const homeFlatSlots = [
-      document.getElementById('homeFlatLarge'),
-      document.getElementById('homeFlat1'),
-      document.getElementById('homeFlat2'),
-      document.getElementById('homeFlat3'),
-      document.getElementById('homeMini1')
-    ];
+    const verticalBoardSlots = [
+  document.getElementById('boardSlot1'),
+  document.getElementById('boardSlot2'),
+  document.getElementById('boardSlot3'),
+  document.getElementById('boardSlot5'),
+  document.getElementById('boardSlot7')
+];
+
+const horizontalBoardSlots = [
+  document.getElementById('boardSlot4'),
+  document.getElementById('boardSlot6'),
+  document.getElementById('boardSlot8')
+];
+
+const homeFlatSlots = [...verticalBoardSlots, ...horizontalBoardSlots];
 
     const homeShelfSlots = [
       document.getElementById('homeShelf1'),
@@ -2046,35 +2020,27 @@ function showAlbum() {
     reader.readAsDataURL(file);
   });
 }
-
-        function fillSlot(slot, artwork, useContain = false) {
+function fillSlot(slot, artwork, useContain = false) {
   slot.innerHTML = '';
   slot.classList.remove('empty', 'album-horizontal', 'album-vertical');
+  slot.classList.add('filled');
 
   const img = document.createElement('img');
   img.src = artwork.image;
   img.alt = artwork.title || '作品';
   img.style.objectFit = useContain ? 'contain' : 'cover';
-  
+  img.className = 'slot-art-img';
+
   slot.appendChild(img);
-if (slot.classList.contains('flat-slot')) {
-  const colors = ['red', 'blue', 'yellow', 'green'];
-  const color1 = colors[Math.floor(Math.random() * colors.length)];
 
-  const pin1 = document.createElement('div');
-  pin1.className = `pin ${color1}`;
-  slot.appendChild(pin1);
-
-  // たまに2こ
-  if (Math.random() < 0.2) {
-    pin1.classList.add('left');
-
-    const color2 = colors[Math.floor(Math.random() * colors.length)];
-    const pin2 = document.createElement('div');
-    pin2.className = `pin ${color2} right`;
-    slot.appendChild(pin2);
+  if (slot.classList.contains('flat-slot')) {
+    const pinImg = document.createElement('img');
+    pinImg.src = 'assets/pin_blue.png';
+    pinImg.alt = '';
+    pinImg.className = 'pin-img';
+    slot.appendChild(pinImg);
   }
-}
+
   if (slot.id && slot.id.startsWith('album') && artwork.type === 'flat') {
     if (artwork.orientation === 'horizontal') {
       slot.classList.add('album-horizontal');
@@ -2111,45 +2077,57 @@ if (slot.classList.contains('flat-slot')) {
 
   slot.onclick = () => openDetailModal(artwork);
 }
+        
 function clearSlot(slot) {
   slot.innerHTML = '';
-  slot.classList.add('empty');
+  slot.classList.remove('empty', 'filled', 'album-horizontal', 'album-vertical');
   slot.onclick = null;
 }
-  function renderHome() {
-  const boardSlots = [
-    'boardSlot1',
-    'boardSlot2',
-    'boardSlot3',
-    'boardSlot4',
-    'boardSlot5',
-    'boardSlot6',
-    'boardSlot7',
-    'boardSlot8'
-  ];
+function shuffleArray(array) {
+  const copy = [...array];
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
+}
+function renderHome() {
+  // まずボードの平面スロットを全部クリア
+  homeFlatSlots.forEach(clearSlot);
 
-  const displayedFlatArtworks = artworks
-    .filter(item =>
-      item.type === 'flat' &&
-      item.display?.isDisplayed &&
-      item.display?.displaySlot
-    )
-    .sort((a, b) => {
-      const order = ['board-1', 'board-2', 'board-3', 'board-4', 'board-5', 'board-6', 'board-7', 'board-8'];
-      return order.indexOf(a.display.displaySlot) - order.indexOf(b.display.displaySlot);
+  // 展示中の平面作品だけ取得
+  const displayedFlatArtworks = artworks.filter(
+    item => item.type === 'flat' && item.display?.isDisplayed
+  );
+
+  // 縦作品 / 横作品に分ける
+  const verticalArtworks = shuffleArray(
+    displayedFlatArtworks.filter(item => item.orientation === 'vertical')
+  );
+
+  const horizontalArtworks = shuffleArray(
+    displayedFlatArtworks.filter(item => item.orientation === 'horizontal')
+  );
+
+  // スロット側もシャッフル
+  const shuffledVerticalSlots = shuffleArray(verticalBoardSlots);
+  const shuffledHorizontalSlots = shuffleArray(horizontalBoardSlots);
+
+  // 縦作品 → 縦スロット
+  verticalArtworks
+    .slice(0, shuffledVerticalSlots.length)
+    .forEach((artwork, index) => {
+      fillSlot(shuffledVerticalSlots[index], artwork, true);
     });
 
-  boardSlots.forEach((slotId, index) => {
-    const el = document.getElementById(slotId);
-    const art = displayedFlatArtworks[index];
+  // 横作品 → 横スロット
+  horizontalArtworks
+    .slice(0, shuffledHorizontalSlots.length)
+    .forEach((artwork, index) => {
+      fillSlot(shuffledHorizontalSlots[index], artwork, true);
+    });
 
-    if (art) {
-      fillSlot(el, art, true);
-    } else {
-      clearSlot(el);
-    }
-  });
-
+  // 棚作品
   const shelf1Artwork = artworks.find(item => item.display?.displaySlot === 'shelf-1');
   const shelf2Artwork = artworks.find(item => item.display?.displaySlot === 'shelf-2');
   const shelf3Artwork = artworks.find(item => item.display?.displaySlot === 'shelf-3');
@@ -2541,6 +2519,7 @@ window.addEventListener('resize', fitScreens);
 window.addEventListener('orientationchange', () => {
   setTimeout(fitScreens, 450);
 });
+
 </script>
 </body>
 </html>
