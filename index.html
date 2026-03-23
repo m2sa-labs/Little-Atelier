@@ -78,19 +78,19 @@
 .btn-add {
   left: 32%;
   transform: translateX(-50%);
-  bottom: 35px;
+  bottom: 40px;
 }
 
 .btn-album {
   left: 50%;
   transform: translateX(-50%);
-  bottom: 35px;
+  bottom: 40px;
 }
 
 .btn-setting {
   left: 68%;
   transform: translateX(-50%);
-  bottom: 35px;
+  bottom: 15px;
 }
 /* アルバム画面の下3つ */
 .btn-add-album {
@@ -133,12 +133,6 @@
   overflow: visible;
 }
 
-    .art-slot img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;   /* ← ここ変えるだけ！ */
-  display: block;
-}
 
     .art-slot.empty {
       background: transparent;
@@ -669,15 +663,15 @@
 }
 
 #artSummary {
-  min-height: 72px;
-  resize: none;
+  min-height: auto;
+  max-height: none;
 }
 
 .add-buttons {
   position: static;
-  margin-top: auto;
+  margin-top: 8px;
   padding-top: 2px;
-  padding-bottom: 0;
+  padding-bottom: 8px;
   background: transparent;
   grid-template-columns: 1fr 1fr;
   gap: 8px;
@@ -696,9 +690,10 @@
   padding-top: 6px;
   }
 .add-card {
-  height: 90vh;
-  max-height: 90vh;
-  padding: 6px 10px;
+  width: min(94vw, 980px);
+  max-width: 980px;
+  max-height: 74vh;
+  padding: 10px 12px 12px;
   overflow-y: auto;
 }
   .add-card h2 {
@@ -1017,30 +1012,22 @@
   display: block;
 }
 
-/* 縦背景用の位置 */
-/* 縦背景用の位置 */
 .dummy-shelf-1 {
-  left: 40px;
-  top: 260px;
-  width: 78px;
+  left: 185px;
+  top: 470px;
+  width: 72px;
 }
 
 .dummy-shelf-2 {
-  left: 120px;
-  top: 250px;
-  width: 60px;
+  left: 285px;
+  top: 485px;
+  width: 70px;
 }
 
 .dummy-shelf-3 {
-  left: 410px;
-  top: 290px;
-  width: 60px;
-}
-
-.dummy-shelf-4 {
-  left: 470px;
-  top: 235px;
-  width: 82px;
+  left: 395px;
+  top: 470px;
+  width: 72px;
 }
 
 .change-user-wrap {
@@ -1162,7 +1149,7 @@
   position: absolute;
   border-radius: 8px;
   overflow: visible;
-  background: transparent;
+   background: none !important;
   border: none;
   box-shadow: none;
   display: flex;
@@ -1170,6 +1157,17 @@
   justify-content: center;
 }
 .flat-slot::after {
+  content: none;
+  display: none !important;
+}
+.flat-slot:not(.filled) {
+  background: none !important;
+}
+
+.flat-slot:not(.filled)::after {
+  display: none !important;
+}
+.flat-slot.filled::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -1189,6 +1187,16 @@
   saturate(0.85)
   blur(0.2px);
 }
+.slot-art-img {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.album-screen .slot-art-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
 .pin-img {
   position: absolute;
   top: -6px;
@@ -1201,16 +1209,39 @@
   filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.10));
 }
 .board-1 { left: 130px; top: 30px; width: 60px; height: 75px; transform: rotate(-4deg); }
-.board-2 { left: 200px; top: 50px; width: 60px; height: 75px; transform: rotate(3deg); }
-.board-3 { left: 270px; top: 40px; width: 90px; height: 115px; transform: rotate(-2deg); }
+.board-2 { left: 190px; top: 40px; width: 78px; height: 56px; transform: rotate(3deg); }
+.board-3 { left: 270px; top: 30px; width: 90px; height: 115px; transform: rotate(-2deg); }
 
 .board-4 { left: 130px; top: 130px; width: 90px; height: 65px; transform: rotate(2deg); }
 .board-5 { left: 220px; top: 140px; width: 45px; height: 60px; transform: rotate(-5deg); }
 .board-6 { left: 370px; top: 35px; width: 70px; height: 50px; transform: rotate(3deg); }
 
-.board-7 { left: 280px; top: 150px; width: 60px; height: 50px; transform: rotate(-3deg); }
-.board-8 { left: 370px; top: 100px; width: 75px; height: 100px; transform: rotate(2deg); }
+.board-7 {left: 270px; top: 150px; width: 75px; height: 55px;transform: rotate(-2deg);}
+.board-8 { left: 370px; top: 100px; width: 55px; height: 75px; transform: rotate(3deg); }
 
+.album-tape-img {
+  position: absolute;
+  top: -7px;
+  left: 50%;
+  width: 38px !important;
+  height: auto !important;
+  transform: translateX(-50%) rotate(-4deg);
+  z-index: 3;
+  pointer-events: none;
+  display: block;
+}
+.rotate-buttons {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.rotate-buttons button {
+  flex: 1;
+  padding: 8px;
+  font-size: 13px;
+  border-radius: 10px;
+}
   </style>
 </head>
 <body>
@@ -1281,7 +1312,6 @@
 <img id="dummyShelf1" class="dummy-shelf dummy-shelf-1" src="assets/dummy_shelf_1.png" alt="" />
 <img id="dummyShelf2" class="dummy-shelf dummy-shelf-2" src="assets/dummy_shelf_2.png" alt="" />
 <img id="dummyShelf3" class="dummy-shelf dummy-shelf-3" src="assets/dummy_shelf_3.png" alt="" />
-<img id="dummyShelf4" class="dummy-shelf dummy-shelf-4" src="assets/dummy_shelf_4.png" alt="" />
 
         <div id="homeShelf1" class="art-slot sculpture shelf-1 empty"></div>
         <div id="homeShelf2" class="art-slot sculpture shelf-2 empty"></div>
@@ -1373,11 +1403,15 @@
       </div>
 
       <div id="previewBox" class="preview-box add-preview-box">
-        <img id="previewImage" alt="プレビュー" />
-        <div class="preview-text">ここに作品の写真が表示されるよ</div>
+  <img id="previewImage" alt="プレビュー" />
+  <div class="preview-text">ここに作品の写真が表示されるよ</div>
+</div>
+
+<div class="rotate-buttons">
+  <button type="button" id="rotateLeftBtn" class="sub-btn">↺ ひだり</button>
+  <button type="button" id="rotateRightBtn" class="sub-btn">↻ みぎ</button>
       </div>
     </div>
-
     <div class="add-right">
       <div class="field">
         <label for="artDate">日付</label>
@@ -1386,7 +1420,7 @@
 
       <div class="field">
         <label for="artSummary">タイトル・メモ</label>
-        <textarea id="artSummary" placeholder="作品タイトルやメモを書いてね"></textarea>
+        <input id="artSummary" type="text" placeholder="作品タイトルやメモを書いてね" />
       </div>
 
       <div class="field">
@@ -1607,19 +1641,20 @@ let selectedOrientation = 'horizontal';
     const previewBox = document.getElementById('previewBox');
     const modalCard = addModal.querySelector('.modal-card');
     const previewImage = document.getElementById('previewImage');
-
+const rotateLeftBtn = document.getElementById('rotateLeftBtn');
+const rotateRightBtn = document.getElementById('rotateRightBtn');
     const verticalBoardSlots = [
-  document.getElementById('boardSlot1'),
-  document.getElementById('boardSlot2'),
-  document.getElementById('boardSlot3'),
-  document.getElementById('boardSlot5'),
-  document.getElementById('boardSlot7')
+  boardSlot1,
+  boardSlot3,
+  boardSlot5,
+  boardSlot8   
 ];
 
 const horizontalBoardSlots = [
-  document.getElementById('boardSlot4'),
-  document.getElementById('boardSlot6'),
-  document.getElementById('boardSlot8')
+  boardSlot2,
+  boardSlot4,
+  boardSlot6,
+  boardSlot7
 ];
 
 const homeFlatSlots = [...verticalBoardSlots, ...horizontalBoardSlots];
@@ -1668,7 +1703,6 @@ const pageIndicator = document.getElementById('pageIndicator');
 const dummyShelf1 = document.getElementById('dummyShelf1');
 const dummyShelf2 = document.getElementById('dummyShelf2');
 const dummyShelf3 = document.getElementById('dummyShelf3');
-const dummyShelf4 = document.getElementById('dummyShelf4');
 
 if (titleScreen) {
   titleScreen.addEventListener('click', (event) => {
@@ -1752,6 +1786,8 @@ if (uiSettingBtn) {
     let previewDataUrl = '';
     let selectedFile = null;
     let artworks = [];
+    let currentRotation = 0;
+    let originalPreviewDataUrl = '';
   
     orientationButtons.forEach(button => {
   button.addEventListener('click', () => {
@@ -1955,10 +1991,13 @@ function showAlbum() {
 
     function resetForm() {
   artImage.value = '';
- artSummary.value = '';
+  artSummary.value = '';
   artType.value = 'flat';
-  
+
+  currentRotation = 0;
+  originalPreviewDataUrl = '';
   previewDataUrl = '';
+
   selectedFile = null;
   selectedOrientation = 'horizontal';
   previewImage.src = '';
@@ -1974,7 +2013,45 @@ function showAlbum() {
   updateOrientationField();
   setTodayDate();
 }
+function applyRotation() {
+  if (!originalPreviewDataUrl) return;
 
+  const img = new Image();
+  img.onload = () => {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+
+    if (currentRotation === 90 || currentRotation === 270) {
+      canvas.width = img.height;
+      canvas.height = img.width;
+    } else {
+      canvas.width = img.width;
+      canvas.height = img.height;
+    }
+
+    ctx.save();
+
+    if (currentRotation === 90) {
+      ctx.translate(canvas.width, 0);
+      ctx.rotate(Math.PI / 2);
+    } else if (currentRotation === 180) {
+      ctx.translate(canvas.width, canvas.height);
+      ctx.rotate(Math.PI);
+    } else if (currentRotation === 270) {
+      ctx.translate(0, canvas.height);
+      ctx.rotate(-Math.PI / 2);
+    }
+
+    ctx.drawImage(img, 0, 0);
+    ctx.restore();
+
+    previewDataUrl = canvas.toDataURL('image/png');
+    previewImage.src = previewDataUrl;
+    previewBox.classList.add('has-image');
+  };
+
+  img.src = originalPreviewDataUrl;
+}
     function compressImage(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -2048,31 +2125,25 @@ function fillSlot(slot, artwork, useContain = false) {
       slot.classList.add('album-vertical');
     }
 
-    const tape = document.createElement('div');
-    tape.className = 'tape';
+    const tapeImages = [
+      'assets/masking_tape_pink.png',
+      'assets/masking_tape_orenji.png'
+    ];
 
-    const color = tapeColors[Math.floor(Math.random() * tapeColors.length)];
-    tape.style.background = color;
+    const randomTape = tapeImages[Math.floor(Math.random() * tapeImages.length)];
 
-    const angle = Math.random() * 10 - 5;
-    tape.style.transform = `translateX(-50%) rotate(${angle}deg)`;
+    const tapeImg = document.createElement('img');
+    tapeImg.src = randomTape;
+    tapeImg.alt = '';
+    tapeImg.className = 'album-tape-img';
 
-    slot.appendChild(tape);
+    const rotate = Math.random() * 8 - 4;
+    const offset = Math.random() * 8 - 4;
 
-    if (Math.random() < 0.4) {
-      const tape2 = document.createElement('div');
-      tape2.className = 'tape';
+    tapeImg.style.left = `${50 + offset}%`;
+    tapeImg.style.transform = `translateX(-50%) rotate(${rotate}deg)`;
 
-      const color2 = tapeColors[Math.floor(Math.random() * tapeColors.length)];
-      tape2.style.background = color2;
-
-      const angle2 = Math.random() * 10 - 5;
-      tape2.style.left = '60%';
-      tape2.style.top = '-4px';
-      tape2.style.transform = `translateX(-50%) rotate(${angle2}deg)`;
-
-      slot.appendChild(tape2);
-    }
+    slot.appendChild(tapeImg);
   }
 
   slot.onclick = () => openDetailModal(artwork);
@@ -2276,6 +2347,7 @@ function displayFlatArtworkAutomatically(artworkId) {
     renderAlbum();
   }
 }
+
 function removeArtworkFromDisplay(artworkId) {
   const artwork = artworks.find(item => item.id === artworkId);
   if (!artwork) return;
@@ -2337,9 +2409,11 @@ function resizeImage(file, callback) {
       previewDataUrl = '';
 
       try {
-        previewDataUrl = await compressImage(file);
-        previewImage.src = previewDataUrl;
-        previewBox.classList.add('has-image');
+        originalPreviewDataUrl = await compressImage(file);
+currentRotation = 0;
+previewDataUrl = originalPreviewDataUrl;
+previewImage.src = previewDataUrl;
+previewBox.classList.add('has-image');
       } catch (error) {
         console.error('画像読み込み失敗', error);
         alert('写真の読み込みに失敗したよ。もう一度えらんでみてね。');
@@ -2418,7 +2492,19 @@ currentAlbumPage = 1;
     renderAlbum();
   }
 });
+rotateLeftBtn.addEventListener('click', () => {
+  currentRotation = (currentRotation + 270) % 360;
+  applyRotation();
+});
 
+rotateRightBtn.addEventListener('click', () => {
+  currentRotation = (currentRotation + 90) % 360;
+  applyRotation();
+});
+
+rotateRightBtn.addEventListener('click', () => {
+  rotatePreviewImage(90);
+});
 nextPageBtn.addEventListener('click', () => {
   if (currentAlbumPage < getAlbumTotalPages()) {
     currentAlbumPage++;
@@ -2449,12 +2535,10 @@ function updateDummyShelves() {
   const shelf1Artwork = artworks.find(item => item.display?.displaySlot === 'shelf-1');
   const shelf2Artwork = artworks.find(item => item.display?.displaySlot === 'shelf-2');
   const shelf3Artwork = artworks.find(item => item.display?.displaySlot === 'shelf-3');
-  const shelf4Artwork = artworks.find(item => item.display?.displaySlot === 'shelf-4');
 
   toggleDummy(dummyShelf1, shelf1Artwork);
   toggleDummy(dummyShelf2, shelf2Artwork);
   toggleDummy(dummyShelf3, shelf3Artwork);
-  toggleDummy(dummyShelf4, shelf4Artwork);
 }
 
 function toggleDummy(dummyEl, artwork) {
