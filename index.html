@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <link rel="manifest" href="manifest.json">
-  <link href="https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Yomogi&display=swap" rel="stylesheet">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <title>○○のアトリエ</title>
@@ -85,7 +85,7 @@
 .btn-album {
   left: 50%;
   transform: translateX(-50%);
-  bottom: 15px;
+  bottom: 50px;
 }
 
 .btn-setting {
@@ -786,7 +786,7 @@
   opacity: 0.8;
 
 
-  font-family: "Kiwi Maru", "Hiragino Maru Gothic ProN", sans-serif;
+  font-family: "Yomogi", "Hiragino Maru Gothic ProN", sans-serif;
 }
 .title-screen {
   position: relative;
@@ -1210,7 +1210,7 @@
 .board-3 { left: 270px; top: 30px; width: 90px; height: 115px; transform: rotate(-2deg); }
 
 .board-4 { left: 130px; top: 130px; width: 90px; height: 65px; transform: rotate(2deg); }
-.board-5 { left: 220px; top: 140px; width: 45px; height: 60px; transform: rotate(-5deg); }
+.board-5 { left: 220px; top: 125px; width: 45px; height: 60px; transform: rotate(-5deg); }
 .board-6 { left: 370px; top: 35px; width: 70px; height: 50px; transform: rotate(3deg); }
 
 .board-7 {left: 270px; top: 150px; width: 75px; height: 55px;transform: rotate(-2deg);}
@@ -1241,20 +1241,23 @@
 }
 .board-deco {
   position: absolute;
-  z-index: 3;
+  z-index: 20;
   pointer-events: none;
-  width: 36px;
+  width: 22px;
   height: auto;
+  filter:
+    saturate(3.0)
+    contrast(1.15)
+    brightness(0.95)
+    drop-shadow(0 1px 1px rgba(0,0,0,0.15));
 }
-.deco-1 { left: 145px; top: 55px; }
-.deco-2 { left: 235px; top: 60px; }
-.deco-3 { left: 415px; top: 70px; }
-
-.deco-4 { left: 165px; top: 165px; }
-.deco-5 { left: 335px; top: 185px; }
-
-.deco-6 { left: 255px; top: 110px; }
-.deco-7 { left: 445px; top: 145px; }
+.deco-1 { left: 235px; top: 180px; }
+.deco-2 { left: 180px; top: 95px; }
+.deco-3 { left: 200px; top: 105px; }
+.deco-4 { left: 220px; top: 109px; }
+.deco-5 { left: 355px; top: 165px; }
+.deco-6 { left: 420px; top: 110px; }
+.deco-7 { left: 400px; top: 160px; }
   </style>
 </head>
 <body>
@@ -1312,7 +1315,7 @@
   <img src="assets/atelier-main.jpg" alt="アトリエ画面" class="bg-image" />
       <div class="atelier-title" id="atelierTitle">○○のアトリエ</div>
       <div class="overlay-layer">
-      <img src="assets/deco1.png" class="board-deco deco-1" alt="">
+<img src="assets/deco1.png" class="board-deco deco-1" alt="">
 <img src="assets/deco2.png" class="board-deco deco-2" alt="">
 <img src="assets/deco3.png" class="board-deco deco-3" alt="">
 <img src="assets/deco4.png" class="board-deco deco-4" alt="">
@@ -2011,9 +2014,7 @@ function showAlbum() {
 
   detailDate.textContent = artwork.date || '日付なし';
 
-  const titleText = artwork.title ? `タイトル：${artwork.title}` : 'タイトル：だいじな作品';
-  const memoText = artwork.memo ? `メモ：${artwork.memo}` : 'メモ：まだないよ';
-  detailSummary.textContent = `${titleText}\n${memoText}`;
+  detailSummary.textContent = artwork.summary || '';
 
   const currentDisplay = artwork.display;
 
@@ -2520,16 +2521,15 @@ previewBox.classList.add('has-image');
 const newArtwork = {
   id: Date.now(),
   image: previewDataUrl,
-  title: summaryText || 'だいじな作品',
+  summary: summaryText,
   type: artType.value,
   orientation: artType.value === 'flat' ? selectedOrientation : '',
   date: artDate.value,
-  memo: summaryText,
   display: {
-  isDisplayed: false,
-  displaySlot: '',
-  isFavorite: false
-}
+    isDisplayed: false,
+    displaySlot: '',
+    isFavorite: false
+  }
 };
 
       const nextArtworks = [...artworks, newArtwork];
