@@ -768,8 +768,8 @@
 }
 .atelier-title {
   position: absolute;
-  right: 130px;
-  bottom: 180px;
+  right: 140px;
+  bottom: 182px;
 
   font-size: 10px;
   font-weight: 500;
@@ -1003,36 +1003,6 @@
 .title-name-btn:active {
   transform: scale(0.97);
 }
-.dummy-shelf {
-  position: absolute;
-  z-index: 4; /* 作品より後ろ */
-  pointer-events: none;
-  display: none;
-}
-.dummy-shelf.show {
-  display: block;
-}
-.home-screen.bg-vertical .dummy-shelf.show {
-  display: block;
-}
-
-.dummy-shelf-1 {
-  left: 220px;
-  top: 280px;
-  width: 48px;
-}
-
-.dummy-shelf-2 {
-  left: 245px;
-  top: 350px;
-  width: 48px;
-}
-
-.dummy-shelf-3 {
-  left: 300px;
-  top: 300px;
-  width: 48px;
-}
 
 .change-user-wrap {
   display: flex;
@@ -1241,25 +1211,15 @@
   font-size: 13px;
   border-radius: 10px;
 }
-.board-deco {
+
+.title-date {
   position: absolute;
-  z-index: 20;
-  pointer-events: none;
-  width: 22px;
-  height: auto;
-  filter:
-    saturate(3.0)
-    contrast(1.15)
-    brightness(0.95)
-    drop-shadow(0 1px 1px rgba(0,0,0,0.15));
+  right: 0;      /* 右に寄せる */
+  top: -12px;    /* 少し上に出す（ここで微調整） */
+
+  font-size: 12px;
+  opacity: 0.6;
 }
-.deco-1 { left: 135px; top: 17px;  width: 300px;}
-.deco-2 { left: 180px; top: 95px; }
-.deco-3 { left: 200px; top: 105px; }
-.deco-4 { left: 220px; top: 109px; }
-.deco-5 { left: 355px; top: 165px; }
-.deco-6 { left: 420px; top: 110px; }
-.deco-7 { left: 400px; top: 160px; }
   </style>
 </head>
 <body>
@@ -1315,15 +1275,11 @@
     <!-- アトリエ画面 -->
     <section id="homeScreen" class="screen home-screen scaled">
   <img src="assets/atelier-main.jpg" alt="アトリエ画面" class="bg-image" />
-      <div class="atelier-title" id="atelierTitle">○○のアトリエ</div>
+      <div class="atelier-title">
+  <div class="title-date" id="todayDate"></div>
+  <div id="atelierTitle">○○のアトリエ</div>
+</div>
       <div class="overlay-layer">
-<img src="assets/deco1.png" class="board-deco deco-1" alt="">
-<img src="assets/deco2.png" class="board-deco deco-2" alt="">
-<img src="assets/deco3.png" class="board-deco deco-3" alt="">
-<img src="assets/deco4.png" class="board-deco deco-4" alt="">
-<img src="assets/deco5.png" class="board-deco deco-5" alt="">
-<img src="assets/deco6.png" class="board-deco deco-6" alt="">
-<img src="assets/deco7.png" class="board-deco deco-7" alt="">
         <div id="boardSlot1" class="flat-slot board-1"></div>
 <div id="boardSlot2" class="flat-slot board-2"></div>
 <div id="boardSlot3" class="flat-slot board-3"></div>
@@ -1332,10 +1288,6 @@
 <div id="boardSlot6" class="flat-slot board-6"></div>
 <div id="boardSlot7" class="flat-slot board-7"></div>
 <div id="boardSlot8" class="flat-slot board-8"></div>
-
-<img id="dummyShelf1" class="dummy-shelf dummy-shelf-1" src="assets/dummy_shelf_1.png" alt="" />
-<img id="dummyShelf2" class="dummy-shelf dummy-shelf-2" src="assets/dummy_shelf_2.png" alt="" />
-<img id="dummyShelf3" class="dummy-shelf dummy-shelf-3" src="assets/dummy_shelf_3.png" alt="" />
 
         <div id="homeShelf1" class="art-slot sculpture shelf-1 empty"></div>
         <div id="homeShelf2" class="art-slot sculpture shelf-2 empty"></div>
@@ -1790,9 +1742,6 @@ const albumSettingBtn = document.getElementById('albumSettingBtn');
 const prevPageBtn = document.getElementById('prevPageBtn');
 const nextPageBtn = document.getElementById('nextPageBtn');
 const pageIndicator = document.getElementById('pageIndicator');
-const dummyShelf1 = document.getElementById('dummyShelf1');
-const dummyShelf2 = document.getElementById('dummyShelf2');
-const dummyShelf3 = document.getElementById('dummyShelf3');
 
 if (titleScreen) {
   titleScreen.addEventListener('click', (event) => {
@@ -2320,8 +2269,6 @@ function renderHome() {
   shelf3Artwork
     ? fillSlot(document.getElementById('homeShelf3'), shelf3Artwork, true)
     : clearSlot(document.getElementById('homeShelf3'));
-
-  updateDummyShelves();
 }
 function renderAlbum() {
   const totalPages = getAlbumTotalPages();
@@ -2630,25 +2577,6 @@ settingModal.addEventListener('click', (event) => {
 function populateShelfOptions() {
   return;
 }
-function updateDummyShelves() {
-  const shelf1Artwork = artworks.find(item => item.display?.displaySlot === 'shelf-1');
-  const shelf2Artwork = artworks.find(item => item.display?.displaySlot === 'shelf-2');
-  const shelf3Artwork = artworks.find(item => item.display?.displaySlot === 'shelf-3');
-
-  toggleDummy(dummyShelf1, shelf1Artwork);
-  toggleDummy(dummyShelf2, shelf2Artwork);
-  toggleDummy(dummyShelf3, shelf3Artwork);
-}
-
-function toggleDummy(dummyEl, artwork) {
-  if (!dummyEl) return;
-
-  if (artwork) {
-    dummyEl.classList.remove('show');
-  } else {
-    dummyEl.classList.add('show');
-  }
-}
 function fitOneScreen(screen) {
   const designWidth = 576;
 
@@ -2702,7 +2630,14 @@ window.addEventListener('resize', fitScreens);
 window.addEventListener('orientationchange', () => {
   setTimeout(fitScreens, 450);
 });
+const today = new Date();
+const month = today.getMonth() + 1;
+const day = today.getDate();
 
+const todayDateEl = document.getElementById('todayDate');
+if (todayDateEl) {
+  todayDateEl.textContent = `${month}/${day}`;
+}
 </script>
 </body>
 </html>
