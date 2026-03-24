@@ -145,24 +145,24 @@
 .shelf-1 {
   left: 230px;
   top: 290px;
-  width: 30px;
-  height: 30px;
+  width: 40px;
+  height: 40px;
   border-radius: 14px;
 }
 
 .shelf-2 {
   left: 275px;
-  top: 350px;
-  width: 30px;
-  height: 30px;
+  top: 375px;
+  width: 40px;
+  height: 40px;
   border-radius: 14px;
 }
 
 .shelf-3 {
   left: 330px;
-  top: 300px;
-  width: 30px;
-  height: 30px;
+  top: 315px;
+  width: 40px;
+  height: 40px;
   border-radius: 14px;
 }
 
@@ -1017,21 +1017,21 @@
 }
 
 .dummy-shelf-1 {
-  left: 205px;
-  top: 290px;
-  width: 45px;
+  left: 220px;
+  top: 280px;
+  width: 48px;
 }
 
 .dummy-shelf-2 {
-  left: 260px;
-  top: 310px;
-  width: 45px;
+  left: 245px;
+  top: 350px;
+  width: 48px;
 }
 
 .dummy-shelf-3 {
-  left: 320px;
+  left: 300px;
   top: 300px;
-  width: 45px;
+  width: 48px;
 }
 
 .change-user-wrap {
@@ -1278,7 +1278,7 @@
       <div class="user-modal-left">
         <div class="field">
           <label for="userNameInput">なまえ</label>
-          <input id="userNameInput" type="text" placeholder="おなまえをいれてね" maxlength="12" />
+          <input id="userNameInput" type="text" placeholder="おなまえをいれてね" maxlength="12" enterkeyhint="done" />
         </div>
 
         <div class="modal-buttons">
@@ -1505,6 +1505,14 @@ const openUserModalBtn = document.getElementById('openUserModal');
 const closeUserModalBtn = document.getElementById('closeUserModalBtn');
 const saveUserBtn = document.getElementById('saveUserBtn');
 const userNameInput = document.getElementById('userNameInput');
+
+userNameInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    userNameInput.blur();
+  }
+});
+
 const userList = document.getElementById('userList');
 const userIconButtons = document.querySelectorAll('.user-icon-btn');
 const changeUserBtn = document.getElementById('changeUserBtn');
