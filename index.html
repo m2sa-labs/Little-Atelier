@@ -143,26 +143,26 @@
 
     /* 立体作品3枠 */
 .shelf-1 {
-  left: 230px;
-  top: 290px;
-  width: 40px;
-  height: 40px;
+  left: 220px;
+  top: 280px;
+  width: 48px;
+  height: 48px;
   border-radius: 14px;
 }
 
 .shelf-2 {
   left: 275px;
-  top: 375px;
-  width: 40px;
-  height: 40px;
+  top: 325px;
+  width: 48px;
+  height: 48px;
   border-radius: 14px;
 }
 
 .shelf-3 {
   left: 330px;
-  top: 315px;
-  width: 40px;
-  height: 40px;
+  top: 280px;
+  width: 48px;
+  height: 48px;
   border-radius: 14px;
 }
 
@@ -1734,18 +1734,18 @@ let selectedOrientation = 'horizontal';
     const previewImage = document.getElementById('previewImage');
 const rotateLeftBtn = document.getElementById('rotateLeftBtn');
 const rotateRightBtn = document.getElementById('rotateRightBtn');
-    const verticalBoardSlots = [
-  boardSlot1,
-  boardSlot3,
-  boardSlot5,
-  boardSlot8   
+const verticalBoardSlots = [
+  document.getElementById('boardSlot1'),
+  document.getElementById('boardSlot3'),
+  document.getElementById('boardSlot5'),
+  document.getElementById('boardSlot8')
 ];
 
 const horizontalBoardSlots = [
-  boardSlot2,
-  boardSlot4,
-  boardSlot6,
-  boardSlot7
+  document.getElementById('boardSlot2'),
+  document.getElementById('boardSlot4'),
+  document.getElementById('boardSlot6'),
+  document.getElementById('boardSlot7')
 ];
 
 const homeFlatSlots = [...verticalBoardSlots, ...horizontalBoardSlots];
