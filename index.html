@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <link rel="manifest" href="manifest.json">
+  <link href="https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@500&display=swap" rel="stylesheet">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <title>○○のアトリエ</title>
@@ -78,13 +79,13 @@
 .btn-add {
   left: 32%;
   transform: translateX(-50%);
-  bottom: 40px;
+  bottom: 15px;
 }
 
 .btn-album {
   left: 50%;
   transform: translateX(-50%);
-  bottom: 40px;
+  bottom: 15px;
 }
 
 .btn-setting {
@@ -139,37 +140,30 @@
     }
 
     /* 立体作品4枠 */
-   .shelf-1 {
-  left: 120px;
+.shelf-1 {
+  left: 170px;
   top: 300px;
-  width: 60px;
-  height: 60px;
+  width: 72px;
+  height: 72px;
   border-radius: 14px;
 }
 
 .shelf-2 {
-  left: 230px;
-  top: 310px;
-  width: 70px;
-  height: 70px;
+  left: 275px;
+  top: 300px;
+  width: 72px;
+  height: 72px;
   border-radius: 14px;
 }
 
 .shelf-3 {
-  left: 350px;
-  top: 295px;
-  width: 65px;
-  height: 65px;
+  left: 380px;
+  top: 300px;
+  width: 72px;
+  height: 72px;
   border-radius: 14px;
 }
 
-.shelf-4 {
-  left: 460px;
-  top: 305px;
-  width: 70px;
-  height: 70px;
-  border-radius: 14px;
-}
 
     .art-slot.sculpture img {
       object-fit: contain;
@@ -514,9 +508,10 @@
   opacity: 0.45;
 }
 .detail-card {
-  max-width: 980px;
-  width: min(94vw, 980px);
-  padding: 22px 20px 18px;
+  width: min(96vw, 980px);
+  max-height: 90vh;
+  padding: 14px 16px 12px;
+  overflow-y: auto;
 }
 
 .detail-layout {
@@ -771,20 +766,27 @@
 }
 .atelier-title {
   position: absolute;
-  top: 12px;
-  left: 16px;
+  right: 130px;
+  bottom: 180px;
 
-  padding: 2px 7px;
   font-size: 10px;
+  font-weight: 500;
 
-  background: rgba(255, 255, 255, 0.5);
-  border-radius: 18px;
+  /* クレヨン色 */
+  color: rgba(255, 255, 255, 0.85);
 
-  color: #6f5442;
-  backdrop-filter: blur(3px);
+  /* クレヨンのにじみ */
+  text-shadow:
+    0.5px 0 rgba(255,255,255,0.6),
+    -0.5px 0 rgba(255,255,255,0.4),
+    0 0.5px rgba(255,255,255,0.5),
+    0 0 3px rgba(255,255,255,0.4);
 
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  /* 少し薄くして描いた感 */
+  opacity: 0.8;
 
+
+  font-family: "Kiwi Maru", "Hiragino Maru Gothic ProN", sans-serif;
 }
 .title-screen {
   position: relative;
@@ -1013,20 +1015,20 @@
 }
 
 .dummy-shelf-1 {
-  left: 185px;
-  top: 470px;
+  left: 170px;
+  top: 300px;
   width: 72px;
 }
 
 .dummy-shelf-2 {
-  left: 285px;
-  top: 485px;
-  width: 70px;
+  left: 275px;
+  top: 300px;
+  width: 72px;
 }
 
 .dummy-shelf-3 {
-  left: 395px;
-  top: 470px;
+  left: 380px;
+  top: 300px;
   width: 72px;
 }
 
@@ -1102,47 +1104,42 @@
   }
 }
 @media (max-height: 430px) and (orientation: landscape) {
-  .detail-card {
-    width: min(94vw, 980px);
-    max-height: 84vh;
-    padding: 10px 12px 10px;
-    overflow: hidden;
-  }
 
-  .detail-layout {
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    align-items: start;
+  .detail-card {
+    width: min(96vw, 980px);
+    max-height: 92vh;
+    padding: 8px 10px 8px;
+    overflow-y: auto;
   }
 
   .detail-preview-box {
-    height: 200px;
-    min-height: 200px;
-    max-height: 200px;
+    height: 170px;
+    min-height: 170px;
+    max-height: 170px;
   }
 
   .detail-right {
-    gap: 6px;
+    gap: 4px;
   }
 
   .detail-text {
-    font-size: 13px;
-    line-height: 1.4;
-    padding: 8px 10px;
+    font-size: 12px;
+    line-height: 1.3;
+    padding: 7px 9px;
   }
 
   .detail-summary {
-    min-height: 70px;
+    min-height: 56px;
   }
 
   .detail-buttons button {
-    padding: 8px;
-    font-size: 12px;
+    padding: 6px;
+    font-size: 11px;
   }
 
   .slot-btn {
-    padding: 8px 12px;
-    font-size: 12px;
+    padding: 6px 10px;
+    font-size: 11px;
   }
 }
 .flat-slot {
@@ -1316,7 +1313,7 @@
         <div id="homeShelf1" class="art-slot sculpture shelf-1 empty"></div>
         <div id="homeShelf2" class="art-slot sculpture shelf-2 empty"></div>
         <div id="homeShelf3" class="art-slot sculpture shelf-3 empty"></div>
-        <div id="homeShelf4" class="art-slot sculpture shelf-4 empty"></div>
+        
         
       </div>
       <div class="ui-buttons">
@@ -1663,7 +1660,6 @@ const homeFlatSlots = [...verticalBoardSlots, ...horizontalBoardSlots];
       document.getElementById('homeShelf1'),
       document.getElementById('homeShelf2'),
       document.getElementById('homeShelf3'),
-      document.getElementById('homeShelf4')
     ];
 
     const albumSlots = [
@@ -2202,7 +2198,6 @@ function renderHome() {
   const shelf1Artwork = artworks.find(item => item.display?.displaySlot === 'shelf-1');
   const shelf2Artwork = artworks.find(item => item.display?.displaySlot === 'shelf-2');
   const shelf3Artwork = artworks.find(item => item.display?.displaySlot === 'shelf-3');
-  const shelf4Artwork = artworks.find(item => item.display?.displaySlot === 'shelf-4');
 
   shelf1Artwork
     ? fillSlot(document.getElementById('homeShelf1'), shelf1Artwork, true)
@@ -2215,10 +2210,6 @@ function renderHome() {
   shelf3Artwork
     ? fillSlot(document.getElementById('homeShelf3'), shelf3Artwork, true)
     : clearSlot(document.getElementById('homeShelf3'));
-
-  shelf4Artwork
-    ? fillSlot(document.getElementById('homeShelf4'), shelf4Artwork, true)
-    : clearSlot(document.getElementById('homeShelf4'));
 
   updateDummyShelves();
 }
@@ -2255,9 +2246,8 @@ function getDisplayOptions(artwork) {
 
   return [
     { value: 'shelf-1', label: 'つくえ左' },
-    { value: 'shelf-2', label: 'つくえ中央左' },
-    { value: 'shelf-3', label: 'つくえ中央右' },
-    { value: 'shelf-4', label: 'つくえ右' }
+    { value: 'shelf-2', label: 'つくえ中央' },
+    { value: 'shelf-3', label: 'つくえ右' }
   ];
 }
 function findDisplayedArtworkBySlot(slot, ignoreId = null) {
