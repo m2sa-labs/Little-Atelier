@@ -1444,6 +1444,26 @@ img {
 .image-zoom-close:active {
   transform: translateX(-50%) scale(0.97);
 }
+.sculpture-info-card {
+  width: min(92vw, 700px);
+  max-width: 700px;
+  padding: 20px 18px 16px;
+}
+
+.sculpture-info-card h2 {
+  margin-bottom: 12px;
+  font-size: 20px;
+}
+
+.sculpture-info-text {
+  font-size: 15px;
+  line-height: 1.8;
+  color: #7a5b49;
+  background: #fffdf9;
+  border: 1.5px solid #ead8c9;
+  border-radius: 16px;
+  padding: 16px 14px;
+}
   </style>
 </head>
 <body>
@@ -1659,9 +1679,9 @@ img {
       </div>
 <div id="sculptureHint" class="hint" style="display:none;">
 背景を消した画像だと、棚にきれいにかざれるよ✨<br>
-iPhoneなら<br>
-写真を長押し → 共有 → ファイルに保存 → ファイルから写真へ保存<br>
-でやってみてね！
+切り抜きや、背景透明は、スマホアプリなどで簡単にできます◎<br>
+（背景削除・切り抜き などで検索してみてください）
+
 </div>
       <div class="field" id="orientationField">
         <label>向き</label>
@@ -1686,7 +1706,12 @@ iPhoneなら<br>
 <!-- ⭐ ① いちばん上に移動 -->
 <div class="field change-user-wrap">
   <button class="change-user-btn" id="changeUserBtn" type="button">
-    ユーザーを切り替える
+    ◎ユーザーを切り替える
+  </button>
+</div>
+<div class="field change-user-wrap">
+  <button class="change-user-btn" id="openSculptureInfoBtn" type="button">
+    ◎立体作品について
   </button>
 </div>
 
@@ -1697,7 +1722,25 @@ iPhoneなら<br>
 </div>
   </div>
 </div>
+<div id="sculptureInfoModal" class="modal">
+  <div class="modal-card sculpture-info-card">
+    <h2>立体作品について</h2>
 
+    <div class="sculpture-info-text">
+      立体作品は、そのままアルバムに保存するだけでもOKです📚<br><br>
+
+      棚にきれいに飾りたい場合は、<br>
+      作品の背景を切り抜いた画像を使うと、より自然に展示できます✨<br><br>
+
+      切り抜きはスマホアプリで簡単にできます◎<br>
+      「背景削除」や「切り抜き」で検索してみてください🔍
+    </div>
+
+    <div class="modal-buttons" style="grid-template-columns: 1fr;">
+      <button class="main-btn" id="closeSculptureInfoBtn" type="button">とじる</button>
+    </div>
+  </div>
+</div>
   <script>
     const USER_STORAGE_KEY = 'atelier-users-v1';
 const guideOverlay = document.getElementById("guideOverlay");
@@ -1718,6 +1761,9 @@ let selectedUserIcon = 'assets/icon_girl1.png';
 
 const userModal = document.getElementById('userModal');
 const openUserModalBtn = document.getElementById('openUserModal');
+const openSculptureInfoBtn = document.getElementById('openSculptureInfoBtn');
+const sculptureInfoModal = document.getElementById('sculptureInfoModal');
+const closeSculptureInfoBtn = document.getElementById('closeSculptureInfoBtn');
 const closeUserModalBtn = document.getElementById('closeUserModalBtn');
 const saveUserBtn = document.getElementById('saveUserBtn');
 const userNameInput = document.getElementById('userNameInput');
@@ -1939,6 +1985,21 @@ userIconButtons.forEach(btn => {
   'rgba(210, 255, 210, 0.7)', // ミント
   'rgba(255, 240, 200, 0.7)'  // ベージュ
 ];
+
+openSculptureInfoBtn.addEventListener('click', () => {
+  sculptureInfoModal.classList.add('show');
+});
+
+closeSculptureInfoBtn.addEventListener('click', () => {
+  sculptureInfoModal.classList.remove('show');
+});
+
+sculptureInfoModal.addEventListener('click', (event) => {
+  if (event.target === sculptureInfoModal) {
+    sculptureInfoModal.classList.remove('show');
+  }
+});
+
 const atelierName = '〇〇のさくひん';
 const atelierTitle = document.getElementById('atelierTitle');
 if (atelierTitle) {
