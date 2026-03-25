@@ -1150,11 +1150,9 @@
   height: 100%;
   object-fit: contain;
 
- filter:
-  brightness(1.05)
-  contrast(0.92)
-  saturate(0.85)
-  blur(0.2px);
+  filter:
+    brightness(1.03)
+    saturate(0.92);
 }
 .slot-art-img {
   width: 100%;
@@ -1177,17 +1175,13 @@
   pointer-events: none;
   filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.10));
 }
-.board-1 { left: 130px; top: 30px; width: 60px; height: 75px; transform: rotate(-4deg); }
-.board-2 { left: 190px; top: 40px; width: 78px; height: 56px; transform: rotate(3deg); }
-.board-3 { left: 270px; top: 30px; width: 90px; height: 115px; transform: rotate(-2deg); }
+.board-1 { left: 135px;  top: 28px;  width: 88px; height: 108px; transform: rotate(-2deg); }
+.board-2 { left: 235px; top: 42px;  width: 112px; height: 88px; transform: rotate(2deg); }
+.board-3 { left: 360px; top: 28px;  width: 78px; height: 98px; transform: rotate(-2deg); }
 
-.board-4 { left: 130px; top: 130px; width: 90px; height: 65px; transform: rotate(2deg); }
-.board-5 { left: 220px; top: 125px; width: 45px; height: 60px; transform: rotate(-5deg); }
-.board-6 { left: 370px; top: 35px; width: 70px; height: 50px; transform: rotate(3deg); }
-
-.board-7 {left: 270px; top: 150px; width: 75px; height: 55px;transform: rotate(-2deg);}
-.board-8 { left: 370px; top: 100px; width: 55px; height: 75px; transform: rotate(3deg); }
-
+.board-4 { left: 135px;  top: 145px; width: 112px; height: 88px; transform: rotate(2deg); }
+.board-5 { left: 260px; top: 140px; width: 78px; height: 98px; transform: rotate(-2deg); }
+.board-6 { left: 345px; top: 145px; width: 92px; height: 66px; transform: rotate(2deg); }
 .album-tape-img {
   position: absolute;
   top: -7px;
@@ -1219,6 +1213,79 @@
 
   font-size: 12px;
   opacity: 0.6;
+}
+.hotspot-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 12;
+  pointer-events: none;
+}
+
+.hotspot {
+  position: absolute;
+  border: none;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+
+/* 右上の虹とこどもの額縁 */
+.hotspot-frame {
+  right: 28px;
+  top: 70px;
+  width: 75px;
+  height: 85px;
+}
+
+/* 右下のボード上アルバム */
+.hotspot-album {
+  right: 100px;
+  bottom: 60px;
+  width: 85px;
+  height: 60px;
+}
+.wall-setting-icon {
+  position: absolute;
+  right: 80px;
+  top: 205px;
+  width: 30px;
+  cursor: pointer;
+  transition: transform 0.1s;
+  z-index: 20;
+}
+
+.wall-setting-icon:active {
+  transform: scale(0.95);
+}
+.title-sticky {
+  position: absolute;
+  right: 125px;
+  bottom: 130px;
+  width:50px;
+  z-index: 6;
+  transform: rotate(-4deg);
+}
+
+.title-sticky-text {
+  position: absolute;
+  right: 110px;
+  bottom: 150px;
+
+  width: 80px;          /* ←ここ重要！広げる */
+  text-align: center;
+
+  font-size: 12px;
+  font-weight: bold;    /* ←太字！ */
+  line-height: 1.3;
+
+  font-family: "Yomogi", sans-serif;
+  color: #7a5b49;
+
+  transform: rotate(-4deg);
+  z-index: 7;
 }
   </style>
 </head>
@@ -1277,7 +1344,6 @@
   <img src="assets/atelier-main.jpg" alt="アトリエ画面" class="bg-image" />
       <div class="atelier-title">
   <div class="title-date" id="todayDate"></div>
-  <div id="atelierTitle">○○のアトリエ</div>
 </div>
       <div class="overlay-layer">
         <div id="boardSlot1" class="flat-slot board-1"></div>
@@ -1286,8 +1352,6 @@
 <div id="boardSlot4" class="flat-slot board-4"></div>
 <div id="boardSlot5" class="flat-slot board-5"></div>
 <div id="boardSlot6" class="flat-slot board-6"></div>
-<div id="boardSlot7" class="flat-slot board-7"></div>
-<div id="boardSlot8" class="flat-slot board-8"></div>
 
         <div id="homeShelf1" class="art-slot sculpture shelf-1 empty"></div>
         <div id="homeShelf2" class="art-slot sculpture shelf-2 empty"></div>
@@ -1295,11 +1359,16 @@
         
         
       </div>
-      <div class="ui-buttons">
-  <img src="assets/icon_add.png" class="ui-btn btn-add" alt="追加" />
-  <img src="assets/icon_album.png" class="ui-btn btn-album" alt="アルバム" />
-  <img src="assets/icon_setting.png" class="ui-btn btn-setting" alt="設定" />
+      <div class="hotspot-layer">
+  <button id="frameAddBtn" class="hotspot hotspot-frame" type="button" aria-label="写真を追加"></button>
+  <button id="boardAlbumBtn" class="hotspot hotspot-album" type="button" aria-label="アルバムへ"></button>
 </div>
+<img src="assets/icon_setting.png" 
+     id="wallSettingBtn" 
+     class="wall-setting-icon" 
+     alt="設定" />
+     <img src="assets/sticky.png" id="titleSticky" class="title-sticky" />
+<div id="titleStickyText" class="title-sticky-text"></div>
     </section>
 
     <!-- アルバム画面 -->
@@ -1594,7 +1663,12 @@ function selectUser(userId) {
   if (!user) return;
 
   if (atelierTitle) {
-    atelierTitle.textContent = `${user.name}のさくひん`;
+    atelierTitle.textContent = user.name;
+  }
+
+  const titleStickyText = document.getElementById('titleStickyText');
+  if (titleStickyText) {
+    titleStickyText.textContent = user.name;
   }
 
   artworks = loadArtworks();
@@ -1690,14 +1764,12 @@ const verticalBoardSlots = [
   document.getElementById('boardSlot1'),
   document.getElementById('boardSlot3'),
   document.getElementById('boardSlot5'),
-  document.getElementById('boardSlot8')
 ];
 
 const horizontalBoardSlots = [
   document.getElementById('boardSlot2'),
   document.getElementById('boardSlot4'),
   document.getElementById('boardSlot6'),
-  document.getElementById('boardSlot7')
 ];
 
 const homeFlatSlots = [...verticalBoardSlots, ...horizontalBoardSlots];
@@ -1731,9 +1803,9 @@ const displaySlotButtons = document.getElementById('displaySlotButtons');
 const settingModal = document.getElementById('settingModal');
 const closeSettingModalBtn = document.getElementById('closeSettingModalBtn');
 const saveSettingBtn = document.getElementById('saveSettingsBtn');
-const uiAddBtn = document.querySelector('.btn-add');
-const uiAlbumBtn = document.querySelector('.btn-album');
-const uiSettingBtn = document.querySelector('.btn-setting');
+const frameAddBtn = document.getElementById('frameAddBtn');
+const boardAlbumBtn = document.getElementById('boardAlbumBtn');
+const uiSettingBtn = document.querySelector('.btn-setting'); // 設定は残すならそのまま
 
 const albumAddBtn = document.getElementById('albumAddBtn');
 const albumHomeBtn = document.getElementById('albumHomeBtn');
@@ -1766,12 +1838,13 @@ if (titleScreen) {
     showHome();
   });
 }
-if (uiAddBtn) {
-  uiAddBtn.addEventListener('click', () => {
+if (frameAddBtn) {
+  frameAddBtn.addEventListener('click', () => {
     showHome();
     openModal();
   });
 }
+
 if (albumHomeBtn) {
   albumHomeBtn.addEventListener('click', () => {
     closeModal();
@@ -1795,11 +1868,22 @@ if (albumSettingBtn) {
     openSettingModal();
   });
 }
-if (uiAlbumBtn) {
-  uiAlbumBtn.addEventListener('click', () => {
+
+if (boardAlbumBtn) {
+  boardAlbumBtn.addEventListener('click', () => {
     closeModal();
     closeDetailModal();
     showAlbum();
+  });
+}
+const wallSettingBtn = document.getElementById('wallSettingBtn');
+
+if (wallSettingBtn) {
+  wallSettingBtn.addEventListener('click', () => {
+    closeModal();
+    closeDetailModal();
+    showHome();
+    openSettingModal();
   });
 }
 if (displayToggleBtn) {
@@ -2226,32 +2310,23 @@ function renderHome() {
     item => item.type === 'flat' && item.display?.isDisplayed
   );
 
-  // 縦作品 / 横作品に分ける
-  const verticalArtworks = shuffleArray(
-    displayedFlatArtworks.filter(item => item.orientation === 'vertical')
+  // 縦作品 / 横作品に分ける（順番そのまま）
+  const verticalArtworks = displayedFlatArtworks.filter(
+    item => item.orientation === 'vertical'
   );
 
-  const horizontalArtworks = shuffleArray(
-    displayedFlatArtworks.filter(item => item.orientation === 'horizontal')
+  const horizontalArtworks = displayedFlatArtworks.filter(
+    item => item.orientation === 'horizontal'
   );
 
-  // スロット側もシャッフル
-  const shuffledVerticalSlots = shuffleArray(verticalBoardSlots);
-  const shuffledHorizontalSlots = shuffleArray(horizontalBoardSlots);
+  // 固定順で入れる
+  verticalArtworks.slice(0, verticalBoardSlots.length).forEach((artwork, index) => {
+    fillSlot(verticalBoardSlots[index], artwork, true);
+  });
 
-  // 縦作品 → 縦スロット
-  verticalArtworks
-    .slice(0, shuffledVerticalSlots.length)
-    .forEach((artwork, index) => {
-      fillSlot(shuffledVerticalSlots[index], artwork, true);
-    });
-
-  // 横作品 → 横スロット
-  horizontalArtworks
-    .slice(0, shuffledHorizontalSlots.length)
-    .forEach((artwork, index) => {
-      fillSlot(shuffledHorizontalSlots[index], artwork, true);
-    });
+  horizontalArtworks.slice(0, horizontalBoardSlots.length).forEach((artwork, index) => {
+    fillSlot(horizontalBoardSlots[index], artwork, true);
+  });
 
   // 棚作品
   const shelf1Artwork = artworks.find(item => item.display?.displaySlot === 'shelf-1');
