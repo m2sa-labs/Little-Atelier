@@ -514,19 +514,19 @@
 }
 .detail-card {
   width: min(98vw, 1400px);
-  height: 96vh;
-  max-height: 96vh;
-  padding: 16px 18px 14px;
-  overflow-y: auto;
+  height: 92vh;
+  max-height: 92vh;
+  padding: 10px 14px 10px;
+  overflow: hidden;
   margin: 0;
 }
 
 .detail-layout {
   display: grid;
   grid-template-columns: 1.15fr 0.85fr;
-  gap: 22px;
+  gap: 14px;
   align-items: stretch;
-  height: 100%;
+  height: calc(100% - 48px);
 }
 
 .detail-left,
@@ -562,12 +562,13 @@
   height: 100%;
   object-fit: contain;
   display: block;
+  cursor: pointer;
 }
 
 .detail-right {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
   justify-content: flex-start;
 }
 
@@ -1399,6 +1400,50 @@ img {
   top: 40px;
   right: 10px;
 }
+.image-zoom-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(40, 30, 25, 0.82);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 16px;
+}
+
+.image-zoom-modal.show {
+  display: flex;
+}
+
+.image-zoom-img {
+  max-width: 96vw;
+  max-height: 88vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.28);
+  background: #fff;
+}
+
+.image-zoom-close {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  border: none;
+  background: #f0d9c4;
+  color: #7a5b49;
+  border-radius: 999px;
+  padding: 10px 20px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.image-zoom-close:active {
+  transform: translateX(-50%) scale(0.97);
+}
   </style>
 </head>
 <body>
@@ -1565,6 +1610,11 @@ img {
       </div>
     </div>
   </div>
+</div>
+
+<div id="imageZoomModal" class="image-zoom-modal">
+  <img id="zoomedImage" class="image-zoom-img" alt="拡大画像" />
+  <button id="closeZoomBtn" class="image-zoom-close" type="button">とじる</button>
 </div>
 
 <div id="addModal" class="modal">
@@ -1953,6 +2003,9 @@ const closeDetailBtn = document.getElementById('closeDetailBtn');
 const deleteArtworkBtn = document.getElementById('deleteArtworkBtn');
 const displayToggleBtn = document.getElementById('displayToggleBtn');
 const detailImage = document.getElementById('detailImage');
+const imageZoomModal = document.getElementById('imageZoomModal');
+const zoomedImage = document.getElementById('zoomedImage');
+const closeZoomBtn = document.getElementById('closeZoomBtn');
 const detailDate = document.getElementById('detailDate');
 const detailSummary = document.getElementById('detailSummary');
 const displaySlotField = document.getElementById('displaySlotField');
@@ -2748,6 +2801,28 @@ currentAlbumPage = 1;
     detailModal.addEventListener('click', (event) => {
       if (event.target === detailModal) closeDetailModal();
     });
+
+if (detailImage) {
+  detailImage.addEventListener('click', () => {
+    if (!detailImage.src) return;
+    zoomedImage.src = detailImage.src;
+    imageZoomModal.classList.add('show');
+  });
+}
+
+if (closeZoomBtn) {
+  closeZoomBtn.addEventListener('click', () => {
+    imageZoomModal.classList.remove('show');
+  });
+}
+
+if (imageZoomModal) {
+  imageZoomModal.addEventListener('click', (event) => {
+    if (event.target === imageZoomModal) {
+      imageZoomModal.classList.remove('show');
+    }
+  });
+}
 
     deleteArtworkBtn.addEventListener('click', () => {
       if (currentDetailId === null) return;
