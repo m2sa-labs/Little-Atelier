@@ -246,9 +246,11 @@
   inset: 0;
   background: rgba(80, 60, 45, 0.32);
   display: none;
-  align-items: center;
+
+  align-items: flex-start;   /* ←ここ変更！！ */
   justify-content: center;
-  padding: 6px;
+
+  padding: 0;                /* ←これも変更 */
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   z-index: 30;
@@ -603,7 +605,7 @@
   width: min(98vw, 1400px);
   max-width: 1400px;
   height: 100vh;
-  max-height: 96vh;
+  max-height: 100vh; 
   padding: 12px 14px 10px;
   overflow-y: auto;
   margin: 0;
@@ -702,7 +704,7 @@
   }
 .add-layout {
   gap: 6px;
-  height: calc(84vh - 24px);
+   height: 100%;
 }
   .add-card .field {
     margin-bottom: 2px;
