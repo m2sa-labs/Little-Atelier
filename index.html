@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <link rel="manifest" href="manifest.json">
   <link href="https://fonts.googleapis.com/css2?family=Yomogi&display=swap" rel="stylesheet">
+  <link rel="apple-touch-icon" sizes="180x180" href="icon2.png">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <title>○○のアトリエ</title>
@@ -525,11 +526,23 @@
   grid-template-columns: 1.15fr 0.85fr;
   gap: 22px;
   align-items: stretch;
+  height: 100%;
 }
 
 .detail-left,
 .detail-right {
   min-width: 0;
+}
+
+.detail-left {
+  height: 100%;
+  display: flex;
+}
+
+.detail-preview-box {
+  width: 100%;
+  height: 100%;
+  flex: 1;
 }
 
 .detail-preview-box {
@@ -685,18 +698,19 @@
   border-radius: 10px;
 }
 @media (max-height: 430px) and (orientation: landscape) {
-  .modal {
-    padding: 4px;
-    align-items: center;
+   .modal {
+    padding: 0;
     align-items: flex-start;
-  padding-top: 6px;
   }
 .add-card {
-  width: min(94vw, 980px);
-  max-width: 980px;
-  max-height: 74vh;
-  padding: 10px 12px 12px;
-  overflow-y: auto;
+    width: 100vw;
+    max-width: 100vw;
+    height: 100vh;
+    max-height: 100vh;
+    padding: 10px 12px 12px;
+    overflow-y: auto;
+    margin: 0;
+    border-radius: 0;
 }
   .add-card h2 {
     font-size: 13px;
@@ -1299,6 +1313,92 @@ img {
   -webkit-touch-callout: none;
   user-select: none;
 }
+/* ガイド全体 */
+.guide-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 999;
+  background: rgba(90, 70, 55, 0.35);
+  backdrop-filter: blur(2px);
+}
+
+/* 各スポット */
+.guide-spot {
+  position: absolute;
+   transform: translateX(-40px); 
+}
+
+/* ふきだし */
+.guide-label {
+  background: rgba(255, 250, 244, 0.95);
+  color: #7a5b49;
+
+  padding: 5px 7px;   /* ←小さく！ */
+  border-radius: 14px;
+
+  font-size: 8px;     /* ←小さく！ */
+  line-height: 1.4;
+
+  box-shadow: 0 3px 8px rgba(90, 65, 45, 0.15);
+
+  max-width: 140px;    /* ←横制限 */
+  white-space: normal; /* ←改行OKにする */
+}
+
+/* ボタン */
+.guide-close-btn {
+  position: absolute;
+  bottom: 180px;
+  left: 55%;
+  transform: translateX(-50%);
+  border: none;
+  background: hsl(29, 48%, 71%);
+  color: #7a5b49;
+  font-size: 10px;
+  padding: 10px 22px;
+  border-radius: 999px;
+  font-weight: bold;
+}
+
+/* ▼位置（ここは微調整OK） */
+
+/* 額縁 */
+.guide-frame {
+  right: 40px;
+  top: 100px;
+  transform: translateX(-68px);
+}
+
+.guide-frame .guide-label {
+  top: 90px;
+  right: 10px;
+}
+
+
+/* アルバム */
+.guide-album {
+  right: 120px;
+  bottom: 80px;
+  transform: translateX(-70px);
+}
+
+.guide-album .guide-label {
+  bottom: 50px;
+  right: 10px;
+}
+
+
+/* 設定 */
+.guide-setting {
+  right: 80px;
+  top: 210px;
+  transform: translateX(-30px);
+}
+
+.guide-setting .guide-label {
+  top: 40px;
+  right: 10px;
+}
   </style>
 </head>
 <body>
@@ -1381,6 +1481,26 @@ img {
      alt="設定" />
      <img src="assets/sticky.png" id="titleSticky" class="title-sticky" />
 <div id="titleStickyText" class="title-sticky-text"></div>
+<div id="guideOverlay" class="guide-overlay">
+
+  <!-- 額縁 -->
+  <div class="guide-spot guide-frame">
+    <div class="guide-label">イラストをおすと →<br>作品を追加できるよ</div>
+  </div>
+
+  <!-- アルバム -->
+  <div class="guide-spot guide-album">
+    <div class="guide-label">アルバムをおすと →<br>アルバムがひらくよ</div>
+  </div>
+
+  <!-- 設定 -->
+  <div class="guide-spot guide-setting">
+    <div class="guide-label">ここをおすと →<br>設定ができるよ</div>
+  </div>
+
+  <button id="closeGuideBtn" class="guide-close-btn">わかった！</button>
+
+</div>
     </section>
 
     <!-- アルバム画面 -->
@@ -1527,9 +1647,22 @@ iPhoneなら<br>
 </div>
   </div>
 </div>
+
   <script>
     const USER_STORAGE_KEY = 'atelier-users-v1';
+const guideOverlay = document.getElementById("guideOverlay");
+const closeGuideBtn = document.getElementById("closeGuideBtn");
 
+// 初回だけ表示
+if (localStorage.getItem("guideShown") === "true") {
+  guideOverlay.style.display = "none";
+}
+
+// 閉じる
+closeGuideBtn.addEventListener("click", () => {
+  guideOverlay.style.display = "none";
+  localStorage.setItem("guideShown", "true");
+});
 let currentUserId = null;
 let selectedUserIcon = 'assets/icon_girl1.png';
 

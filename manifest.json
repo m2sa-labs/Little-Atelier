@@ -1,13 +1,13 @@
 {
-  "name": "アトリエ",
-  "short_name": "アトリエ",
+  "name": "Little Atelier",
+  "short_name": "Atelier",
+  "start_url": "./",
   "display": "standalone",
-  "orientation": "landscape",
   "background_color": "#f7efe6",
   "theme_color": "#f7efe6",
   "icons": [
     {
-      "src": "icon.png",
+      "src": "icon2.png",
       "sizes": "1024x1024",
       "type": "image/png"
     }
