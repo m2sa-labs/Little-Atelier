@@ -146,24 +146,24 @@
 .shelf-1 {
   left: 205px;
   top: 260px;
-  width: 70px;
-  height: 70px;
+  width: 65px;
+  height: 65px;
   border-radius: 14px;
 }
 
 .shelf-2 {
   left: 260px;
-  top: 320px;
-  width: 70px;
-  height: 70px;
+  top: 305px;
+  width: 65px;
+  height: 65px;
   border-radius: 14px;
 }
 
 .shelf-3 {
   left: 330px;
   top: 280px;
-  width: 70px;
-  height: 70px;
+  width: 65px;
+  height: 65px;
   border-radius: 14px;
 }
 
@@ -3097,32 +3097,31 @@ function fitOneScreen(screen) {
   screen.style.transform = `translateX(-50%) scale(${scale})`;
 }
 
-function fitScreens() {
-  const titleScreen = document.getElementById('titleScreen');
-  const homeScreen = document.getElementById('homeScreen');
-  const albumScreen = document.getElementById('albumScreen');
+function fitOneScreen(screen) {
+  const designWidth = 576;
 
-  if (titleScreen) fitOneScreen(titleScreen);
-  if (homeScreen) fitOneScreen(homeScreen);
-  if (albumScreen) fitOneScreen(albumScreen);
-}
+  screen.style.width = designWidth + 'px';
+  screen.style.position = 'relative';
+  screen.style.left = '50%';
+  screen.style.transformOrigin = 'top center';
 
-window.addEventListener('load', () => {
-  setTimeout(fitScreens, 150);
-});
+  screen.style.transform = 'translateX(-50%) scale(1)';
+  const naturalHeight = screen.offsetHeight;
 
-window.addEventListener('resize', fitScreens);
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
 
-window.addEventListener('orientationchange', () => {
-  setTimeout(fitScreens, 450);
-});
-const today = new Date();
-const month = today.getMonth() + 1;
-const day = today.getDate();
+  const scaleByWidth = vw / designWidth;
+  const scaleByHeight = vh / naturalHeight;
 
-const todayDateEl = document.getElementById('todayDate');
-if (todayDateEl) {
-  todayDateEl.textContent = `${month}/${day}`;
+  let scale = Math.min(scaleByWidth, scaleByHeight);
+
+  // ★ここだけ追加
+  if (screen.classList.contains('title-screen')) {
+    scale *= 1.03;
+  }
+
+  screen.style.transform = `translateX(-50%) scale(${scale})`;
 }
 
 </script>
