@@ -517,16 +517,15 @@
   height: 92vh;
   max-height: 92vh;
   padding: 10px 14px 10px;
-  overflow: hidden;
+  overflow-y: auto;   /* ←これに変更 */
   margin: 0;
 }
-
 .detail-layout {
   display: grid;
   grid-template-columns: 1.15fr 0.85fr;
   gap: 14px;
-  align-items: stretch;
-  height: calc(100% - 48px);
+  align-items: start;
+  height: auto;
 }
 
 .detail-left,
@@ -535,31 +534,25 @@
 }
 
 .detail-left {
-  height: 100%;
-  display: flex;
+  display: block;
+  height: auto;
 }
 
 .detail-preview-box {
   width: 100%;
-  height: 100%;
-  flex: 1;
-}
-
-.detail-preview-box {
-  width: 100%;
-  height: 100%;
-  min-height: unset;
-  max-height: unset;
+  height: auto;
+  min-height: 0;
+  max-height: none;
   margin-top: 0;
   border-radius: 22px;
   border: 2px dashed #e4d3c2;
   background: #fffdf9;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .detail-preview-box img {
   width: 100%;
-  height: 100%;
+  height: auto;
   object-fit: contain;
   display: block;
   cursor: pointer;
@@ -1742,6 +1735,28 @@ img {
   </div>
 </div>
   <script>
+    let db;
+
+function initDB() {
+  const request = indexedDB.open('atelierDB', 1);
+
+  request.onupgradeneeded = (event) => {
+    db = event.target.result;
+
+    if (!db.objectStoreNames.contains('artworks')) {
+      db.createObjectStore('artworks', { keyPath: 'id' });
+    }
+  };
+
+  request.onsuccess = (event) => {
+    db = event.target.result;
+    console.log('DB ready');
+  };
+
+  request.onerror = () => {
+    console.error('DB error');
+  };
+}
     const USER_STORAGE_KEY = 'atelier-users-v1';
 const guideOverlay = document.getElementById("guideOverlay");
 const closeGuideBtn = document.getElementById("closeGuideBtn");
@@ -1909,7 +1924,7 @@ btn.addEventListener('touchend', () => {
   });
 }
 
-function selectUser(userId) {
+async function selectUser(userId) {
   currentUserId = userId;
 
   const user = users.find(u => u.id === userId);
@@ -1924,7 +1939,7 @@ function selectUser(userId) {
     titleStickyText.textContent = user.name;
   }
 
-  artworks = loadArtworks();
+  artworks = await loadArtworks();
   currentAlbumPage = 1;
   renderAll();
   showHome();
@@ -1940,7 +1955,7 @@ closeUserModalBtn.addEventListener('click', (event) => {
   closeUserModal();
 });
 
-saveUserBtn.addEventListener('click', (event) => {
+saveUserBtn.addEventListener('click', async (event) => {
   event.stopPropagation();
 
   const name = userNameInput.value.trim();
@@ -1960,8 +1975,7 @@ saveUserBtn.addEventListener('click', (event) => {
   renderUsers();
   closeUserModal();
 
-  // 追加したユーザーをすぐ選ぶ
-  selectUser(newUser.id);
+  await selectUser(newUser.id);
 });
 
 userModal.addEventListener('click', (event) => {
@@ -2158,25 +2172,23 @@ if (wallSettingBtn) {
   });
 }
 if (displayToggleBtn) {
-  displayToggleBtn.addEventListener('click', () => {
+  displayToggleBtn.addEventListener('click', async () => {
     if (currentDetailId === null) return;
 
     const artwork = artworks.find(item => item.id === currentDetailId);
     if (!artwork) return;
 
-    // 平面作品
     if (artwork.type === 'flat') {
       if (artwork.display?.isDisplayed) {
-        removeArtworkFromDisplay(currentDetailId);
+        await removeArtworkFromDisplay(currentDetailId);
       } else {
-        displayFlatArtworkAutomatically(currentDetailId);
+        await displayFlatArtworkAutomatically(currentDetailId);
       }
       closeDetailModal();
       return;
     }
 
-    // 立体作品
-    removeArtworkFromDisplay(currentDetailId);
+    await removeArtworkFromDisplay(currentDetailId);
     closeDetailModal();
   });
 }
@@ -2208,11 +2220,14 @@ if (uiSettingBtn) {
 });
 const ALBUM_PAGE_SIZE = 8;
 let currentAlbumPage = 1;
-    setTodayDate();
-updateOrientationField();
-renderAll();
-renderUsers();
-showTitle();
+ document.addEventListener('DOMContentLoaded', () => {
+  initDB();
+  setTodayDate();
+  updateOrientationField();
+  renderAll();
+  renderUsers();
+  showTitle();
+});
 function getArtworkStorageKey() {
   if (!currentUserId) return null;
   return `atelier-artworks-${currentUserId}`;
@@ -2234,31 +2249,81 @@ artType.addEventListener('input', updateOrientationField);
       artDate.value = `${yyyy}-${mm}-${dd}`;
     }
 
-    function loadArtworks() {
+   async function loadArtworks() {
   const storageKey = getArtworkStorageKey();
   if (!storageKey) return [];
 
+  // ① まず IndexedDB を読む
+  try {
+    const idbArtworks = await loadArtworksFromIndexedDB();
+
+    if (Array.isArray(idbArtworks)) {
+      console.log('IndexedDBから作品を読み込んだよ');
+      return idbArtworks;
+    }
+  } catch (error) {
+    console.error('IndexedDB 読み込みエラー', error);
+  }
+
+  // ② IndexedDB にないときは localStorage を読む
   const saved = localStorage.getItem(storageKey);
   if (!saved) return [];
 
   try {
     const parsed = JSON.parse(saved);
+    const normalized = normalizeArtworks(parsed);
 
-    return parsed.map(item => ({
-  ...item,
-  orientation: item.orientation || (item.type === 'flat' ? 'horizontal' : ''),
-  display: item.display || {
-    isDisplayed: item.isDisplayed || false,
-    displaySlot: item.displaySlot || '',
-    isFavorite: item.isFavorite || false
-  }
-}));
+    console.log('localStorageから作品を読み込んだよ');
+
+    // ③ 読めたら IndexedDB に移し直す
+    artworks = normalized;
+
+    try {
+      await saveArtworksToIndexedDB();
+      console.log('localStorageのデータをIndexedDBへ移行したよ');
+    } catch (error) {
+      console.error('IndexedDB への移行保存エラー', error);
+    }
+
+    return normalized;
   } catch (error) {
-    console.error('保存データの読み込み失敗', error);
+    console.error('localStorage 読み込みエラー', error);
     return [];
   }
 }
+function getArtworkDBKey() {
+  if (!currentUserId) return null;
+  return `artworks-${currentUserId}`;
+}
 
+function saveArtworksToIndexedDB() {
+  return new Promise((resolve, reject) => {
+    const dbKey = getArtworkDBKey();
+
+    if (!dbKey) {
+      reject(new Error('no-user'));
+      return;
+    }
+
+    if (!db) {
+      reject(new Error('db-not-ready'));
+      return;
+    }
+
+    const tx = db.transaction(['artworks'], 'readwrite');
+    const store = tx.objectStore('artworks');
+
+    const request = store.put({
+      id: dbKey,
+      userId: currentUserId,
+      artworks: artworks,
+      updatedAt: Date.now()
+    });
+
+    request.onsuccess = () => resolve(true);
+    request.onerror = () => reject(request.error || new Error('idb-save-failed'));
+  });
+}
 function openSettingModal() {
   settingModal.classList.add('show');
 }
@@ -2269,7 +2334,7 @@ function closeSettingModal() {
 function getAlbumTotalPages() {
   return Math.max(1, Math.ceil(artworks.length / ALBUM_PAGE_SIZE));
 }
-    function saveArtworks() {
+ async function saveArtworks() {
   const storageKey = getArtworkStorageKey();
 
   if (!storageKey) {
@@ -2277,16 +2342,75 @@ function getAlbumTotalPages() {
     return false;
   }
 
+  // ① まず今まで通り localStorage に保存
   try {
     localStorage.setItem(storageKey, JSON.stringify(artworks));
-    return true;
   } catch (error) {
-    console.error('保存エラー', error);
+    console.error('localStorage 保存エラー', error);
     alert('保存できなかったよ。写真サイズが大きいかも。もう少し軽い画像で試してね。');
     return false;
   }
-}
 
+  // ② 次に IndexedDB にも保存
+  try {
+    await saveArtworksToIndexedDB();
+    console.log('IndexedDBにも保存できたよ');
+    return true;
+  } catch (error) {
+    console.error('IndexedDB 保存エラー', error);
+
+    // 今回は localStorage が生きていればアプリ継続
+    // ここでは alert を出さず、壊れないのを優先
+    return true;
+  }
+}
+function normalizeArtworks(items) {
+  if (!Array.isArray(items)) return [];
+
+  return items.map(item => ({
+    ...item,
+    orientation: item.orientation || (item.type === 'flat' ? 'horizontal' : ''),
+    display: item.display || {
+      isDisplayed: item.isDisplayed || false,
+      displaySlot: item.displaySlot || '',
+      isFavorite: item.isFavorite || false
+    }
+  }));
+}
+function loadArtworksFromIndexedDB() {
+  return new Promise((resolve, reject) => {
+    const dbKey = getArtworkDBKey();
+
+    if (!dbKey) {
+      resolve([]);
+      return;
+    }
+
+    if (!db) {
+      resolve(null);
+      return;
+    }
+
+    const tx = db.transaction(['artworks'], 'readonly');
+    const store = tx.objectStore('artworks');
+    const request = store.get(dbKey);
+
+    request.onsuccess = () => {
+      const result = request.result;
+
+      if (!result || !Array.isArray(result.artworks)) {
+        resolve(null);
+        return;
+      }
+
+      resolve(normalizeArtworks(result.artworks));
+    };
+
+    request.onerror = () => {
+      reject(request.error || new Error('idb-load-failed'));
+    };
+  });
+}
 function showTitle() {
   titleScreen.classList.add('active');
   homeScreen.classList.remove('active');
@@ -2660,7 +2784,7 @@ function findDisplayedArtworkBySlot(slot, ignoreId = null) {
     item.display?.displaySlot === slot
   );
 }
-function displayArtworkInSlot(artworkId, slot) {
+async function removeArtworkFromDisplay(artworkId) {
   const artwork = artworks.find(item => item.id === artworkId);
   if (!artwork) return;
 
@@ -2672,27 +2796,17 @@ function displayArtworkInSlot(artworkId, slot) {
     };
   }
 
-  const options = getDisplayOptions(artwork);
-  const isValidSlot = options.some(option => option.value === slot);
-  if (!isValidSlot) return;
+  artwork.display.isDisplayed = false;
+  artwork.display.displaySlot = '';
+  artwork.display.isFavorite = false;
 
-  const existingArtwork = findDisplayedArtworkBySlot(slot, artwork.id);
-  if (existingArtwork) {
-    existingArtwork.display.isDisplayed = false;
-    existingArtwork.display.displaySlot = '';
-    existingArtwork.display.isFavorite = false;
-  }
-
-  artwork.display.isDisplayed = true;
-  artwork.display.displaySlot = slot;
-  artwork.display.isFavorite = slot === 'center';
-
-  if (saveArtworks()) {
+  const saved = await saveArtworks();
+  if (saved) {
     renderHome();
     renderAlbum();
   }
 }
-function displayFlatArtworkAutomatically(artworkId) {
+async function displayFlatArtworkAutomatically(artworkId) {
   const artwork = artworks.find(item => item.id === artworkId);
   if (!artwork) return;
 
@@ -2702,9 +2816,7 @@ function displayFlatArtworkAutomatically(artworkId) {
     'board-3',
     'board-4',
     'board-5',
-    'board-6',
-    'board-7',
-    'board-8'
+    'board-6'
   ];
 
   // すでに展示中なら何もしない
@@ -2712,7 +2824,11 @@ function displayFlatArtworkAutomatically(artworkId) {
 
   // 今使われてる board slot 一覧
   const usedSlots = artworks
-    .filter(item => item.type === 'flat' && item.display?.isDisplayed && item.display?.displaySlot)
+    .filter(item =>
+      item.type === 'flat' &&
+      item.display?.isDisplayed &&
+      item.display?.displaySlot
+    )
     .map(item => item.display.displaySlot);
 
   // 空いてる slot を探す
@@ -2735,33 +2851,14 @@ function displayFlatArtworkAutomatically(artworkId) {
   artwork.display.displaySlot = emptySlot;
   artwork.display.isFavorite = false;
 
-  if (saveArtworks()) {
+  const saved = await saveArtworks();
+  if (saved) {
     renderHome();
     renderAlbum();
   }
 }
 
-function removeArtworkFromDisplay(artworkId) {
-  const artwork = artworks.find(item => item.id === artworkId);
-  if (!artwork) return;
 
-  if (!artwork.display) {
-    artwork.display = {
-      isDisplayed: false,
-      displaySlot: '',
-      isFavorite: false
-    };
-  }
-
-  artwork.display.isDisplayed = false;
-  artwork.display.displaySlot = '';
-  artwork.display.isFavorite = false;
-
-  if (saveArtworks()) {
-    renderHome();
-    renderAlbum();
-  }
-}
 function resizeImage(file, callback) {
   const img = new Image();
   const reader = new FileReader();
@@ -2813,43 +2910,44 @@ previewBox.classList.add('has-image');
       }
     });
 
-    saveArtworkBtn.addEventListener('click', () => {
-      if (!previewDataUrl) {
-        alert('作品の写真を選んでね');
-        return;
-      }
-
-      const summaryText = artSummary.value.trim();
-
-const newArtwork = {
-  id: Date.now(),
-  image: previewDataUrl,
-  summary: summaryText,
-  type: artType.value,
-  orientation: artType.value === 'flat' ? selectedOrientation : '',
-  date: artDate.value,
-  display: {
-    isDisplayed: false,
-    displaySlot: '',
-    isFavorite: false
+  saveArtworkBtn.addEventListener('click', async () => {
+  if (!previewDataUrl) {
+    alert('作品の写真を選んでね');
+    return;
   }
-};
 
-      const nextArtworks = [...artworks, newArtwork];
-      const oldArtworks = artworks;
-      artworks = nextArtworks;
+  const summaryText = artSummary.value.trim();
 
-      const saved = saveArtworks();
-      if (!saved) {
-        artworks = oldArtworks;
-        return;
-      }
-currentAlbumPage = 1;
-      renderAll();
-      closeModal();
-      showHome();
-      
-    });
+
+  const newArtwork = {
+    id: Date.now(),
+    image: previewDataUrl,
+    summary: summaryText,
+    type: artType.value,
+    orientation: artType.value === 'flat' ? selectedOrientation : '',
+    date: artDate.value,
+    display: {
+      isDisplayed: false,
+      displaySlot: '',
+      isFavorite: false
+    }
+  };
+
+ const nextArtworks = [...artworks, newArtwork];
+  const oldArtworks = artworks;
+  artworks = nextArtworks;
+
+  const saved = await saveArtworks();
+  if (!saved) {
+    artworks = oldArtworks;
+    return;
+  }
+
+  currentAlbumPage = 1;
+  renderAll();
+  closeModal();
+  showHome();
+});
 
 
     closeModalBtn.addEventListener('click', closeModal);
@@ -2885,21 +2983,23 @@ if (imageZoomModal) {
   });
 }
 
-    deleteArtworkBtn.addEventListener('click', () => {
-      if (currentDetailId === null) return;
+    deleteArtworkBtn.addEventListener('click', async () => {
+  if (currentDetailId === null) return;
 
-      const ok = confirm('この作品をアトリエとアルバムからはずす？');
-      if (!ok) return;
+  const ok = confirm('この作品をアトリエとアルバムからはずす？');
+  if (!ok) return;
 
-      artworks = artworks.filter(item => item.id !== currentDetailId);
-      saveArtworks();
-      const totalPages = getAlbumTotalPages();
+  artworks = artworks.filter(item => item.id !== currentDetailId);
+  await saveArtworks();
+
+  const totalPages = getAlbumTotalPages();
   if (currentAlbumPage > totalPages) {
     currentAlbumPage = totalPages;
   }
-      renderAll();
-      closeDetailModal();
-    });
+
+  renderAll();
+  closeDetailModal();
+});
     prevPageBtn.addEventListener('click', () => {
   if (currentAlbumPage > 1) {
     currentAlbumPage--;
