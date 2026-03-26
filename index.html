@@ -2280,13 +2280,17 @@ artType.addEventListener('input', updateOrientationField);
     artworks = normalized;
 
     try {
-      await saveArtworksToIndexedDB();
-      console.log('localStorageのデータをIndexedDBへ移行したよ');
-    } catch (error) {
-      console.error('IndexedDB への移行保存エラー', error);
-    }
+  await saveArtworksToIndexedDB();
+  console.log('localStorageのデータをIndexedDBへ移行したよ');
 
-    return normalized;
+  localStorage.removeItem(storageKey);
+  console.log('古いlocalStorageデータを削除したよ');
+
+} catch (error) {
+  console.error('IndexedDB への移行保存エラー', error);
+}
+
+return normalized;
   } catch (error) {
     console.error('localStorage 読み込みエラー', error);
     return [];
