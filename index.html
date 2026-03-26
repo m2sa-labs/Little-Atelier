@@ -849,9 +849,10 @@
 .user-modal-card {
   width: min(92vw, 860px);
   max-width: 860px;
-  max-height: 84vh;
-  padding: 14px 16px 12px;
-  overflow: hidden;
+  max-height: 92vh;
+  padding: 10px 12px 10px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .user-modal-card h2 {
@@ -959,54 +960,54 @@
   border-radius: 12px;
 }
 
-@media (max-height: 430px) and (orientation: landscape) {
+@media (max-height: 500px) and (orientation: landscape) {
   .user-modal-card {
     width: min(94vw, 920px);
-    max-height: 90vh;
-    padding: 10px 12px 10px;
+    max-height: 92vh;
+    padding: 8px 10px 8px;
   }
 
   .user-modal-card h2 {
-    font-size: 16px;
-    margin-bottom: 6px;
+    font-size: 15px;
+    margin-bottom: 4px;
   }
 
   .user-modal-layout {
     grid-template-columns: 0.9fr 1.1fr;
-    gap: 10px;
+    gap: 8px;
   }
 
   .user-modal-card .field {
-    margin-bottom: 6px;
+    margin-bottom: 5px;
   }
 
   .user-modal-card .field label {
-    font-size: 11px;
-    margin-bottom: 3px;
+    font-size: 10px;
+    margin-bottom: 2px;
   }
 
   .user-modal-card input {
-    font-size: 13px;
-    padding: 7px 9px;
+    font-size: 12px;
+    padding: 6px 8px;
   }
 
   .user-icon-select {
     grid-template-columns: repeat(4, 1fr);
-    gap: 8px;
+    gap: 6px;
   }
 
   .user-icon-btn {
-    padding: 4px;
-    border-radius: 12px;
+    padding: 3px;
+    border-radius: 10px;
   }
 
   .user-icon-btn img {
-    max-width: 88px;
+    max-width: 72px;
   }
 
   .user-modal-card .modal-buttons button {
-    padding: 8px;
-    font-size: 13px;
+    padding: 7px;
+    font-size: 12px;
   }
 }
 .title-name-btn {
@@ -3073,6 +3074,7 @@ settingModal.addEventListener('click', (event) => {
 function populateShelfOptions() {
   return;
 }
+
 function fitOneScreen(screen) {
   const designWidth = 576;
 
@@ -3093,19 +3095,20 @@ function fitOneScreen(screen) {
   let scale = Math.min(scaleByWidth, scaleByHeight);
 
   if (screen.classList.contains('title-screen')) {
-    scale *= 0.99;
+    scale *= 1.0;
   }
 
   if (screen.classList.contains('home-screen')) {
-    scale *= 0.84;
+    scale *= 1.0;
   }
 
   if (screen.classList.contains('album-screen')) {
-    scale *= 0.84;
+    scale *= 1.0;
   }
 
   screen.style.transform = `translateX(-50%) scale(${scale})`;
 }
+</script>
 
 function fitScreens() {
   const titleScreen = document.getElementById('titleScreen');
