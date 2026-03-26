@@ -146,24 +146,24 @@
 .shelf-1 {
   left: 205px;
   top: 260px;
-  width: 50px;
-  height: 50px;
+  width: 70px;
+  height: 70px;
   border-radius: 14px;
 }
 
 .shelf-2 {
   left: 260px;
-  top: 300px;
-  width: 50px;
-  height: 50px;
+  top: 320px;
+  width: 70px;
+  height: 70px;
   border-radius: 14px;
 }
 
 .shelf-3 {
   left: 330px;
   top: 280px;
-  width: 50px;
-  height: 50px;
+  width: 70px;
+  height: 70px;
   border-radius: 14px;
 }
 
@@ -3071,6 +3071,7 @@ function fitOneScreen(screen) {
   screen.style.left = '50%';
   screen.style.transformOrigin = 'top center';
 
+  // 一旦リセット
   screen.style.transform = 'translateX(-50%) scale(1)';
   const naturalHeight = screen.offsetHeight;
 
@@ -3080,19 +3081,11 @@ function fitOneScreen(screen) {
   const scaleByWidth = vw / designWidth;
   const scaleByHeight = vh / naturalHeight;
 
+  // ★ここがポイント
   let scale = Math.min(scaleByWidth, scaleByHeight);
 
-  if (screen.classList.contains('title-screen')) {
-    scale *= 0.99;
-  }
-
-  if (screen.classList.contains('home-screen')) {
-    scale *= 0.84;
-  }
-
-  if (screen.classList.contains('album-screen')) {
-    scale *= 0.84;
-  }
+  // 👉 横だけちょっと広げる（左右余白対策）
+  scale *= 1.03;
 
   screen.style.transform = `translateX(-50%) scale(${scale})`;
 }
