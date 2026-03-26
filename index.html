@@ -17,7 +17,7 @@
   font-family: "Hiragino Maru Gothic ProN", "Yu Gothic", sans-serif;
   background: #efe7de;
   color: #6f5442;
-  /* overflow: hidden; を消す */
+  overflow: hidden;
 }
 
 .app {
@@ -81,6 +81,7 @@
   left: 32%;
   transform: translateX(-50%);
   bottom: 120px;
+
 }
 
 .btn-album {
@@ -960,56 +961,7 @@
   border-radius: 12px;
 }
 
-@media (max-height: 500px) and (orientation: landscape) {
-  .user-modal-card {
-    width: min(94vw, 920px);
-    max-height: 92vh;
-    padding: 8px 10px 8px;
-  }
 
-  .user-modal-card h2 {
-    font-size: 15px;
-    margin-bottom: 4px;
-  }
-
-  .user-modal-layout {
-    grid-template-columns: 0.9fr 1.1fr;
-    gap: 8px;
-  }
-
-  .user-modal-card .field {
-    margin-bottom: 5px;
-  }
-
-  .user-modal-card .field label {
-    font-size: 10px;
-    margin-bottom: 2px;
-  }
-
-  .user-modal-card input {
-    font-size: 12px;
-    padding: 6px 8px;
-  }
-
-  .user-icon-select {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 6px;
-  }
-
-  .user-icon-btn {
-    padding: 3px;
-    border-radius: 10px;
-  }
-
-  .user-icon-btn img {
-    max-width: 72px;
-  }
-
-  .user-modal-card .modal-buttons button {
-    padding: 7px;
-    font-size: 12px;
-  }
-}
 .title-name-btn {
   border: none;
   cursor: pointer;
@@ -1249,24 +1201,26 @@
 
 /* 右上の虹とこどもの額縁 */
 .hotspot-frame {
-  right: 28px;
-  top: 70px;
-  width: 75px;
-  height: 85px;
+  right: 220px;
+  top: 160px;
+  width: 125px;
+  height: 155px;
+  
 }
 
 /* 右下のボード上アルバム */
 .hotspot-album {
-  right: 100px;
-  bottom: 60px;
-  width: 85px;
-  height: 60px;
+  right: 335px;
+  bottom: 140px;
+  width: 150px;
+  height: 100px;
+  
 }
 .wall-setting-icon {
   position: absolute;
-  right: 80px;
-  top: 205px;
-  width: 30px;
+  right: 110px;
+  top: 400px;
+  width: 50px;
   cursor: pointer;
   transition: transform 0.1s;
   z-index: 20;
@@ -3108,7 +3062,6 @@ function fitOneScreen(screen) {
 
   screen.style.transform = `translateX(-50%) scale(${scale})`;
 }
-</script>
 
 function fitScreens() {
   const titleScreen = document.getElementById('titleScreen');
