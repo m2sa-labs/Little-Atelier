@@ -2859,7 +2859,34 @@ async function displayFlatArtworkAutomatically(artworkId) {
   }
 }
 
+async function displayArtworkInSlot(artworkId, slot) {
+  const artwork = artworks.find(item => item.id === artworkId);
+  if (!artwork) return;
 
+  const occupied = findDisplayedArtworkBySlot(slot, artworkId);
+  if (occupied) {
+    alert('そこはもうかざってあるよ');
+    return;
+  }
+
+  if (!artwork.display) {
+    artwork.display = {
+      isDisplayed: false,
+      displaySlot: '',
+      isFavorite: false
+    };
+  }
+
+  artwork.display.isDisplayed = true;
+  artwork.display.displaySlot = slot;
+  artwork.display.isFavorite = false;
+
+  const saved = await saveArtworks();
+  if (saved) {
+    renderHome();
+    renderAlbum();
+  }
+}
 function resizeImage(file, callback) {
   const img = new Image();
   const reader = new FileReader();
