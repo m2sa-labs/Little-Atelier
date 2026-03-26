@@ -17,7 +17,7 @@
   font-family: "Hiragino Maru Gothic ProN", "Yu Gothic", sans-serif;
   background: #efe7de;
   color: #6f5442;
-  overflow: hidden;
+  /* overflow: hidden; を消す */
 }
 
 .app {
@@ -81,7 +81,6 @@
   left: 32%;
   transform: translateX(-50%);
   bottom: 120px;
-
 }
 
 .btn-album {
@@ -850,10 +849,9 @@
 .user-modal-card {
   width: min(92vw, 860px);
   max-width: 860px;
-  max-height: 92vh;
-  padding: 10px 12px 10px;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+  max-height: 84vh;
+  padding: 14px 16px 12px;
+  overflow: hidden;
 }
 
 .user-modal-card h2 {
@@ -961,7 +959,56 @@
   border-radius: 12px;
 }
 
+@media (max-height: 430px) and (orientation: landscape) {
+  .user-modal-card {
+    width: min(94vw, 920px);
+    max-height: 90vh;
+    padding: 10px 12px 10px;
+  }
 
+  .user-modal-card h2 {
+    font-size: 16px;
+    margin-bottom: 6px;
+  }
+
+  .user-modal-layout {
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: 10px;
+  }
+
+  .user-modal-card .field {
+    margin-bottom: 6px;
+  }
+
+  .user-modal-card .field label {
+    font-size: 11px;
+    margin-bottom: 3px;
+  }
+
+  .user-modal-card input {
+    font-size: 13px;
+    padding: 7px 9px;
+  }
+
+  .user-icon-select {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+
+  .user-icon-btn {
+    padding: 4px;
+    border-radius: 12px;
+  }
+
+  .user-icon-btn img {
+    max-width: 88px;
+  }
+
+  .user-modal-card .modal-buttons button {
+    padding: 8px;
+    font-size: 13px;
+  }
+}
 .title-name-btn {
   border: none;
   cursor: pointer;
@@ -1201,26 +1248,24 @@
 
 /* 右上の虹とこどもの額縁 */
 .hotspot-frame {
-  right: 220px;
-  top: 160px;
-  width: 125px;
-  height: 155px;
-  
+  right: 28px;
+  top: 70px;
+  width: 75px;
+  height: 85px;
 }
 
 /* 右下のボード上アルバム */
 .hotspot-album {
-  right: 335px;
-  bottom: 140px;
-  width: 150px;
-  height: 100px;
-  
+  right: 100px;
+  bottom: 60px;
+  width: 85px;
+  height: 60px;
 }
 .wall-setting-icon {
   position: absolute;
-  right: 110px;
-  top: 400px;
-  width: 50px;
+  right: 80px;
+  top: 205px;
+  width: 30px;
   cursor: pointer;
   transition: transform 0.1s;
   z-index: 20;
@@ -2290,34 +2335,20 @@ function closeSettingModal() {
 function getAlbumTotalPages() {
   return Math.max(1, Math.ceil(artworks.length / ALBUM_PAGE_SIZE));
 }
- async function saveArtworks() {
-  const storageKey = getArtworkStorageKey();
-
-  if (!storageKey) {
+async function saveArtworks() {
+  if (!currentUserId) {
     alert('先になまえをえらんでね');
     return false;
   }
 
-  // ① まず今まで通り localStorage に保存
-  try {
-    localStorage.setItem(storageKey, JSON.stringify(artworks));
-  } catch (error) {
-    console.error('localStorage 保存エラー', error);
-    alert('保存できなかったよ。写真サイズが大きいかも。もう少し軽い画像で試してね。');
-    return false;
-  }
-
-  // ② 次に IndexedDB にも保存
   try {
     await saveArtworksToIndexedDB();
-    console.log('IndexedDBにも保存できたよ');
+    console.log('IndexedDBに保存できたよ');
     return true;
   } catch (error) {
     console.error('IndexedDB 保存エラー', error);
-
-    // 今回は localStorage が生きていればアプリ継続
-    // ここでは alert を出さず、壊れないのを優先
-    return true;
+    alert('保存できなかったよ。もう一度ためしてね。');
+    return false;
   }
 }
 function normalizeArtworks(items) {
@@ -2807,11 +2838,11 @@ async function displayFlatArtworkAutomatically(artworkId) {
   artwork.display.displaySlot = emptySlot;
   artwork.display.isFavorite = false;
 
-  const saved = await saveArtworks();
-  if (saved) {
-    renderHome();
-    renderAlbum();
-  }
+ const saved = await saveArtworks();
+if (saved) {
+  renderHome();
+  renderAlbum();
+}
 }
 
 async function displayArtworkInSlot(artworkId, slot) {
@@ -2837,10 +2868,10 @@ async function displayArtworkInSlot(artworkId, slot) {
   artwork.display.isFavorite = false;
 
   const saved = await saveArtworks();
-  if (saved) {
-    renderHome();
-    renderAlbum();
-  }
+if (saved) {
+  renderHome();
+  renderAlbum();
+}
 }
 function resizeImage(file, callback) {
   const img = new Image();
@@ -2917,19 +2948,19 @@ previewBox.classList.add('has-image');
   };
 
  const nextArtworks = [...artworks, newArtwork];
-  const oldArtworks = artworks;
-  artworks = nextArtworks;
+ const oldArtworks = artworks;
+artworks = nextArtworks;
 
-  const saved = await saveArtworks();
-  if (!saved) {
-    artworks = oldArtworks;
-    return;
-  }
+const saved = await saveArtworks();
+if (!saved) {
+  artworks = oldArtworks;
+  return;
+}
 
-  currentAlbumPage = 1;
-  renderAll();
-  closeModal();
-  showHome();
+currentAlbumPage = 1;
+renderAll();
+closeModal();
+showHome();
 });
 
 
@@ -3028,7 +3059,6 @@ settingModal.addEventListener('click', (event) => {
 function populateShelfOptions() {
   return;
 }
-
 function fitOneScreen(screen) {
   const designWidth = 576;
 
@@ -3049,15 +3079,15 @@ function fitOneScreen(screen) {
   let scale = Math.min(scaleByWidth, scaleByHeight);
 
   if (screen.classList.contains('title-screen')) {
-    scale *= 1.0;
+    scale *= 0.99;
   }
 
   if (screen.classList.contains('home-screen')) {
-    scale *= 1.0;
+    scale *= 0.84;
   }
 
   if (screen.classList.contains('album-screen')) {
-    scale *= 1.0;
+    scale *= 0.84;
   }
 
   screen.style.transform = `translateX(-50%) scale(${scale})`;
