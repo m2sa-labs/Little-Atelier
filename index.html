@@ -3071,7 +3071,6 @@ function fitOneScreen(screen) {
   screen.style.left = '50%';
   screen.style.transformOrigin = 'top center';
 
-  // 一旦リセット
   screen.style.transform = 'translateX(-50%) scale(1)';
   const naturalHeight = screen.offsetHeight;
 
@@ -3081,11 +3080,19 @@ function fitOneScreen(screen) {
   const scaleByWidth = vw / designWidth;
   const scaleByHeight = vh / naturalHeight;
 
-  // ★ここがポイント
   let scale = Math.min(scaleByWidth, scaleByHeight);
 
-  // 👉 横だけちょっと広げる（左右余白対策）
-  scale *= 1.03;
+  if (screen.classList.contains('title-screen')) {
+    scale *= 1.03;
+  }
+
+  if (screen.classList.contains('home-screen')) {
+    scale *= 1.01;
+  }
+
+  if (screen.classList.contains('album-screen')) {
+    scale *= 1.01;
+  }
 
   screen.style.transform = `translateX(-50%) scale(${scale})`;
 }
