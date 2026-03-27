@@ -156,28 +156,29 @@ html, body {
 
     /* 立体作品3枠 */
 .shelf-1 {
-  left: 550px;
-  top: 500px;
+  left: 205px;
+  top: 260px;
   width: 65px;
   height: 65px;
   border-radius: 14px;
 }
 
 .shelf-2 {
-  left: 650px;
-  top: 550px;
+  left: 255px;
+  top: 290px;
   width: 65px;
   height: 65px;
   border-radius: 14px;
 }
 
 .shelf-3 {
-  left: 750px;
-  top: 530px;
+  left: 330px;
+  top: 280px;
   width: 65px;
   height: 65px;
   border-radius: 14px;
 }
+
 
     .art-slot.sculpture img {
       object-fit: contain;
@@ -820,16 +821,16 @@ html, body {
 }
 .title-name-btn {
   position: absolute;
-  top: 560px;
-  right: 130px;
+  top: 20px;
+  right: 20px;
   z-index: 20;
 
-  padding: 16px 22px;
-  font-size: 16px;
+  padding: 8px 14px;
+  font-size: 14px;
   font-weight: 700;
 
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.65);
+  background: rgba(255, 255, 255, 0.85);
   color: #8a6b5c;
   box-shadow: 0 2px 8px rgba(0,0,0,0.12);
 }
@@ -1203,13 +1204,13 @@ html, body {
   pointer-events: none;
   filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.10));
 }
-.board-1 { left: 410px;  top: 35px;  width: 160px; height: 188px; transform: rotate(-2deg); }
-.board-2 { left: 590px; top: 42px;  width: 182px; height: 158px; transform: rotate(2deg); }
-.board-3 { left: 800px; top: 40px;  width: 170px; height: 188px; transform: rotate(-2deg); }
+.board-1 { left: 135px;  top: 28px;  width: 88px; height: 108px; transform: rotate(-2deg); }
+.board-2 { left: 235px; top: 42px;  width: 112px; height: 88px; transform: rotate(2deg); }
+.board-3 { left: 360px; top: 28px;  width: 78px; height: 98px; transform: rotate(-2deg); }
 
-.board-4 { left: 420px;  top: 260px; width: 180px; height: 150px; transform: rotate(2deg); }
-.board-5 { left: 610px; top: 250px; width: 148px; height: 168px; transform: rotate(-2deg); }
-.board-6 { left: 345px; top: 145px; width: 112px; height: 88px; transform: rotate(2deg); }
+.board-4 { left: 145px;  top: 155px; width: 100px; height: 70px; transform: rotate(2deg); }
+.board-5 { left: 260px; top: 140px; width: 78px; height: 98px; transform: rotate(-2deg); }
+.board-6 { left: 345px; top: 145px; width: 92px; height: 66px; transform: rotate(2deg); }
 .album-tape-img {
   position: absolute;
   top: -7px;
@@ -1729,7 +1730,7 @@ img {
 
 <!-- ③ 下のボタン -->
 <div class="modal-buttons" style="grid-template-columns: 1fr 1fr;">
-
+  <button class="sub-btn" id="closeSettingModalBtn" type="button">とじる</button>
 <button class="main-btn" id="saveSettingsBtn" type="button">とじる</button>
 </div>
   </div>
@@ -3066,7 +3067,9 @@ nextPageBtn.addEventListener('click', () => {
   }
 });
 
-
+closeSettingModalBtn.addEventListener('click', () => {
+  closeSettingModal();
+});
 changeUserBtn.addEventListener('click', () => {
   closeSettingModal();
   showTitle();
