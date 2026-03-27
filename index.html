@@ -19,7 +19,13 @@
   color: #6f5442;
   /* overflow: hidden; を消す */
 }
-
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
 .app {
   width: 100%;
   max-width: 100%;
@@ -31,7 +37,8 @@
   padding-bottom: 0;
 }
 .screen {
-  position: relative;
+  position: absolute;
+  inset: 0;
   overflow: hidden;
   display: none;
 }
@@ -3073,16 +3080,18 @@ function fitOneScreen(screen) {
   const designWidth = 576;
   const designHeight = 324;
 
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+
+  const scale = Math.max(vw / designWidth, vh / designHeight);
+
   screen.style.width = designWidth + 'px';
   screen.style.height = designHeight + 'px';
-  screen.style.position = 'relative';
+  screen.style.position = 'absolute';
   screen.style.left = '50%';
-  screen.style.transformOrigin = 'top center';
-
-  const vw = window.innerWidth;
-  const scale = vw / designWidth;
-
-  screen.style.transform = `translateX(-50%) scale(${scale})`;
+  screen.style.top = '50%';
+  screen.style.transformOrigin = 'center center';
+  screen.style.transform = `translate(-50%, -50%) scale(${scale})`;
 }
 
 function fitScreens() {
