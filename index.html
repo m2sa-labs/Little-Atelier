@@ -3080,19 +3080,7 @@ function fitOneScreen(screen) {
   const scaleByWidth = vw / designWidth;
   const scaleByHeight = vh / naturalHeight;
 
-  let scale = Math.min(scaleByWidth, scaleByHeight);
-
-  if (screen.classList.contains('title-screen')) {
-    scale *= 0.99;
-  }
-
-  if (screen.classList.contains('home-screen')) {
-    scale *= 0.84;
-  }
-
-  if (screen.classList.contains('album-screen')) {
-    scale *= 0.84;
-  }
+  const scale = Math.min(scaleByWidth, scaleByHeight);
 
   screen.style.transform = `translateX(-50%) scale(${scale})`;
 }
