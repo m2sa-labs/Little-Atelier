@@ -46,7 +46,7 @@ html, body {
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: fill;
   z-index: 1;
   pointer-events: none;
 }
@@ -1475,7 +1475,7 @@ img {
 <body>
   <div class="app">
     <!-- タイトル画面 -->
-<section id="titleScreen" class="screen title-screen active scaled">
+<section id="titleScreen" class="screen title-screen active">
   <img src="assets/title-bg.png" alt="リトルアトリエ タイトル画面" class="bg-image" />
 
 
@@ -1524,7 +1524,7 @@ img {
   <button class="title-name-btn" id="openUserModal" type="button">なまえ登録</button>
 </section>
     <!-- アトリエ画面 -->
-    <section id="homeScreen" class="screen home-screen scaled">
+    <section id="homeScreen" class="screen home-screen">
   <img src="assets/atelier-main.png" alt="アトリエ画面" class="bg-image" />
 
       <div class="atelier-title">
@@ -1577,7 +1577,7 @@ img {
     </section>
 
     <!-- アルバム画面 -->
-    <section id="albumScreen" class="screen album-screen scaled">
+    <section id="albumScreen" class="screen album-screen">
  <img src="assets/atelier-album.png" alt="アルバム画面" class="bg-image" />
 
   <div class="overlay-layer">
@@ -3091,21 +3091,19 @@ if (todayDateEl) {
   todayDateEl.textContent = `${month}/${day}`;
 }
 
+['titleScreen', 'homeScreen', 'albumScreen'].forEach(id => {
+  const screen = document.getElementById(id);
+  if (!screen) return;
 
-  window.addEventListener('load', () => {
-    ['titleScreen', 'homeScreen', 'albumScreen'].forEach(id => {
-      const screen = document.getElementById(id);
-      if (!screen) return;
-
-      screen.style.width = '';
-      screen.style.height = '';
-      screen.style.left = '';
-      screen.style.top = '';
-      screen.style.transform = '';
-      screen.style.transformOrigin = '';
-      screen.style.position = '';
-    });
-  });
+  screen.style.width = '';
+  screen.style.height = '';
+  screen.style.left = '';
+  screen.style.top = '';
+  screen.style.transform = '';
+  screen.style.transformOrigin = '';
+  screen.style.position = '';
+});
+ 
 
 </script>
 
