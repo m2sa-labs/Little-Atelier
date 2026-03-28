@@ -1213,7 +1213,7 @@ html, body {
 
 .board-4 { left: 240px;  top: 180px; width: 120px; height: 90px; transform: rotate(2deg); }
 .board-5 { left: 370px; top: 170px; width: 98px; height: 118px; transform: rotate(-2deg); }
-.board-6 { left: 345px; top: 145px; width: 112px; height: 86px; transform: rotate(2deg); }
+.board-6 { left: 490px; top: 185px; width: 122px; height: 96px; transform: rotate(2deg); }
 .album-tape-img {
   position: absolute;
   top: -7px;
@@ -1266,10 +1266,11 @@ html, body {
 
 /* 右上の虹とこどもの額縁 */
 .hotspot-frame {
-  right: 28px;
-  top: 70px;
-  width: 75px;
-  height: 85px;
+  right: 73px;
+  top: 55px;
+  width: 100px;
+  height: 120px;
+  background: rgba(255, 0, 0, 0.3);  /* ←赤で半透明 */
 }
 
 /* 右下のボード上アルバム */
@@ -1281,9 +1282,9 @@ html, body {
 }
 .wall-setting-icon {
   position: absolute;
-  right: 80px;
-  top: 205px;
-  width: 30px;
+  right: 30px;
+  top: 230px;
+  width: 50px;
   cursor: pointer;
   transition: transform 0.1s;
   z-index: 20;
@@ -1294,8 +1295,8 @@ html, body {
 }
 .title-sticky {
   position: absolute;
-  right: 125px;
-  bottom: 130px;
+  right: 206px;
+  bottom: 90px;
   width:50px;
   z-index: 6;
   transform: rotate(-4deg);
@@ -1303,8 +1304,8 @@ html, body {
 
 .title-sticky-text {
   position: absolute;
-  right: 110px;
-  bottom: 150px;
+  right: 190px;
+  bottom: 110px;
 
   width: 80px;          /* ←ここ重要！広げる */
   text-align: center;
@@ -1476,6 +1477,14 @@ img {
   border-radius: 16px;
   padding: 16px 14px;
 }
+.books-decor {
+  position: absolute;
+  right: 20px;
+  bottom: 30px;
+  width: 75px;
+  z-index: 6;
+  pointer-events: none;
+}
   </style>
 </head>
 <body>
@@ -1550,7 +1559,7 @@ img {
         <div id="homeShelf2" class="art-slot sculpture shelf-2 empty"></div>
         <div id="homeShelf3" class="art-slot sculpture shelf-3 empty"></div>
         
-        
+        <img src="assets/books.png" id="booksDecor" class="books-decor" alt="アルバム" />
       </div>
       <div class="hotspot-layer">
   <button id="frameAddBtn" class="hotspot hotspot-frame" type="button" aria-label="写真を追加"></button>
@@ -1967,11 +1976,12 @@ async function selectUser(userId) {
   }
 
   artworks = await loadArtworks();
-  currentAlbumPage = 1;
-  renderAll();
-  showHome();
+repairFlatDisplaySlots();
+await saveArtworks();
+currentAlbumPage = 1;
+renderAll();
+showHome();
 }
-
 openUserModalBtn.addEventListener('click', (event) => {
   event.stopPropagation();
   openUserModal();
@@ -2827,29 +2837,25 @@ async function displayFlatArtworkAutomatically(artworkId) {
   const artwork = artworks.find(item => item.id === artworkId);
   if (!artwork) return;
 
-  const boardSlots = [
-    'board-1',
-    'board-2',
-    'board-3',
-    'board-4',
-    'board-5',
-    'board-6'
-  ];
-
-  // すでに展示中なら何もしない
   if (artwork.display?.isDisplayed) return;
 
-  // 今使われてる board slot 一覧
+  const isVertical = artwork.orientation === 'vertical';
+
+  const targetSlots = isVertical
+    ? ['board-1', 'board-3', 'board-5']
+    : ['board-2', 'board-4', 'board-6'];
+
   const usedSlots = artworks
     .filter(item =>
+      item.id !== artworkId &&
       item.type === 'flat' &&
       item.display?.isDisplayed &&
-      item.display?.displaySlot
+      item.orientation === artwork.orientation &&
+      targetSlots.includes(item.display?.displaySlot)
     )
     .map(item => item.display.displaySlot);
 
-  // 空いてる slot を探す
-  const emptySlot = boardSlots.find(slot => !usedSlots.includes(slot));
+  const emptySlot = targetSlots.find(slot => !usedSlots.includes(slot));
 
   if (!emptySlot) {
     alert('ボードがいっぱいだよ');
@@ -2868,11 +2874,11 @@ async function displayFlatArtworkAutomatically(artworkId) {
   artwork.display.displaySlot = emptySlot;
   artwork.display.isFavorite = false;
 
- const saved = await saveArtworks();
-if (saved) {
-  renderHome();
-  renderAlbum();
-}
+  const saved = await saveArtworks();
+  if (saved) {
+    renderHome();
+    renderAlbum();
+  }
 }
 
 async function displayArtworkInSlot(artworkId, slot) {
@@ -2932,7 +2938,32 @@ function resizeImage(file, callback) {
   renderHome();
   renderAlbum();
 }
+function repairFlatDisplaySlots() {
+  const verticalSlots = ['board-1', 'board-3', 'board-5'];
+  const horizontalSlots = ['board-2', 'board-4', 'board-6'];
 
+  const displayedVertical = artworks.filter(item =>
+    item.type === 'flat' &&
+    item.display?.isDisplayed &&
+    item.orientation === 'vertical'
+  );
+
+  const displayedHorizontal = artworks.filter(item =>
+    item.type === 'flat' &&
+    item.display?.isDisplayed &&
+    item.orientation === 'horizontal'
+  );
+
+  displayedVertical.forEach((item, index) => {
+    item.display.displaySlot = verticalSlots[index] || '';
+    item.display.isDisplayed = index < verticalSlots.length;
+  });
+
+  displayedHorizontal.forEach((item, index) => {
+    item.display.displaySlot = horizontalSlots[index] || '';
+    item.display.isDisplayed = index < horizontalSlots.length;
+  });
+}
     artImage.addEventListener('change', async (event) => {
       const file = event.target.files[0];
       if (!file) return;
