@@ -1349,21 +1349,21 @@ img {
 
   box-shadow: 0 3px 8px rgba(90, 65, 45, 0.15);
 
-  max-width: 140px;    /* ←横制限 */
+  max-width: 200px;    /* ←横制限 */
   white-space: normal; /* ←改行OKにする */
 }
 
 /* ボタン */
 .guide-close-btn {
   position: absolute;
-  bottom: 180px;
-  left: 55%;
+  bottom: 130px;
+  left: 40%;
   transform: translateX(-50%);
   border: none;
   background: hsl(29, 48%, 71%);
   color: #7a5b49;
-  font-size: 10px;
-  padding: 10px 22px;
+  font-size: 25px;
+  padding: 30px 50px;
   border-radius: 999px;
   font-weight: bold;
 }
@@ -1372,8 +1372,8 @@ img {
 
 /* 額縁 */
 .guide-frame {
-  right: 40px;
-  top: 100px;
+  right: 140px;
+  top: 90px;
   transform: translateX(-68px);
 }
 
@@ -1385,8 +1385,8 @@ img {
 
 /* アルバム */
 .guide-album {
-  right: 120px;
-  bottom: 80px;
+  right: 250px;
+  bottom: 20px;
   transform: translateX(-70px);
 }
 
@@ -1398,7 +1398,7 @@ img {
 
 /* 設定 */
 .guide-setting {
-  right: 80px;
+  right: 90px;
   top: 210px;
   transform: translateX(-30px);
 }
@@ -3157,9 +3157,7 @@ window.addEventListener('resize', fitStage);
 window.addEventListener('orientationchange', fitStage);
 
 
-window.addEventListener('load', () => {
-  showTutorial();
-});
+
 </script>
 
 
