@@ -108,7 +108,7 @@ html, body {
 }
 /* アルバム画面の下3つ */
 .btn-add-album {
-  left: 92.5%;
+  left: 90%;
   transform: translateX(-50%);
   bottom: 170px;
   z-index: 15;
@@ -116,7 +116,7 @@ html, body {
 }
 
 .btn-home-album {
-  left: 92.5%;
+  left: 90%;
   transform: translateX(-50%);
   bottom: 102px;
   z-index: 15;
@@ -124,7 +124,7 @@ html, body {
 }
 
 .btn-setting-album {
-  left: 92.5%;
+  left: 90%;
   transform: translateX(-50%);
   bottom: 34px;
   z-index: 15;
@@ -804,7 +804,7 @@ html, body {
 .title-name-btn {
   position: absolute;
   top: 20px;
-  right: 20px;
+  right: 70px;
   z-index: 20;
 
   padding: 8px 14px;
@@ -1278,9 +1278,9 @@ html, body {
 }
 .wall-setting-icon {
   position: absolute;
-  right: 80px;
+  right: 70px;
   top: 210px;
-  width: 40px;
+  width: 50px;
   cursor: pointer;
   transition: transform 0.1s;
   z-index: 20;
@@ -2702,7 +2702,7 @@ if (slot.id && slot.id.startsWith('album')) {
 if (artwork.orientation === 'horizontal') {
   tapeImg.style.top = '11px';
 } else {
-  tapeImg.style.top = '-8px';
+  tapeImg.style.top = '-12px';
 }
 
     const rotate = Math.random() * 8 - 4;
@@ -3144,8 +3144,8 @@ function fitStage() {
 
   const vw = window.innerWidth;
   const vh = window.innerHeight;
-
-  const scale = Math.max(vw / BASE_W, vh / BASE_H);
+  
+const scale = Math.max(vw / BASE_W, vh / BASE_H) * 1.02;
 
   const offsetX = (vw - BASE_W * scale) / 2;
   const offsetY = (vh - BASE_H * scale) / 2;
