@@ -156,7 +156,7 @@ html, body {
 
     /* 立体作品3枠 */
 .shelf-1 {
-  left: 300px;
+  left: 285px;
   top: 280px;
   width: 65px;
   height: 65px;
@@ -164,7 +164,7 @@ html, body {
 }
 
 .shelf-2 {
-  left: 360px;
+  left: 350px;
   top: 310px;
   width: 65px;
   height: 65px;
@@ -172,7 +172,7 @@ html, body {
 }
 
 .shelf-3 {
-  left: 430px;
+  left: 425px;
   top: 300px;
   width: 65px;
   height: 65px;
@@ -2177,6 +2177,7 @@ if (titleScreen) {
 }
 if (frameAddBtn) {
   frameAddBtn.addEventListener('click', () => {
+    lastScreenBeforeAdd = 'home';
     showHome();
     openModal();
   });
@@ -2192,7 +2193,7 @@ if (albumHomeBtn) {
 
 if (albumAddBtn) {
   albumAddBtn.addEventListener('click', () => {
-    showHome();
+    lastScreenBeforeAdd = 'album';
     openModal();
   });
 }
@@ -2258,6 +2259,7 @@ if (uiSettingBtn) {
     let artworks = [];
     let currentRotation = 0;
     let originalPreviewDataUrl = '';
+    let lastScreenBeforeAdd = 'home';
   
     orientationButtons.forEach(button => {
   button.addEventListener('click', () => {
@@ -2561,10 +2563,16 @@ function showAlbum() {
       detailModal.classList.remove('show');
       currentDetailId = null;
     }
-    function closeModal() {
-      addModal.classList.remove('show');
-      document.activeElement.blur();
-    }
+   function closeModal() {
+  addModal.classList.remove('show');
+  document.activeElement.blur();
+
+  if (lastScreenBeforeAdd === 'album') {
+    showAlbum();
+  } else {
+    showHome();
+  }
+}
 
     function resetForm() {
   artImage.value = '';
@@ -3048,7 +3056,6 @@ if (!saved) {
 currentAlbumPage = 1;
 renderAll();
 closeModal();
-showHome();
 });
 
 
