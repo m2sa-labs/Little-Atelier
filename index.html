@@ -114,15 +114,15 @@ html, body {
 }
 
 .btn-home-album {
-  left: 92%;
+  left: 92.5%;
   transform: translateX(-50%);
-  bottom: 100px;
+  bottom: 102px;
   z-index: 15;
-  width: 36px;
+  width: 60px;
 }
 
 .btn-setting-album {
-  left: 92%;
+  left: 92.5%;
   transform: translateX(-50%);
   bottom: 34px;
   z-index: 15;
@@ -162,7 +162,7 @@ html, body {
 }
 
 .shelf-2 {
-  left: 360px;
+  left: 375px;
   top: 310px;
   width: 65px;
   height: 65px;
@@ -1206,9 +1206,10 @@ html, body {
 .board-4 { left: 240px;  top: 175px; width: 110px; height: 80px; transform: rotate(2deg); }
 .board-5 { left: 365px; top: 155px; width: 88px; height: 108px; transform: rotate(-2deg); }
 .board-6 { left: 475px; top: 175px; width: 112px; height: 88px; transform: rotate(2deg); }
+
 .album-tape-img {
   position: absolute;
-  top: -7px;
+  top: 10px;
   left: 50%;
   width: 38px !important;
   height: auto !important;
@@ -1340,10 +1341,10 @@ img {
   background: rgba(255, 250, 244, 0.95);
   color: #7a5b49;
 
-  padding: 5px 7px;   /* ←小さく！ */
+  padding: 10px 14px;   /* ←小さく！ */
   border-radius: 14px;
 
-  font-size: 8px;     /* ←小さく！ */
+  font-size: 16px;     /* ←小さく！ */
   line-height: 1.4;
 
   box-shadow: 0 3px 8px rgba(90, 65, 45, 0.15);
@@ -2697,9 +2698,9 @@ if (slot.id && slot.id.startsWith('album')) {
     tapeImg.className = 'album-tape-img';
 
 if (artwork.orientation === 'horizontal') {
-  tapeImg.style.top = '6px';
+  tapeImg.style.top = '11px';
 } else {
-  tapeImg.style.top = '-7px';
+  tapeImg.style.top = '-8px';
 }
 
     const rotate = Math.random() * 8 - 4;
@@ -3154,6 +3155,11 @@ function fitStage() {
 }
 window.addEventListener('resize', fitStage);
 window.addEventListener('orientationchange', fitStage);
+
+
+window.addEventListener('load', () => {
+  showTutorial();
+});
 </script>
 
 
