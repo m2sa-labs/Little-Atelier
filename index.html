@@ -107,35 +107,44 @@ html, body {
   bottom: 115px;
 }
 /* アルバム画面の下3つ */
-.btn-add-album {
+.btn-add-album,
+.btn-setting-album {
   left: 90%;
   transform: translateX(-50%);
-  bottom: 170px;
   z-index: 12;
-  
+
+  width: 44px;          /* ←小さく */
+  opacity: 0.8;         /* ←ちょい透明 */
 }
 
 .btn-home-album {
   left: 90%;
   transform: translateX(-50%);
-  bottom: 102px;
   z-index: 12;
-  width: 60px;
+
+  width: 52px;          /* ←少し大きめ（主役） */
+  opacity: 0.9;
+}
+
+/* 位置（ちょい詰める） */
+.btn-add-album {
+  bottom: 160px;
+}
+
+.btn-home-album {
+  bottom: 100px;
 }
 
 .btn-setting-album {
-  left: 90%;
-  transform: translateX(-50%);
-  bottom: 34px;
-  z-index: 12;
+  bottom: 40px;
 }
 
-/* アルバム画面ボタンを押したとき */
+/* 押したとき */
 .btn-home-album:active,
 .btn-add-album:active,
 .btn-setting-album:active {
-  transform: translateX(-50%) scale(0.97);
-  opacity: 0.9;
+  transform: translateX(-50%) scale(0.96);
+  opacity: 0.7;
 }
     .art-slot {
   position: absolute;
@@ -1392,7 +1401,7 @@ img {
 
 /* 額縁 */
 .guide-frame {
-  right: 140px;
+  right: 130px;
   top: 90px;
   transform: translateX(-68px);
 }
@@ -1418,7 +1427,7 @@ img {
 
 /* 設定 */
 .guide-setting {
-  right: 90px;
+  right: 80px;
   top: 210px;
   transform: translateX(-30px);
 }
