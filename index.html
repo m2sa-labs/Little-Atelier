@@ -3145,7 +3145,7 @@ function fitStage() {
   const vw = window.innerWidth;
   const vh = window.innerHeight;
 
-  const scale = Math.min(vw / BASE_W, vh / BASE_H);
+  const scale = Math.max(vw / BASE_W, vh / BASE_H);
 
   const offsetX = (vw - BASE_W * scale) / 2;
   const offsetY = (vh - BASE_H * scale) / 2;
