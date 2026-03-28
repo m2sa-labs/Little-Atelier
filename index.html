@@ -2658,7 +2658,12 @@ function fillSlot(slot, artwork, useContain = false) {
   const img = document.createElement('img');
   img.src = artwork.image;
   img.alt = artwork.title || '作品';
+  // アルバムは絶対containにする
+if (slot.id && slot.id.startsWith('album')) {
+  img.style.objectFit = 'contain';
+} else {
   img.style.objectFit = useContain ? 'contain' : 'cover';
+}
   img.className = 'slot-art-img';
 
   slot.appendChild(img);
@@ -2689,6 +2694,12 @@ function fillSlot(slot, artwork, useContain = false) {
     tapeImg.src = randomTape;
     tapeImg.alt = '';
     tapeImg.className = 'album-tape-img';
+
+if (artwork.orientation === 'horizontal') {
+  tapeImg.style.top = '6px';
+} else {
+  tapeImg.style.top = '-7px';
+}
 
     const rotate = Math.random() * 8 - 4;
     const offset = Math.random() * 8 - 4;
