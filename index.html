@@ -29,12 +29,14 @@ html, body {
 }
 
 .screen {
-  position: fixed;
-  inset: 0;
-  width: 100vw;
-  height: 100dvh;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 844px;
+  height: 390px;
   overflow: hidden;
   display: none;
+  transform-origin: top left;
 }
 
 .screen.active {
@@ -46,19 +48,15 @@ html, body {
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: fill;
+  object-fit: contain;
   z-index: 1;
   pointer-events: none;
 }
 .app {
-  width: 100%;
-  max-width: 100%;
-  min-height: 100vh;
-  margin: 0 auto;
-  background: #f7efe6;
-  position: relative;
+  position: fixed;
+  inset: 0;
   overflow: hidden;
-  padding-bottom: 0;
+  background: #f7efe6;
 }
     /* 作品のせる層 */
     .overlay-layer {
@@ -108,23 +106,23 @@ html, body {
 }
 /* アルバム画面の下3つ */
 .btn-add-album {
-  left: 25%;
+  left: 92.5%;
   transform: translateX(-50%);
-  bottom: 34px;
+  bottom: 170px;
   z-index: 15;
   
 }
 
 .btn-home-album {
-  left: 50%;
+  left: 92%;
   transform: translateX(-50%);
-  bottom: 34px;
+  bottom: 100px;
   z-index: 15;
   width: 36px;
 }
 
 .btn-setting-album {
-  left: 75%;
+  left: 92%;
   transform: translateX(-50%);
   bottom: 34px;
   z-index: 15;
@@ -156,24 +154,24 @@ html, body {
 
     /* 立体作品3枠 */
 .shelf-1 {
-  left: 205px;
-  top: 260px;
+  left: 330px;
+  top: 310px;
   width: 65px;
   height: 65px;
   border-radius: 14px;
 }
 
 .shelf-2 {
-  left: 255px;
-  top: 290px;
+  left: 415px;
+  top: 325px;
   width: 65px;
   height: 65px;
   border-radius: 14px;
 }
 
 .shelf-3 {
-  left: 330px;
-  top: 280px;
+  left: 495px;
+  top: 310px;
   width: 65px;
   height: 65px;
   border-radius: 14px;
@@ -185,8 +183,8 @@ html, body {
     }
 
     /* アルバム画面の8枠（右ページ調整版） */
-.album-slot-1 { left: 106px; top: 78px; width: 68px; height: 84px; transform: rotate(-1deg); }
-.album-slot-2 { left: 190px; top: 78px; width: 68px; height: 84px; }
+.album-slot-1 { left: 106px; top: 78px; width: 88px; height: 104px; transform: rotate(-1deg); }
+.album-slot-2 { left: 190px; top: 78px; width: 88px; height: 104px; }
 
 .album-slot-3 { left: 324px; top: 78px; width: 68px; height: 84px; }
 .album-slot-4 { left: 408px; top: 78px; width: 68px; height: 84px; transform: rotate(1deg); }
@@ -207,7 +205,7 @@ html, body {
     .bottom-nav {
       position: fixed;
       left: 50%;
-      bottom: 14px;
+      bottom: 10px;
       transform: translateX(-50%);
       width: min(92%, 400px);
       background: rgba(255, 249, 242, 0.96);
@@ -379,27 +377,17 @@ html, body {
     .preview-box.has-image img { display: block; }
     .preview-box.has-image .preview-text { display: none; }
 
-    .modal-buttons {
-      display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-      gap: 10px;
-      margin-top: 14px;
-      position: sticky;
-      bottom: -1px;
-      z-index: 3;
-      background: #fffaf4;
-      padding-top: 10px;
-      padding-bottom: 2px;
-    }
 
-    .modal-buttons button {
-      border: none;
-      border-radius: 14px;
-      padding: 12px;
-      font: inherit;
-      font-weight: 700;
-      cursor: pointer;
-    }
+   .modal-buttons button {
+  border: none;
+  border-radius: 999px;   /* 丸っぽく */
+  padding: 8px 18px;      /* 小さく */
+  font-size: 13px;        /* 少し小さく */
+  font-weight: 700;
+  cursor: pointer;
+
+  width: auto;            /* ←これ重要 */
+}
 
     .main-btn {
       background: #f0d9c4;
@@ -438,7 +426,7 @@ html, body {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  bottom: 20%;  /* ←ここがポイント */
+  bottom: 10%;  /* ←ここがポイント */
   width: 70%;   /* ←アルバム内に収める */
   z-index: 12;
 
@@ -967,7 +955,22 @@ html, body {
   margin-top: 8px;
   padding-top: 6px;
 }
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 14px;
+  pointer-events: auto;
+}
 
+.modal-buttons button {
+  border: none;
+  border-radius: 999px;
+  padding: 8px 18px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  width: auto;
+}
 .user-modal-card .modal-buttons button {
   padding: 10px;
   font-size: 14px;
@@ -1204,13 +1207,13 @@ html, body {
   pointer-events: none;
   filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.10));
 }
-.board-1 { left: 135px;  top: 28px;  width: 88px; height: 108px; transform: rotate(-2deg); }
-.board-2 { left: 235px; top: 42px;  width: 112px; height: 88px; transform: rotate(2deg); }
-.board-3 { left: 360px; top: 28px;  width: 78px; height: 98px; transform: rotate(-2deg); }
+.board-1 { left: 240px;  top: 35px;  width: 108px; height: 128px; transform: rotate(-2deg); }
+.board-2 { left: 370px; top: 42px;  width: 142px; height: 118px; transform: rotate(2deg); }
+.board-3 { left: 525px; top: 40px;  width: 108px; height: 128px; transform: rotate(-2deg); }
 
-.board-4 { left: 145px;  top: 155px; width: 100px; height: 70px; transform: rotate(2deg); }
-.board-5 { left: 260px; top: 140px; width: 78px; height: 98px; transform: rotate(-2deg); }
-.board-6 { left: 345px; top: 145px; width: 92px; height: 66px; transform: rotate(2deg); }
+.board-4 { left: 240px;  top: 180px; width: 120px; height: 90px; transform: rotate(2deg); }
+.board-5 { left: 370px; top: 170px; width: 98px; height: 118px; transform: rotate(-2deg); }
+.board-6 { left: 345px; top: 145px; width: 112px; height: 86px; transform: rotate(2deg); }
 .album-tape-img {
   position: absolute;
   top: -7px;
@@ -1729,8 +1732,8 @@ img {
 </div>
 
 <!-- ③ 下のボタン -->
-<div class="modal-buttons" style="grid-template-columns: 1fr 1fr;">
-  <button class="sub-btn" id="closeSettingModalBtn" type="button">とじる</button>
+<div class="modal-buttons">
+ 
 <button class="main-btn" id="saveSettingsBtn" type="button">とじる</button>
 </div>
   </div>
@@ -1749,9 +1752,9 @@ img {
       「背景削除」や「切り抜き」で検索してみてください🔍
     </div>
 
-    <div class="modal-buttons" style="grid-template-columns: 1fr;">
-      <button class="main-btn" id="closeSculptureInfoBtn" type="button">とじる</button>
-    </div>
+    <div class="modal-buttons">
+  <button class="main-btn" id="closeSculptureInfoBtn" type="button">とじる</button>
+</div>
   </div>
 </div>
   <script>
@@ -2110,7 +2113,6 @@ const detailSummary = document.getElementById('detailSummary');
 const displaySlotField = document.getElementById('displaySlotField');
 const displaySlotButtons = document.getElementById('displaySlotButtons');
 const settingModal = document.getElementById('settingModal');
-const closeSettingModalBtn = document.getElementById('closeSettingModalBtn');
 const saveSettingBtn = document.getElementById('saveSettingsBtn');
 const frameAddBtn = document.getElementById('frameAddBtn');
 const boardAlbumBtn = document.getElementById('boardAlbumBtn');
@@ -2244,13 +2246,14 @@ if (uiSettingBtn) {
 });
 const ALBUM_PAGE_SIZE = 8;
 let currentAlbumPage = 1;
- document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {
   initDB();
   setTodayDate();
   updateOrientationField();
   renderAll();
   renderUsers();
   showTitle();
+  fitStage();
 });
 function getArtworkStorageKey() {
   if (!currentUserId) return null;
@@ -3067,9 +3070,6 @@ nextPageBtn.addEventListener('click', () => {
   }
 });
 
-closeSettingModalBtn.addEventListener('click', () => {
-  closeSettingModal();
-});
 changeUserBtn.addEventListener('click', () => {
   closeSettingModal();
   showTitle();
@@ -3096,20 +3096,29 @@ if (todayDateEl) {
   todayDateEl.textContent = `${month}/${day}`;
 }
 
-['titleScreen', 'homeScreen', 'albumScreen'].forEach(id => {
-  const screen = document.getElementById(id);
-  if (!screen) return;
 
-  screen.style.width = '';
-  screen.style.height = '';
-  screen.style.left = '';
-  screen.style.top = '';
-  screen.style.transform = '';
-  screen.style.transformOrigin = '';
-  screen.style.position = '';
-});
- 
+function fitStage() {
+  const app = document.querySelector('.app');
+  if (!app) return;
 
+  const BASE_W = 844;
+  const BASE_H = 390;
+
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+
+  const scale = Math.min(vw / BASE_W, vh / BASE_H);
+
+  const offsetX = (vw - BASE_W * scale) / 2;
+  const offsetY = (vh - BASE_H * scale) / 2;
+
+  app.style.width = `${BASE_W}px`;
+  app.style.height = `${BASE_H}px`;
+  app.style.transform = `translate(${offsetX}px, ${offsetY}px) scale(${scale})`;
+  app.style.transformOrigin = 'top left';
+}
+window.addEventListener('resize', fitStage);
+window.addEventListener('orientationchange', fitStage);
 </script>
 
 
