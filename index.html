@@ -113,7 +113,7 @@ html, body {
   transform: translateX(-50%);
   z-index: 12;
 
-  width: 44px;          /* ←小さく */
+  width: 36px;          /* ←小さく */
   opacity: 0.8;         /* ←ちょい透明 */
 }
 
@@ -122,7 +122,7 @@ html, body {
   transform: translateX(-50%);
   z-index: 12;
 
-  width: 52px;          /* ←少し大きめ（主役） */
+  width: 42px;          /* ←少し大きめ（主役） */
   opacity: 0.9;
 }
 
@@ -1392,7 +1392,7 @@ img {
   background: hsl(29, 48%, 71%);
   color: #7a5b49;
   font-size: 25px;
-  padding: 30px 50px;
+  padding: 15px 50px;
   border-radius: 999px;
   font-weight: bold;
 }
@@ -1401,7 +1401,7 @@ img {
 
 /* 額縁 */
 .guide-frame {
-  right: 130px;
+  right: 120px;
   top: 90px;
   transform: translateX(-68px);
 }
@@ -1414,7 +1414,7 @@ img {
 
 /* アルバム */
 .guide-album {
-  right: 250px;
+  right: 270px;
   bottom: 20px;
   transform: translateX(-70px);
 }
@@ -1427,8 +1427,8 @@ img {
 
 /* 設定 */
 .guide-setting {
-  right: 80px;
-  top: 210px;
+  right: 70px;
+  top: 225px;
   transform: translateX(-30px);
 }
 
@@ -1510,6 +1510,25 @@ img {
   z-index: 6;
   pointer-events: none;
 }
+.title-bgm-btn {
+  position: absolute;
+  top: 15px;
+  left: 620px;
+  z-index: 20;
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.85);
+  color: #8a6b5c;
+  font-size: 22px;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  cursor: pointer;
+}
+.title-bgm-btn:active {
+  transform: scale(0.96);
+}
   </style>
 </head>
 <body>
@@ -1518,12 +1537,14 @@ img {
 <section id="titleScreen" class="screen title-screen active">
   <img src="assets/title-bg.png" alt="リトルアトリエ タイトル画面" class="bg-image" />
 
-
+<button id="titleBgmBtn" class="title-bgm-btn" type="button">♬</button>
   <div id="userList" class="user-list"></div>
 
   <div id="userModal" class="modal">
   <div class="modal-card user-modal-card">
     <h2>なまえ登録</h2>
+
+
 
     <div class="user-modal-layout">
       <div class="user-modal-left">
@@ -1600,17 +1621,17 @@ img {
 
   <!-- 額縁 -->
   <div class="guide-spot guide-frame">
-    <div class="guide-label">イラストをおすと →<br>作品を追加できるよ</div>
+    <div class="guide-label">イラストを押すと →<br>作品を追加できるよ</div>
   </div>
 
   <!-- アルバム -->
   <div class="guide-spot guide-album">
-    <div class="guide-label">アルバムをおすと →<br>アルバムがひらくよ</div>
+    <div class="guide-label">アルバムを押すと →<br>アルバムがひらくよ</div>
   </div>
 
   <!-- 設定 -->
   <div class="guide-spot guide-setting">
-    <div class="guide-label">ここをおすと →<br>設定ができるよ</div>
+    <div class="guide-label">このボタンを押すと →<br>設定画面が開くよ</div>
   </div>
 
   <button id="closeGuideBtn" class="guide-close-btn">わかった！</button>
@@ -1765,6 +1786,12 @@ img {
   </button>
 </div>
 
+<div class="field change-user-wrap">
+  <button class="change-user-btn" id="bgmToggleBtn" type="button">
+    ◎BGM ON / OFF
+  </button>
+</div>
+
 <!-- ③ 下のボタン -->
 <div class="modal-buttons">
  
@@ -1791,6 +1818,8 @@ img {
 </div>
   </div>
 </div>
+
+<audio id="bgm" src="bgm.mp3" loop></audio>
   <script>
     let db;
 
@@ -2284,6 +2313,7 @@ if (uiSettingBtn) {
 const ALBUM_PAGE_SIZE = 8;
 let currentAlbumPage = 1;
 document.addEventListener('DOMContentLoaded', () => {
+  localStorage.removeItem("guideShown");
   initDB();
   setTodayDate();
   updateOrientationField();
@@ -2291,7 +2321,16 @@ document.addEventListener('DOMContentLoaded', () => {
   renderUsers();
   showTitle();
   fitStage();
+
+  updateBgmButtons();
+
+  if (bgmEnabled) {
+    // iPhoneでは自動再生が止められることがあるので、
+    // 最初のユーザー操作後に再生されればOKくらいで考える
+    playBgm();
+  }
 });
+
 function getArtworkStorageKey() {
   if (!currentUserId) return null;
   return `atelier-artworks-${currentUserId}`;
@@ -2737,9 +2776,9 @@ if (slot.id && slot.id.startsWith('album')) {
     tapeImg.className = 'album-tape-img';
 
 if (artwork.orientation === 'horizontal') {
-  tapeImg.style.top = '11px';
+  tapeImg.style.top = '15px';
 } else {
-  tapeImg.style.top = '-12px';
+  tapeImg.style.top = '-8px';
 }
 
     const rotate = Math.random() * 8 - 4;
@@ -3191,6 +3230,61 @@ const scale = Math.max(vw / BASE_W, vh / BASE_H) * 1.02;
   app.style.transform = `translate(${offsetX}px, ${offsetY}px) scale(${scale})`;
   app.style.transformOrigin = 'top left';
 }
+
+const bgm = document.getElementById('bgm');
+const titleBgmBtn = document.getElementById('titleBgmBtn');
+const bgmToggleBtn = document.getElementById('bgmToggleBtn');
+
+let bgmEnabled = localStorage.getItem('atelier-bgm-enabled') === 'true';
+
+function updateBgmButtons() {
+  if (titleBgmBtn) {
+    titleBgmBtn.textContent = bgmEnabled ? '♫' : '♬';
+  }
+  if (bgmToggleBtn) {
+    bgmToggleBtn.textContent = bgmEnabled ? '◎BGM OFF' : '◎BGM ON';
+  }
+}
+
+async function playBgm() {
+  try {
+    await bgm.play();
+  } catch (e) {
+    console.log('BGM再生はユーザー操作後に開始されるよ');
+  }
+}
+
+function stopBgm() {
+  bgm.pause();
+  bgm.currentTime = 0;
+}
+
+async function toggleBgm() {
+  bgmEnabled = !bgmEnabled;
+  localStorage.setItem('atelier-bgm-enabled', bgmEnabled);
+
+  if (bgmEnabled) {
+    await playBgm();
+  } else {
+    stopBgm();
+  }
+
+  updateBgmButtons();
+}
+
+if (titleBgmBtn) {
+  titleBgmBtn.addEventListener('click', async (event) => {
+    event.stopPropagation(); // タイトル画面クリックでホームに進むのを防ぐ
+    await toggleBgm();
+  });
+}
+
+if (bgmToggleBtn) {
+  bgmToggleBtn.addEventListener('click', async () => {
+    await toggleBgm();
+  });
+}
+
 window.addEventListener('resize', fitStage);
 window.addEventListener('orientationchange', fitStage);
 
